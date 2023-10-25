@@ -1,0 +1,11 @@
+- hoạt động theo kiểu module
+- giống angular
+- entity tạo bảng
+- controller: làm điều hướng, nhận request, response
+- service: 
+- interceptors: lấy và nhận dữ liệu
+- DTO: data transfer object : check dữ liệu đầu vào (validate bên server)
+- @ là decorator: Decorator là một hàm hoặc phương thức được gọi với các tham
+ số khác nhau và thường được sử dụng để thay đổi hoặc mở rộng hành vi của các
+  phần tử trong TypeScript
+- 
