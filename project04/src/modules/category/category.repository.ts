@@ -4,6 +4,8 @@ import { CategoryEntity } from '../category/entities/category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryDTO } from './dto/category.dto';
+import { IsCategoryInterface } from './interface/category.interface';
+import { GlobalInterface } from 'src/shared/interface/global.interface';
 @Injectable()
 export class CategoryRepository {
   constructor(
@@ -11,15 +13,15 @@ export class CategoryRepository {
     public categoryRepository: Repository<CategoryEntity>,
   ) {}
 
-  getAllCategory() {
+  getAllCategory(): Promise<IsCategoryInterface[]> {
     return this.categoryRepository.find();
   }
 
-  getOneCategory(id: number) {
+  getOneCategory(id: number): Promise<IsCategoryInterface> {
     return this.categoryRepository.findOneBy({ id });
   }
 
-  async createCategory(data: CategoryDTO) {
+  async createCategory(data: CategoryDTO): Promise<GlobalInterface> {
     this.categoryRepository.create(data);
     await this.categoryRepository.save(data);
     return {
@@ -28,7 +30,10 @@ export class CategoryRepository {
     };
   }
 
-  async updateCategory(data: CategoryDTO, id: number) {
+  async updateCategory(
+    data: CategoryDTO,
+    id: number,
+  ): Promise<GlobalInterface> {
     const updatedCategory = await this.categoryRepository.update(id, data);
     if (updatedCategory.affected === 0) {
       return {
@@ -42,7 +47,7 @@ export class CategoryRepository {
     };
   }
 
-  async deleteCategory(id: number) {
+  async deleteCategory(id: number): Promise<GlobalInterface> {
     let categoryItem = await this.categoryRepository.findOneBy({ id });
     if (!categoryItem) {
       return {

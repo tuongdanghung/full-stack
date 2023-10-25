@@ -2,27 +2,28 @@
 import { Injectable } from '@nestjs/common';
 import { CategoryRepository } from './category.repository';
 import { CategoryDTO } from './dto/category.dto';
-
+import { IsCategoryInterface } from './interface/category.interface';
+import { GlobalInterface } from 'src/shared/interface/global.interface';
 @Injectable()
 export class CategoryServices {
   constructor(private categoryRepo: CategoryRepository) {}
-  getAllCategory() {
+  getAllCategory(): Promise<IsCategoryInterface[]> {
     return this.categoryRepo.getAllCategory();
   }
 
-  getOneCategory(id: number) {
+  getOneCategory(id: number): Promise<IsCategoryInterface> {
     return this.categoryRepo.getOneCategory(id);
   }
 
-  createCategory(data: CategoryDTO) {
+  createCategory(data: CategoryDTO): Promise<GlobalInterface> {
     return this.categoryRepo.createCategory(data);
   }
 
-  updateCategory(data: CategoryDTO, id: number) {
+  updateCategory(data: CategoryDTO, id: number): Promise<GlobalInterface> {
     return this.categoryRepo.updateCategory(data, id);
   }
 
-  deleteCategory(id: number) {
+  deleteCategory(id: number): Promise<GlobalInterface> {
     return this.categoryRepo.deleteCategory(id);
   }
 }
