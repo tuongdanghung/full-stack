@@ -15,7 +15,7 @@ dotenv.config();
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
       entities: [CategoryEntity],
-      synchronize: true,
+      // synchronize: true,
     }),
   ],
 })
