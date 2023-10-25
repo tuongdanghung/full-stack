@@ -6,6 +6,9 @@ import {
   Put,
   Delete,
   Param,
+  Query,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { CategoryServices } from './category.service';
@@ -19,20 +22,32 @@ dotenv.config();
 export class CategoryController {
   constructor(private readonly categoryService: CategoryServices) {}
   @Get()
-  getAllCategories(): Promise<IsCategoryInterface[]> {
-    return this.categoryService.getAllCategory();
+  async getAllCategories(
+    @Query('title') title: string,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number,
+  ): Promise<{ data: IsCategoryInterface[]; currentPage: number }> {
+    if (!page && !limit) {
+      page = 1;
+      limit = 2;
+    }
+    return this.categoryService.getAllCategory(title, page, limit);
   }
   // get all categories
 
   @Get('/:id')
   getDetailCategory(@Param('id') id: number): Promise<IsCategoryInterface> {
+    console.log();
+
     return this.categoryService.getOneCategory(id);
   }
+  // get one categories
 
   @Post()
   createCategory(@Body() categoryDTO: CategoryDTO): Promise<GlobalInterface> {
     return this.categoryService.createCategory(categoryDTO);
   }
+  // create categories
 
   @Put('/:id')
   updateCategory(
@@ -41,11 +56,13 @@ export class CategoryController {
   ): Promise<GlobalInterface> {
     return this.categoryService.updateCategory(categoryDTO, id);
   }
+  // update categories
 
   @Delete('/:id')
   deleteCategory(@Param('id') id: number): Promise<GlobalInterface> {
     return this.categoryService.deleteCategory(id);
   }
+  // delete categories
 }
 // nhận các request từ client gửi về server
 // và nhận response từ server trả về client

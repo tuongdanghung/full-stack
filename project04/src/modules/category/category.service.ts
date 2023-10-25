@@ -7,8 +7,12 @@ import { GlobalInterface } from 'src/shared/interface/global.interface';
 @Injectable()
 export class CategoryServices {
   constructor(private categoryRepo: CategoryRepository) {}
-  getAllCategory(): Promise<IsCategoryInterface[]> {
-    return this.categoryRepo.getAllCategory();
+  getAllCategory(
+    title: string,
+    page: number,
+    limit: number,
+  ): Promise<{ data: IsCategoryInterface[]; currentPage: number }> {
+    return this.categoryRepo.getAllCategory(title, page, limit);
   }
 
   getOneCategory(id: number): Promise<IsCategoryInterface> {

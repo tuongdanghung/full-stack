@@ -2,7 +2,6 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { Connection } from 'typeorm';
-import { CategoryEntity } from '../modules/category/entities/category.entity';
 dotenv.config();
 
 @Module({
@@ -14,7 +13,7 @@ dotenv.config();
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
-      entities: [CategoryEntity],
+      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       // synchronize: true,
     }),
   ],
