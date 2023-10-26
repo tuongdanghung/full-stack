@@ -4,7 +4,15 @@ import { CategoryModule } from './modules/category/category.module';
 import { BrandModule } from './modules/brand/brand.module';
 import { RoleModule } from './modules/role/role.module';
 import { ColorModule } from './modules/color/color.module';
+import { CapacityModule } from './modules/capacity/capacity.module';
 @Module({
-  imports: [MysqlModule, CategoryModule, BrandModule, RoleModule, ColorModule],
+  imports: [
+    MysqlModule,
+    CategoryModule,
+    BrandModule,
+    RoleModule,
+    ColorModule,
+    CapacityModule,
+  ],
 })
 export class AppModule {}
