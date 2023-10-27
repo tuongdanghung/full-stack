@@ -19,6 +19,7 @@ import { GlobalInterface } from '../../shared/interface/global.interface';
 // trong global class có bao nhiêu tham số thì ở đây truyền bấy nhiêu tham số
 dotenv.config();
 @Controller(`${process.env.API_KEY}/roles`)
+// viet guards intercepter
 export class RoleController {
   constructor(private readonly roleService: RoleServices) {}
   @Get()
