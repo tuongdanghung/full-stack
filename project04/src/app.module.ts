@@ -7,7 +7,12 @@ import { ColorModule } from './modules/color/color.module';
 import { CapacityModule } from './modules/capacity/capacity.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { LoggerMiddleware } from './shared/middlewares/logger.middleware';
+import { GenerateToken } from './shared/middlewares/generateToken';
 import * as dotenv from 'dotenv';
+import { UserModule } from './modules/user/user.module';
+import { CheckAuthenGuard } from './shared/guards/auth.guard';
+import { CheckAuthorGuard } from './shared/guards/verify_role.guard';
+import { SharedDataService } from './shared/middlewares/shareData.service';
 dotenv.config();
 const PORT = process.env.API_KEY;
 
@@ -20,6 +25,13 @@ const PORT = process.env.API_KEY;
     ColorModule,
     CapacityModule,
     AuthModule,
+    UserModule,
+  ],
+  providers: [
+    CheckAuthenGuard,
+    GenerateToken,
+    CheckAuthorGuard,
+    SharedDataService,
   ],
 })
 export class AppModule {
