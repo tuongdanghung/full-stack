@@ -1,6 +1,5 @@
 import { RoleEntity } from 'src/modules/role/entities/role.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
@@ -15,7 +14,7 @@ export class UserEntity {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column()
@@ -24,10 +23,14 @@ export class UserEntity {
   @Column()
   card_id: string;
 
-  @ManyToOne(() => RoleEntity, (role) => role.user)
-  role: RoleEntity;
+  @Column()
+  avatar: string;
 
+  @ManyToOne(() => RoleEntity, (role) => role.user, { eager: true })
+  role: RoleEntity;
+  RoleID: number;
   @Column({
+    select: false,
     name: 'createdAt',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -35,6 +38,7 @@ export class UserEntity {
   public createdAt: string;
 
   @Column({
+    select: false,
     name: 'updatedAt',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

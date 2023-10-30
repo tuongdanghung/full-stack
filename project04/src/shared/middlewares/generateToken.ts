@@ -9,4 +9,8 @@ export class GenerateToken {
   signJwt(payload: any, jwtSignOptions?: JwtSignOptions) {
     return jwtService.sign(payload, jwtSignOptions);
   }
+
+  verifyJwt(token: string, jwtSignOptions?: JwtSignOptions) {
+    return jwtService.verify(token, jwtSignOptions);
+  }
 }
