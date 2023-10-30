@@ -1,5 +1,5 @@
 import { IsNotEmpty, MaxLength, IsEmail, IsNumber } from 'class-validator';
-export class AuthDTOController {
+export class RegisterDTOController {
   @MaxLength(50, {
     message: 'User is too long',
   })
@@ -10,13 +10,14 @@ export class AuthDTOController {
   lastName: string;
 
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @IsNotEmpty()
   password: string;
 }
 
-export class AuthDTOServices {
+export class RegisterDTOServices {
   @MaxLength(50, {
     message: 'User is too long',
   })
@@ -26,18 +27,24 @@ export class AuthDTOServices {
   @IsNotEmpty()
   lastName: string;
 
+  @IsEmail()
   @IsNotEmpty()
   email: string;
 
   @IsNotEmpty()
   password: string;
 
-  @IsNotEmpty()
-  status: string;
-
-  @IsNumber()
-  role: number;
-
   @IsNumber()
   card_id: string;
 }
+
+export class LoginDTO {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+}
+
+export class VerifyDTOServices {}

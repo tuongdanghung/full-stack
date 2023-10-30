@@ -1,0 +1,11 @@
+export { default as ExtendAdmin } from "./extend";
+export { default as Dashboard } from "./dashboard";
+export { default as ManagerUsers } from "./managerUser";
+export { default as ManagerProduct } from "./managerProduct";
+export { default as ManagerOrder } from "./managerOrder";
+export { default as ManagerBrand } from "./managerBrand";
+export { default as ManagerCategory } from "./managerCategory";
+export { default as ManagerColor } from "./managerColor";
+export { default as ManagerCapacity } from "./managerCapacity";
+export { default as ManagerRam } from "./managerRam";
+export { default as ManagerBlog } from "./managerBlog";

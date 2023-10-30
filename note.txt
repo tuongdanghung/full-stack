@@ -10,3 +10,6 @@
  số khác nhau và thường được sử dụng để thay đổi hoặc mở rộng hành vi của các
   phần tử trong TypeScript
 - 
+
+
+- hỏi cụ thể chi tiết : bối cảnh kịch bản, vấn đề gặp phải, giải pháp

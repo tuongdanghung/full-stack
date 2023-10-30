@@ -18,14 +18,23 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: 'true' })
   status: string;
 
   @Column()
   card_id: string;
 
+  @Column({
+    default:
+      'https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi3LTAwMi1wLnBuZw.png',
+  })
+  avatar: string;
+
   @ManyToOne(() => RoleEntity, (role) => role.user)
   role: RoleEntity;
+
+  @Column({ nullable: true, default: 1 })
+  roleId: number;
 
   @Column({
     name: 'createdAt',

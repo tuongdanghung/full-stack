@@ -1,31 +1,27 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Put,
-  Delete,
-  Param,
-  Query,
-  ParseIntPipe,
-  DefaultValuePipe,
-} from '@nestjs/common';
+import { Controller, Post, Body, Put, Param } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { AuthServices } from './auth.service';
-import { AuthDTOController } from './dto/auth.dto';
-import { UserEnum, card_id, role } from './enum/user.enum';
-//   import { IsRoleInterface } from './interface/role.interface';
-import { GlobalInterface } from '../../shared/interface/global.interface';
+import { RegisterDTOController, LoginDTO } from './dto/auth.dto';
+import { card_id } from './enum/user.enum';
 
 dotenv.config();
-@Controller(`${process.env.API_KEY}/auth/register`)
+@Controller(`${process.env.API_KEY}/auth`)
 export class AuthController {
   constructor(private readonly authService: AuthServices) {}
 
-  @Post()
-  register(@Body() authDTOController: AuthDTOController): Promise<any> {
-    const req = { ...authDTOController, ...UserEnum, card_id, role };
-
+  @Post('/register')
+  register(@Body() authDTOController: RegisterDTOController): Promise<any> {
+    const req = { ...authDTOController, card_id };
     return this.authService.register(req);
+  }
+
+  @Put('verifyAccount/:id')
+  verifyAccount(@Param('id') card_id: string) {
+    return this.authService.verifyAccount(card_id);
+  }
+
+  @Post('/login')
+  login(@Body() loginDTOController: LoginDTO): Promise<any> {
+    return this.authService.login(loginDTOController);
   }
 }

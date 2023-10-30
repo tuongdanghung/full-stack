@@ -1,0 +1,21 @@
+.ant-select-dropdown {
+    z-index: 9999 !important;
+}
+.select-ant {
+    width: 100% !important;
+    .ant-select-selector {
+        border: 1px solid #6b7280 !important;
+        padding: 8px 12px !important;
+    }
+}
+.checked-button {
+    div {
+        label {
+            padding: 0 !important;
+        }
+    }
+}
+.label-css {
+    display: block !important;
+    width: 90px !important;
+}
