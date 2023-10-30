@@ -2,7 +2,8 @@
 - giống angular
 - entity tạo bảng
 - controller: làm điều hướng, nhận request, response
-- service: 
+- service: xử lý logic
+- repository: tương tác với sdl
 - interceptors: lấy và nhận dữ liệu
 - DTO: data transfer object : check dữ liệu đầu vào (validate bên server)
 - @ là decorator: Decorator là một hàm hoặc phương thức được gọi với các tham
