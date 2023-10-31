@@ -17,9 +17,9 @@ export class CheckAuthorGuard implements CanActivate {
     const headerString = headers.authorization.split(' ');
 
     const currentToken = await this.loginService.verifyJwt(headerString[1]);
-    if (currentToken.dataGenerateToken.roleId !== 1) {
-      return true;
-    }
+
+    if (currentToken.dataGenerateToken.roleId === 2) return true;
+
     throw new UnauthorizedException('Insufficient role authorization');
   }
 }
