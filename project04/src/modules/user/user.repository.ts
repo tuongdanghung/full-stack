@@ -19,7 +19,8 @@ export class UserRepository {
   ): Promise<{ data: UserEntity[]; currentPage: number }> {
     const skip = (page - 1) * limit;
     const data = await this.userRepository.find({
-      where: email && { email: ILike(`%${email}%`) },
+      where: email ? { email: ILike(`%${email}%`) } : {},
+      relations: ['addresses'],
       skip,
       take: limit,
     });
