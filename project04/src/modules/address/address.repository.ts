@@ -28,11 +28,7 @@ export class AddressRepository {
     return { data, currentPage };
   }
 
-  //   getOneRole(id: number): Promise<IsRoleInterface> {
-  //     return this.roleRepository.findOneBy({ id });
-  //   }
-
-  async createRole(data: any): Promise<GlobalInterface> {
+  async createAddress(data: any): Promise<GlobalInterface> {
     this.addressRepository.create(data);
     const response = await this.addressRepository.save(data);
     return response;

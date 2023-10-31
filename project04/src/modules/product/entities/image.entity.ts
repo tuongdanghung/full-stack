@@ -1,27 +1,18 @@
-// import { RoleEntity } from 'src/modules/role/entities/role.entity';
-import { UserEntity } from 'src/modules/user/entities/user.entity';
+import { ProductEntity } from './product.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-@Entity('addresses')
-export class AddressEntity {
+@Entity('images')
+export class ImageEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  province: string;
-
-  @Column()
-  district: string;
-
-  @Column()
-  ward: string;
-
-  @Column()
-  phone: number;
-  @ManyToOne(() => UserEntity, (user) => user.addresses)
-  user: UserEntity;
+  src: string;
 
   @Column({ select: false })
-  userId: number;
+  productId: number;
+
+  @ManyToOne(() => ProductEntity, (product) => product.images)
+  product: ProductEntity;
 
   @Column({
     select: false,

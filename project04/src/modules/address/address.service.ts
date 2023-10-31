@@ -16,7 +16,7 @@ export class AddressServices {
   }
 
   async createAddress(data: AddressDTO): Promise<GlobalInterface> {
-    const response = await this.addressService.createRole(data);
+    const response = await this.addressService.createAddress(data);
     if (response) {
       return {
         success: true,

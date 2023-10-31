@@ -28,24 +28,24 @@ export class CloudinaryService {
     });
   }
   // // xử lý nhiều ảnh
-  // uploadMultipleFiles(files: Express.Multer.File[]): any {
-  //   // Promise.all() => để đợi cho tất cả các Promise trong mảng hoàn thành.
-  //   return Promise.all(
-  //     files.map((file) => {
-  //       return new Promise<CloudinaryResponse>((resolve, reject) => {
-  //         const uploadOptions = {
-  //           folder: 'Project-NestJs',
-  //         };
-  //         const uploadStream = cloudinary.uploader.upload_stream(
-  //           uploadOptions,
-  //           (error, result) => {
-  //             if (error) return reject(error);
-  //             resolve(result);
-  //           },
-  //         );
-  //         streamifier.createReadStream(file.buffer)?.pipe(uploadStream);
-  //       });
-  //     }),
-  //   );
-  // }
+  uploadMultipleFiles(files: Express.Multer.File[]): any {
+    // Promise.all() => để đợi cho tất cả các Promise trong mảng hoàn thành.
+    return Promise.all(
+      files.map((file) => {
+        return new Promise<CloudinaryResponse>((resolve, reject) => {
+          const uploadOptions = {
+            folder: 'Project-NestJs',
+          };
+          const uploadStream = cloudinary.uploader.upload_stream(
+            uploadOptions,
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result);
+            },
+          );
+          streamifier.createReadStream(file.buffer)?.pipe(uploadStream);
+        });
+      }),
+    );
+  }
 }
