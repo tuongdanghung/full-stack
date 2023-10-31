@@ -42,7 +42,6 @@ export class UserRepository {
   }
 
   async updateUserByAdmin(id: number, data: any): Promise<boolean> {
-    console.log(data, id);
     const updatedUser = await this.userRepository.update(id, data);
     if (updatedUser.affected === 1) {
       return true;
