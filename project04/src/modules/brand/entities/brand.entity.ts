@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { ProductEntity } from 'src/modules/product/entities/product.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('brands')
 export class BrandEntity {
@@ -7,8 +8,10 @@ export class BrandEntity {
 
   @Column({ unique: true, nullable: true })
   title: string;
-
+  @OneToMany(() => ProductEntity, (product) => product.brand)
+  brand: ProductEntity;
   @Column({
+    select: false,
     name: 'createdAt',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -16,6 +19,7 @@ export class BrandEntity {
   public createdAt: string;
 
   @Column({
+    select: false,
     name: 'updatedAt',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

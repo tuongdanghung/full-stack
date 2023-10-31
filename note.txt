@@ -9,7 +9,8 @@
 - @ là decorator: Decorator là một hàm hoặc phương thức được gọi với các tham
  số khác nhau và thường được sử dụng để thay đổi hoặc mở rộng hành vi của các
   phần tử trong TypeScript
-- 
+- Dependency injection:  là một kỹ thuật trong lập trình phần mềm, được sử dụng để giảm sự phụ thuộc giữa các thành phần trong một ứng dụng.
+ Điều này giúp tăng tính linh hoạt, tái sử dụng và kiểm thử của mã.
 
 
 - hỏi cụ thể chi tiết : bối cảnh kịch bản, vấn đề gặp phải, giải pháp
