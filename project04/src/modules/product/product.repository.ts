@@ -1,7 +1,7 @@
 // lấy data để trả về controller
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductDTO } from './dto/product.dto';
+import { ProductCapacityDTO, ProductDTO } from './dto/product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { ImageEntity } from './entities/image.entity';
 import { IsProductInterface } from './interface/product.interface';
@@ -87,6 +87,17 @@ export class ProductRepository {
       return false;
     }
     await this.imageRepository.delete({ productId: id });
+    await this.productCapacityEntity.delete({ productsId: id });
     return await this.productRepository.delete(id);
+  }
+
+  async deleteProductCapacity(
+    productCapacityDTO: ProductCapacityDTO,
+  ): Promise<boolean | any> {
+    const options = {
+      productsId: productCapacityDTO.productsId,
+      capacitiesId: productCapacityDTO.capacitiesId,
+    };
+    await this.productCapacityEntity.delete(options);
   }
 }

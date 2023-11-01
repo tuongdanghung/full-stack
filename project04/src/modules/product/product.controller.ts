@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { ProductServices } from './product.service';
-import { ProductDTO } from './dto/product.dto';
+import { ProductDTO, ProductCapacityDTO } from './dto/product.dto';
 import { IsProductInterface } from './interface/product.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -46,6 +46,11 @@ export class ProductController {
   @Get('/:id')
   getDetailRole(@Param('id') id: number): Promise<IsProductInterface> {
     return this.productService.getOneProduct(id);
+  }
+
+  @Post('/productCapacity')
+  async createProductCapacity(@Body() productCapacityDTO: ProductCapacityDTO) {
+    return this.productService.createNewProductCapacity(productCapacityDTO);
   }
 
   @Post()
@@ -102,11 +107,15 @@ export class ProductController {
     return this.productService.updateImage(id, data?.url);
   }
 
+  @Delete('/productCapacity')
+  async deleteProductCapacity(@Body() productCapacityDTO: ProductCapacityDTO) {
+    this.productService.deleteProductCapacity(productCapacityDTO);
+  }
+
   @Delete('/:id')
-  deleteProduct(@Param('id') id: number): Promise<GlobalInterface> {
+  async deleteProduct(@Param('id') id: number): Promise<GlobalInterface> {
     return this.productService.deleteProduct(id);
   }
-  // delete role
 }
 // nhận các request từ client gửi về server
 // và nhận response từ server trả về client

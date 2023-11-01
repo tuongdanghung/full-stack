@@ -21,3 +21,13 @@ export class ProductDTO {
   @IsNotEmpty()
   stock: string;
 }
+
+export class ProductCapacityDTO {
+  @IsNotEmpty()
+  @IsNumber()
+  productsId: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  capacitiesId: number;
+}
