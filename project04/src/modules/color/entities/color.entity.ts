@@ -1,3 +1,4 @@
+import { CartEntity } from 'src/modules/cart/entities/cart.entity';
 import { ProductColorEntity } from 'src/modules/product/entities/productColor.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
@@ -14,6 +15,9 @@ export class ColorEntity {
     (productCapacityEntity) => productCapacityEntity.colors,
   )
   public colors: ProductColorEntity[];
+
+  @OneToMany(() => CartEntity, (cart) => cart.product)
+  carts: CartEntity[];
 
   @Column({
     select: false,

@@ -15,6 +15,7 @@ import { CheckAuthorGuard } from './shared/guards/verify_role.guard';
 import { SharedDataService } from './shared/middlewares/shareData.service';
 import { AddressModule } from './modules/address/address.module';
 import { ProductModule } from './modules/product/product.module';
+import { CartModule } from './modules/cart/cart.module';
 dotenv.config();
 const PORT = process.env.API_KEY;
 
@@ -30,6 +31,7 @@ const PORT = process.env.API_KEY;
     UserModule,
     AddressModule,
     ProductModule,
+    CartModule,
   ],
   providers: [
     CheckAuthenGuard,
