@@ -22,6 +22,7 @@ export class ProductServices {
   async createProduct(
     dataProduct: IsProductInterface,
     newDataImage: any,
+    capacity: number[],
   ): Promise<GlobalInterface> {
     const responseProduct = await this.productRepo.createProduct(dataProduct);
 
@@ -31,8 +32,16 @@ export class ProductServices {
         productId: responseProduct?.id,
       }));
 
+      const productCapacityArray = capacity?.map((item: number) => ({
+        capacitiesId: item,
+        productsId: responseProduct?.id,
+      }));
+
       for (const image of imageArray) {
         await this.productRepo.createImage(image);
+      }
+      for (const item of productCapacityArray) {
+        await this.productRepo.createProductCapacity(item);
       }
       return {
         success: true,

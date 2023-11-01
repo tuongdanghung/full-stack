@@ -53,7 +53,7 @@ export class ProductController {
   async createProduct(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() formData: any,
-  ): Promise<GlobalInterface> {
+  ): Promise<any> {
     const dataProduct = {
       title: formData.title,
       description: formData.description,
@@ -62,11 +62,16 @@ export class ProductController {
       brandId: +formData.brandId,
       categoryId: +formData.categoryId,
     };
+    const capacity = JSON.parse(formData.capacity);
     const dataImage = await this.cloudinaryService.uploadMultipleFiles(files);
     const newDataImage = dataImage?.map((file: any) => {
       return file.url;
     });
-    return await this.productService.createProduct(dataProduct, newDataImage);
+    return await this.productService.createProduct(
+      dataProduct,
+      newDataImage,
+      capacity,
+    );
   }
 
   @Put('/:id')
