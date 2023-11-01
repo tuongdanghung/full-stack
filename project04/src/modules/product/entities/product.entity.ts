@@ -14,6 +14,7 @@ import { CapacityEntity } from 'src/modules/capacity/entities/capacity.entity';
 import { ProductCapacityEntity } from './productCapacity.entity';
 import { ColorEntity } from 'src/modules/color/entities/color.entity';
 import { ProductColorEntity } from './productColor.entity';
+import { CartEntity } from 'src/modules/cart/entities/cart.entity';
 @Entity('products')
 export class ProductEntity {
   @PrimaryGeneratedColumn()
@@ -40,13 +41,15 @@ export class ProductEntity {
   @Column()
   stock: number;
 
-  @OneToMany(() => ImageEntity, (image) => image.product)
+  @OneToMany(() => ImageEntity, (image) => image.product, { eager: true })
   images: ImageEntity[];
 
-  @ManyToOne(() => CategoryEntity, (category) => category.product)
+  @ManyToOne(() => CategoryEntity, (category) => category.product, {
+    eager: true,
+  })
   category: CategoryEntity;
 
-  @ManyToOne(() => BrandEntity, (category) => category.brand)
+  @ManyToOne(() => BrandEntity, (category) => category.brand, { eager: true })
   brand: BrandEntity;
 
   @ManyToMany(() => CapacityEntity)
@@ -66,6 +69,8 @@ export class ProductEntity {
     () => ProductColorEntity,
     (productColorEntity) => productColorEntity.productsId,
   )
+  @OneToMany(() => CartEntity, (cart) => cart.product)
+  carts: CartEntity[];
   public productColors: ProductColorEntity[];
   @Column({
     select: false,
