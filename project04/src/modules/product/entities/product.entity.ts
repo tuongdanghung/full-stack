@@ -50,6 +50,7 @@ export class ProductEntity {
   @ManyToMany(() => CapacityEntity)
   @JoinTable({ name: 'product_capacities' })
   capacities: CapacityEntity[];
+
   @Column({
     select: false,
     name: 'createdAt',

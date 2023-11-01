@@ -1,7 +1,7 @@
 // lấy data để trả về controller
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
-import { ProductDTO } from './dto/product.dto';
+import { ProductCapacityDTO, ProductDTO } from './dto/product.dto';
 import { IsProductInterface } from './interface/product.interface';
 import { GlobalInterface } from 'src/shared/interface/global.interface';
 @Injectable()
@@ -52,6 +52,10 @@ export class ProductServices {
       success: false,
       message: 'Create Product failed',
     };
+  }
+
+  async createNewProductCapacity(productCapacityDTO: ProductCapacityDTO) {
+    await this.productRepo.createProductCapacity(productCapacityDTO);
   }
 
   async updateProduct(
@@ -118,5 +122,9 @@ export class ProductServices {
       success: true,
       message: 'Product deleted successfully',
     };
+  }
+
+  async deleteProductCapacity(productCapacityDTO: ProductCapacityDTO) {
+    return this.productRepo.deleteProductCapacity(productCapacityDTO);
   }
 }

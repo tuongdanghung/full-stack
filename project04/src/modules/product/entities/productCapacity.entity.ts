@@ -20,11 +20,11 @@ export class ProductCapacityEntity {
     () => ProductEntity,
     (productEntity) => productEntity.productCapacities,
   )
-  public product: ProductEntity;
+  public products: ProductEntity;
 
   @ManyToOne(
     () => CapacityEntity,
     (capacityEntity) => capacityEntity.productCapacities,
   )
-  public category: CapacityEntity;
+  public capacities: CapacityEntity;
 }

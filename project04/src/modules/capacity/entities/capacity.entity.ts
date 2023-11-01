@@ -30,7 +30,7 @@ export class CapacityEntity {
 
   @OneToMany(
     () => ProductCapacityEntity,
-    (productCapacityEntity) => productCapacityEntity.category,
+    (productCapacityEntity) => productCapacityEntity.capacities,
   )
   public productCapacities: ProductCapacityEntity[];
 }
