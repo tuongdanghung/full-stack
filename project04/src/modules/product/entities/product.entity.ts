@@ -12,6 +12,8 @@ import { CategoryEntity } from 'src/modules/category/entities/category.entity';
 import { BrandEntity } from 'src/modules/brand/entities/brand.entity';
 import { CapacityEntity } from 'src/modules/capacity/entities/capacity.entity';
 import { ProductCapacityEntity } from './productCapacity.entity';
+import { ColorEntity } from 'src/modules/color/entities/color.entity';
+import { ProductColorEntity } from './productColor.entity';
 @Entity('products')
 export class ProductEntity {
   @PrimaryGeneratedColumn()
@@ -51,6 +53,20 @@ export class ProductEntity {
   @JoinTable({ name: 'product_capacities' })
   capacities: CapacityEntity[];
 
+  @ManyToMany(() => ColorEntity)
+  @JoinTable({ name: 'product_colors' })
+  colors: ColorEntity[];
+
+  @OneToMany(
+    () => ProductCapacityEntity,
+    (productCapacityEntity) => productCapacityEntity.productsId,
+  )
+  public productCapacities: ProductCapacityEntity[];
+  @OneToMany(
+    () => ProductColorEntity,
+    (productColorEntity) => productColorEntity.productsId,
+  )
+  public productColors: ProductColorEntity[];
   @Column({
     select: false,
     name: 'createdAt',
@@ -66,10 +82,4 @@ export class ProductEntity {
     default: () => 'CURRENT_TIMESTAMP',
   })
   public updatedAt: string;
-
-  @OneToMany(
-    () => ProductCapacityEntity,
-    (productCapacityEntity) => productCapacityEntity.productsId,
-  )
-  public productCapacities: ProductCapacityEntity[];
 }
