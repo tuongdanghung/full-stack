@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { ProductColorEntity } from 'src/modules/product/entities/productColor.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('colors')
 export class ColorEntity {
@@ -8,7 +9,14 @@ export class ColorEntity {
   @Column({ unique: true, nullable: true })
   color: string;
 
+  @OneToMany(
+    () => ProductColorEntity,
+    (productCapacityEntity) => productCapacityEntity.colors,
+  )
+  public colors: ProductColorEntity[];
+
   @Column({
+    select: false,
     name: 'createdAt',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -16,6 +24,7 @@ export class ColorEntity {
   public createdAt: string;
 
   @Column({
+    select: false,
     name: 'updatedAt',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

@@ -7,6 +7,7 @@ import { ProductEntity } from './entities/product.entity';
 import { ImageEntity } from './entities/image.entity';
 import { CloudinaryModule } from 'src/shared/utils/upload/cloudinary.module';
 import { ProductCapacityEntity } from './entities/productCapacity.entity';
+import { ProductColorEntity } from './entities/productColor.entity';
 @Module({
   controllers: [ProductController],
   imports: [
@@ -15,6 +16,7 @@ import { ProductCapacityEntity } from './entities/productCapacity.entity';
       ImageEntity,
       ProductRepository,
       ProductCapacityEntity,
+      ProductColorEntity,
     ]),
     CloudinaryModule,
   ],

@@ -15,7 +15,11 @@ import {
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { ProductServices } from './product.service';
-import { ProductDTO, ProductCapacityDTO } from './dto/product.dto';
+import {
+  ProductDTO,
+  ProductCapacityDTO,
+  ProductColorDTO,
+} from './dto/product.dto';
 import { IsProductInterface } from './interface/product.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -53,6 +57,11 @@ export class ProductController {
     return this.productService.createNewProductCapacity(productCapacityDTO);
   }
 
+  @Post('/productColor')
+  async createNewProductColor(@Body() productColorDTO: ProductColorDTO) {
+    return this.productService.createNewProductColor(productColorDTO);
+  }
+
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
   async createProduct(
@@ -68,6 +77,7 @@ export class ProductController {
       categoryId: +formData.categoryId,
     };
     const capacity = JSON.parse(formData.capacity);
+    const color = JSON.parse(formData.color);
     const dataImage = await this.cloudinaryService.uploadMultipleFiles(files);
     const newDataImage = dataImage?.map((file: any) => {
       return file.url;
@@ -76,6 +86,7 @@ export class ProductController {
       dataProduct,
       newDataImage,
       capacity,
+      color,
     );
   }
 
@@ -110,6 +121,11 @@ export class ProductController {
   @Delete('/productCapacity')
   async deleteProductCapacity(@Body() productCapacityDTO: ProductCapacityDTO) {
     this.productService.deleteProductCapacity(productCapacityDTO);
+  }
+
+  @Delete('/productColor')
+  async deleteProductColor(@Body() productColorDTO: ProductColorDTO) {
+    this.productService.deleteProductColor(productColorDTO);
   }
 
   @Delete('/:id')

@@ -1,7 +1,11 @@
 // lấy data để trả về controller
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
-import { ProductCapacityDTO, ProductDTO } from './dto/product.dto';
+import {
+  ProductCapacityDTO,
+  ProductColorDTO,
+  ProductDTO,
+} from './dto/product.dto';
 import { IsProductInterface } from './interface/product.interface';
 import { GlobalInterface } from 'src/shared/interface/global.interface';
 @Injectable()
@@ -23,6 +27,7 @@ export class ProductServices {
     dataProduct: IsProductInterface,
     newDataImage: any,
     capacity: number[],
+    color: number[],
   ): Promise<GlobalInterface> {
     const responseProduct = await this.productRepo.createProduct(dataProduct);
 
@@ -36,12 +41,20 @@ export class ProductServices {
         capacitiesId: item,
         productsId: responseProduct?.id,
       }));
+      const productColorArray = capacity?.map((item: number) => ({
+        colorsId: item,
+        productsId: responseProduct?.id,
+      }));
 
       for (const image of imageArray) {
         await this.productRepo.createImage(image);
       }
       for (const item of productCapacityArray) {
         await this.productRepo.createProductCapacity(item);
+      }
+
+      for (const item of productColorArray) {
+        await this.productRepo.createProductColor(item);
       }
       return {
         success: true,
@@ -56,6 +69,10 @@ export class ProductServices {
 
   async createNewProductCapacity(productCapacityDTO: ProductCapacityDTO) {
     await this.productRepo.createProductCapacity(productCapacityDTO);
+  }
+
+  async createNewProductColor(productColorDTO: ProductColorDTO) {
+    await this.productRepo.createNewProductColor(productColorDTO);
   }
 
   async updateProduct(
@@ -126,5 +143,9 @@ export class ProductServices {
 
   async deleteProductCapacity(productCapacityDTO: ProductCapacityDTO) {
     return this.productRepo.deleteProductCapacity(productCapacityDTO);
+  }
+
+  async deleteProductColor(productColorDTO: ProductColorDTO) {
+    return this.productRepo.deleteProductColor(productColorDTO);
   }
 }

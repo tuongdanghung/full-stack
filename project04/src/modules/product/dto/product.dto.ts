@@ -31,3 +31,13 @@ export class ProductCapacityDTO {
   @IsNumber()
   capacitiesId: number;
 }
+
+export class ProductColorDTO {
+  @IsNotEmpty()
+  @IsNumber()
+  productsId: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  colorsId: number;
+}
