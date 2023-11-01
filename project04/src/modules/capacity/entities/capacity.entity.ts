@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { ProductCapacityEntity } from 'src/modules/product/entities/productCapacity.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('capacities')
 export class CapacityEntity {
@@ -12,6 +13,7 @@ export class CapacityEntity {
   percent: number;
 
   @Column({
+    select: false,
     name: 'createdAt',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -19,9 +21,16 @@ export class CapacityEntity {
   public createdAt: string;
 
   @Column({
+    select: false,
     name: 'updatedAt',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   public updatedAt: string;
+
+  @OneToMany(
+    () => ProductCapacityEntity,
+    (productCapacityEntity) => productCapacityEntity.category,
+  )
+  public productCapacities: ProductCapacityEntity[];
 }

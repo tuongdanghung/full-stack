@@ -4,10 +4,14 @@ import {
   Column,
   OneToMany,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { ImageEntity } from './image.entity';
 import { CategoryEntity } from 'src/modules/category/entities/category.entity';
 import { BrandEntity } from 'src/modules/brand/entities/brand.entity';
+import { CapacityEntity } from 'src/modules/capacity/entities/capacity.entity';
+import { ProductCapacityEntity } from './productCapacity.entity';
 @Entity('products')
 export class ProductEntity {
   @PrimaryGeneratedColumn()
@@ -16,7 +20,7 @@ export class ProductEntity {
   @Column()
   title: string;
 
-  @Column()
+  @Column('text')
   description: string;
 
   @Column({ select: false })
@@ -43,6 +47,9 @@ export class ProductEntity {
   @ManyToOne(() => BrandEntity, (category) => category.brand)
   brand: BrandEntity;
 
+  @ManyToMany(() => CapacityEntity)
+  @JoinTable({ name: 'product_capacities' })
+  capacities: CapacityEntity[];
   @Column({
     select: false,
     name: 'createdAt',
@@ -58,4 +65,10 @@ export class ProductEntity {
     default: () => 'CURRENT_TIMESTAMP',
   })
   public updatedAt: string;
+
+  @OneToMany(
+    () => ProductCapacityEntity,
+    (productCapacityEntity) => productCapacityEntity.productsId,
+  )
+  public productCapacities: ProductCapacityEntity[];
 }

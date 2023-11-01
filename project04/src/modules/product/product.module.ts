@@ -6,10 +6,16 @@ import { ProductRepository } from './product.repository';
 import { ProductEntity } from './entities/product.entity';
 import { ImageEntity } from './entities/image.entity';
 import { CloudinaryModule } from 'src/shared/utils/upload/cloudinary.module';
+import { ProductCapacityEntity } from './entities/productCapacity.entity';
 @Module({
   controllers: [ProductController],
   imports: [
-    TypeOrmModule.forFeature([ProductEntity, ImageEntity, ProductRepository]),
+    TypeOrmModule.forFeature([
+      ProductEntity,
+      ImageEntity,
+      ProductRepository,
+      ProductCapacityEntity,
+    ]),
     CloudinaryModule,
   ],
   providers: [ProductServices, ProductRepository],
