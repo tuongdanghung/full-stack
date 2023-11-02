@@ -1,5 +1,6 @@
 import { AddressEntity } from 'src/modules/address/entities/address.entity';
 import { CartEntity } from 'src/modules/cart/entities/cart.entity';
+import { OrderEntity } from 'src/modules/order/entities/order.entity';
 import { RoleEntity } from 'src/modules/role/entities/role.entity';
 import {
   Entity,
@@ -43,6 +44,9 @@ export class UserEntity {
 
   @OneToMany(() => CartEntity, (cart) => cart.user)
   carts: CartEntity[];
+
+  @OneToMany(() => OrderEntity, (cart) => cart.user)
+  orders: OrderEntity[];
 
   @Column({
     select: false,

@@ -45,7 +45,14 @@ export class ProductRepository {
   async getOneProduct(id: number): Promise<any> {
     return await this.productRepository.findOne({
       where: { id },
-      relations: ['images', 'category', 'brand', 'capacities', 'colors'],
+      relations: [
+        'images',
+        'category',
+        'brand',
+        'capacities',
+        'colors',
+        'orderItems',
+      ],
     });
   }
 

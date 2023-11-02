@@ -1,6 +1,13 @@
 // import { RoleEntity } from 'src/modules/role/entities/role.entity';
+import { OrderEntity } from 'src/modules/order/entities/order.entity';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 @Entity('addresses')
 export class AddressEntity {
   @PrimaryGeneratedColumn()
@@ -19,6 +26,9 @@ export class AddressEntity {
   phone: number;
   @ManyToOne(() => UserEntity, (user) => user.addresses)
   user: UserEntity;
+
+  @OneToMany(() => OrderEntity, (order) => order.address)
+  orders: OrderEntity[];
 
   @Column({ select: false })
   userId: number;
