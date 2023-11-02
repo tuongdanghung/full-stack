@@ -1,4 +1,5 @@
 import { CartEntity } from 'src/modules/cart/entities/cart.entity';
+import { OrderItemEntity } from 'src/modules/order/entities/orderItem.entity';
 import { ProductCapacityEntity } from 'src/modules/product/entities/productCapacity.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
@@ -35,6 +36,9 @@ export class CapacityEntity {
   )
   @OneToMany(() => CartEntity, (cart) => cart.product)
   carts: CartEntity[];
+
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product)
+  orderItems: OrderItemEntity[];
 
   public productCapacities: ProductCapacityEntity[];
 }

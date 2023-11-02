@@ -12,13 +12,13 @@ export class CartEntity {
   @Column({ select: false })
   userId: number;
 
-  @Column({ select: false })
+  @Column()
   productId: number;
 
-  @Column({ select: false })
+  @Column()
   colorId: number;
 
-  @Column({ select: false })
+  @Column()
   capacityId: number;
 
   @Column()

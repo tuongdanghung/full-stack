@@ -16,9 +16,6 @@ export class CartRepository {
     });
     return data;
   }
-  // getOneCategory(id: number): Promise<IsCategoryInterface> {
-  //   return this.categoryRepository.findOneBy({ id });
-  // }
   async createCart(data: ISCartInterface): Promise<any> {
     const cartItem = await this.cartRepository.findOne({
       where: {

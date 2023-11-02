@@ -15,6 +15,7 @@ import { ProductCapacityEntity } from './productCapacity.entity';
 import { ColorEntity } from 'src/modules/color/entities/color.entity';
 import { ProductColorEntity } from './productColor.entity';
 import { CartEntity } from 'src/modules/cart/entities/cart.entity';
+import { OrderItemEntity } from 'src/modules/order/entities/orderItem.entity';
 @Entity('products')
 export class ProductEntity {
   @PrimaryGeneratedColumn()
@@ -65,6 +66,7 @@ export class ProductEntity {
     (productCapacityEntity) => productCapacityEntity.productsId,
   )
   public productCapacities: ProductCapacityEntity[];
+
   @OneToMany(
     () => ProductColorEntity,
     (productColorEntity) => productColorEntity.productsId,
@@ -72,6 +74,10 @@ export class ProductEntity {
   @OneToMany(() => CartEntity, (cart) => cart.product)
   carts: CartEntity[];
   public productColors: ProductColorEntity[];
+
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product)
+  orderItems: OrderItemEntity[];
+
   @Column({
     select: false,
     name: 'createdAt',
