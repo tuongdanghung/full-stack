@@ -9,16 +9,20 @@ import {
   Query,
   ParseIntPipe,
   DefaultValuePipe,
+  UseGuards,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { CapacityServices } from './capacity.service';
 import { CapacityDTO } from './dto/capacity.dto';
 import { IsCapacityInterface } from './interface/capacity.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
+import { CheckAuthenGuard } from 'src/shared/guards/auth.guard';
+import { CheckAuthorGuard } from 'src/shared/guards/verify_role.guard';
 
-// trong global class có bao nhiêu tham số thì ở đây truyền bấy nhiêu tham số
 dotenv.config();
 @Controller(`${process.env.API_KEY}/capacities`)
+@UseGuards(CheckAuthenGuard)
+@UseGuards(CheckAuthorGuard)
 export class CapacityController {
   constructor(private readonly capacityService: CapacityServices) {}
   @Get()
@@ -63,5 +67,3 @@ export class CapacityController {
   }
   // delete capacity
 }
-// nhận các request từ client gửi về server
-// và nhận response từ server trả về client
