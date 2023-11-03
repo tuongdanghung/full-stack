@@ -9,14 +9,19 @@ import {
   Query,
   ParseIntPipe,
   DefaultValuePipe,
+  UseGuards,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { ColorServices } from './color.service';
 import { ColorDTO } from './dto/color.dto';
 import { IsColorInterface } from './interface/color.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
+import { CheckAuthenGuard } from 'src/shared/guards/auth.guard';
+import { CheckAuthorGuard } from 'src/shared/guards/verify_role.guard';
 dotenv.config();
 @Controller(`${process.env.API_KEY}/colors`)
+@UseGuards(CheckAuthenGuard)
+@UseGuards(CheckAuthorGuard)
 export class ColorController {
   constructor(private readonly colorService: ColorServices) {}
   @Get()

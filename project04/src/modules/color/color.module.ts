@@ -5,6 +5,8 @@ import { ColorServices } from './color.service';
 import { ColorRepository } from './color.repository';
 import { ColorEntity } from './entities/color.entity';
 import { ProductColorEntity } from '../product/entities/productColor.entity';
+import { GenerateToken } from 'src/shared/middlewares/generateToken';
+import { SharedDataService } from 'src/shared/middlewares/shareData.service';
 @Module({
   controllers: [ColorController],
   imports: [
@@ -14,6 +16,12 @@ import { ProductColorEntity } from '../product/entities/productColor.entity';
       ProductColorEntity,
     ]),
   ],
-  providers: [ColorServices, ColorRepository, ProductColorEntity],
+  providers: [
+    ColorServices,
+    ColorRepository,
+    ProductColorEntity,
+    GenerateToken,
+    SharedDataService,
+  ],
 })
 export class ColorModule {}
