@@ -18,19 +18,15 @@ export class OrderServices {
 
   async createOrder(userId: number): Promise<any> {
     const cartItem = await this.orderRepo.findCart(userId);
-
     let min = 1000000;
     let max = 9999999;
-
     let codeOrder = Math.floor(Math.random() * (max - min + 1)) + min;
-
     const order = {
       userId,
       addressId: 2,
       paymentId: 1,
       codeOrder,
     };
-    const response = await this.orderRepo.createOrder(order);
 
     let orderItem = cartItem.map((item) => ({
       cartId: item.id,
@@ -43,8 +39,22 @@ export class OrderServices {
     }));
 
     for (const item of orderItem) {
-      await this.orderRepo.createOrderItem(item);
-      await this.orderRepo.updateProduct(item.productId, item.quantity);
+      const res = await this.orderRepo.findProduct(item.productId);
+      if (res.stock >= item.quantity) {
+        var response = await this.orderRepo.createOrder(order);
+        await this.orderRepo.createOrderItem(item);
+        await this.orderRepo.updateProduct(
+          item.productId,
+          res.stock,
+          item.quantity,
+        );
+      } else {
+        return {
+          success: false,
+          message:
+            'The quantity purchased is greater than the quantity of product available',
+        };
+      }
     }
 
     if (response) {

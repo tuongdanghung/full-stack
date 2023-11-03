@@ -72,14 +72,20 @@ export class OrderRepository {
     return await this.orderItemRepository.save(data);
   }
 
-  async updateProduct(id: number, quantity: number) {
-    const product = await this.productRepository.findOneBy({ id });
+  async findProduct(id: number) {
+    return await this.productRepository.findOneBy({ id });
+  }
+  async updateProduct(id: number, stock: number, quantity: number) {
     return await this.productRepository.update(id, {
-      stock: product.stock - quantity,
+      stock: stock - quantity,
     });
   }
 
   async createOrder(order: any) {
+    const itemOrder = await this.orderRepository.findOneBy({
+      codeOrder: order.codeOrder,
+    });
+    console.log(itemOrder);
     this.orderRepository.create(order);
     return await this.orderRepository.save(order);
   }
