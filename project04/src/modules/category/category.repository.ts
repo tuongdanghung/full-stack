@@ -32,45 +32,16 @@ export class CategoryRepository {
     return this.categoryRepository.findOneBy({ id });
   }
 
-  async createCategory(data: CategoryDTO): Promise<GlobalInterface> {
+  async createCategory(data: CategoryDTO): Promise<any> {
     this.categoryRepository.create(data);
-    await this.categoryRepository.save(data);
-    return {
-      success: true,
-      message: 'Created category successfully',
-    };
+    return await this.categoryRepository.save(data);
   }
 
-  async updateCategory(
-    data: CategoryDTO,
-    id: number,
-  ): Promise<GlobalInterface> {
-    const updatedCategory = await this.categoryRepository.update(id, data);
-    if (updatedCategory.affected === 0) {
-      return {
-        success: false,
-        message: 'Category updated failed',
-      };
-    }
-    return {
-      success: true,
-      message: 'Category updated successfully',
-    };
+  async updateCategory(data: CategoryDTO, id: number): Promise<any> {
+    return await this.categoryRepository.update(id, data);
   }
 
-  async deleteCategory(id: number): Promise<GlobalInterface> {
-    let categoryItem = await this.categoryRepository.findOneBy({ id });
-    if (!categoryItem) {
-      return {
-        success: false,
-        message: 'Category not found',
-      };
-    }
-
-    this.categoryRepository.delete(id);
-    return {
-      success: true,
-      message: 'Delete category successfully',
-    };
+  async deleteCategory(id: number): Promise<any> {
+    return await this.categoryRepository.delete(id);
   }
 }

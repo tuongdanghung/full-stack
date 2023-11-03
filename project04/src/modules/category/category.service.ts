@@ -19,15 +19,49 @@ export class CategoryServices {
     return this.categoryRepo.getOneCategory(id);
   }
 
-  createCategory(data: CategoryDTO): Promise<GlobalInterface> {
-    return this.categoryRepo.createCategory(data);
+  async createCategory(data: CategoryDTO): Promise<GlobalInterface> {
+    const response = await this.categoryRepo.createCategory(data);
+    if (response) {
+      return {
+        success: true,
+        message: 'Created category successfully',
+      };
+    } else {
+      return {
+        success: false,
+        message: 'Created category failed',
+      };
+    }
   }
 
-  updateCategory(data: CategoryDTO, id: number): Promise<GlobalInterface> {
-    return this.categoryRepo.updateCategory(data, id);
+  async updateCategory(
+    data: CategoryDTO,
+    id: number,
+  ): Promise<GlobalInterface> {
+    const response = await this.categoryRepo.updateCategory(data, id);
+    if (response.affected === 0) {
+      return {
+        success: false,
+        message: 'Category updated failed',
+      };
+    }
+    return {
+      success: true,
+      message: 'Category updated successfully',
+    };
   }
 
-  deleteCategory(id: number): Promise<GlobalInterface> {
-    return this.categoryRepo.deleteCategory(id);
+  async deleteCategory(id: number): Promise<GlobalInterface> {
+    const response = await this.categoryRepo.deleteCategory(id);
+    if (response.affected === 0) {
+      return {
+        success: false,
+        message: 'Category delete failed',
+      };
+    }
+    return {
+      success: true,
+      message: 'Category delete successfully',
+    };
   }
 }
