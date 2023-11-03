@@ -27,7 +27,10 @@ export class FavoriteEntity {
   @ManyToOne(() => CapacityEntity, (capacity) => capacity.favorites)
   capacity: CapacityEntity;
 
-  @ManyToOne(() => ColorEntity, (color) => color.favorites)
+  @ManyToOne(() => ColorEntity, (color) => color.favorites, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   color: ColorEntity;
 
   @Column({

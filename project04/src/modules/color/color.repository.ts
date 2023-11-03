@@ -5,11 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ColorDTO } from './dto/color.dto';
 import { IsColorInterface } from './interface/color.interface';
 import { GlobalInterface } from 'src/shared/interface/global.interface';
+import { ProductColorEntity } from '../product/entities/productColor.entity';
 
 export class ColorRepository {
   constructor(
     @InjectRepository(ColorEntity)
     public colorRepository: Repository<ColorEntity>,
+    @InjectRepository(ProductColorEntity)
+    public productColorEntity: Repository<ProductColorEntity>,
   ) {}
 
   async getAllColors(
@@ -32,42 +35,20 @@ export class ColorRepository {
     return this.colorRepository.findOneBy({ id });
   }
 
-  async createColor(data: ColorDTO): Promise<GlobalInterface> {
+  async createColor(data: ColorDTO): Promise<any> {
     this.colorRepository.create(data);
-    await this.colorRepository.save(data);
-    return {
-      success: true,
-      message: 'Created color successfully',
-    };
+    return await this.colorRepository.save(data);
   }
 
-  async updateColor(data: ColorDTO, id: number): Promise<GlobalInterface> {
-    const updatedColor = await this.colorRepository.update(id, data);
-    if (updatedColor.affected === 0) {
-      return {
-        success: false,
-        message: 'Color updated failed',
-      };
-    }
-    return {
-      success: true,
-      message: 'Color updated successfully',
-    };
+  async updateColor(data: ColorDTO, id: number): Promise<any> {
+    return await this.colorRepository.update(id, data);
   }
 
-  async deleteColor(id: number): Promise<GlobalInterface> {
+  async deleteColor(id: number): Promise<any> {
     let colorItem = await this.colorRepository.findOneBy({ id });
-    if (!colorItem) {
-      return {
-        success: false,
-        message: 'Color not found',
-      };
+    if (colorItem !== null) {
+      await this.productColorEntity.delete({ colorsId: id });
+      return await this.colorRepository.delete(id);
     }
-
-    this.colorRepository.delete(id);
-    return {
-      success: true,
-      message: 'Delete color successfully',
-    };
   }
 }

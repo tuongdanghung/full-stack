@@ -15,8 +15,6 @@ import { ColorServices } from './color.service';
 import { ColorDTO } from './dto/color.dto';
 import { IsColorInterface } from './interface/color.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
-
-// trong global class có bao nhiêu tham số thì ở đây truyền bấy nhiêu tham số
 dotenv.config();
 @Controller(`${process.env.API_KEY}/colors`)
 export class ColorController {
@@ -33,19 +31,19 @@ export class ColorController {
     }
     return this.colorService.getAllColors(color, page, limit);
   }
-  // get all role
+  // get all color
 
   @Get('/:id')
   getDetailRole(@Param('id') id: number): Promise<IsColorInterface> {
     return this.colorService.getOneColor(id);
   }
-  // get one role
+  // get one color
 
   @Post()
   createRole(@Body() roleDTO: ColorDTO): Promise<GlobalInterface> {
     return this.colorService.createColor(roleDTO);
   }
-  // create role
+  // create color
 
   @Put('/:id')
   updateRole(
@@ -54,13 +52,11 @@ export class ColorController {
   ): Promise<GlobalInterface> {
     return this.colorService.updateColor(roleDTO, id);
   }
-  // update role
+  // update color
 
   @Delete('/:id')
   deleteRole(@Param('id') id: number): Promise<GlobalInterface> {
     return this.colorService.deleteColor(id);
   }
-  // delete role
+  // delete color
 }
-// nhận các request từ client gửi về server
-// và nhận response từ server trả về client
