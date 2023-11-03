@@ -45,17 +45,17 @@ export class ColorController {
   // get one color
 
   @Post()
-  createRole(@Body() roleDTO: ColorDTO): Promise<GlobalInterface> {
-    return this.colorService.createColor(roleDTO);
+  createRole(@Body() colorDTO: ColorDTO): Promise<GlobalInterface> {
+    return this.colorService.createColor(colorDTO);
   }
   // create color
 
   @Put('/:id')
   updateRole(
-    @Body() roleDTO: ColorDTO,
+    @Body() colorDTO: ColorDTO,
     @Param('id') id: number,
   ): Promise<GlobalInterface> {
-    return this.colorService.updateColor(roleDTO, id);
+    return this.colorService.updateColor(colorDTO, id);
   }
   // update color
 
