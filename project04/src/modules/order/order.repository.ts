@@ -20,6 +20,7 @@ export class OrderRepository {
     @InjectRepository(ProductEntity)
     public productRepository: Repository<ProductEntity>,
   ) {}
+
   async getAllOrders(codeOrder: string, page: number, limit: number) {
     const skip = (page - 1) * limit;
     const data = await this.orderRepository.find({
@@ -75,6 +76,7 @@ export class OrderRepository {
   async findProduct(id: number) {
     return await this.productRepository.findOneBy({ id });
   }
+
   async updateProduct(id: number, stock: number, quantity: number) {
     return await this.productRepository.update(id, {
       stock: stock - quantity,
