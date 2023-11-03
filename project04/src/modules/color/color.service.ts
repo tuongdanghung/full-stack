@@ -19,15 +19,45 @@ export class ColorServices {
     return this.colorRepo.getOneColor(id);
   }
 
-  createColor(data: ColorDTO): Promise<GlobalInterface> {
-    return this.colorRepo.createColor(data);
+  async createColor(data: ColorDTO): Promise<GlobalInterface> {
+    const response = await this.colorRepo.createColor(data);
+    if (response) {
+      return {
+        success: true,
+        message: 'Created color successfully',
+      };
+    }
+    return {
+      success: false,
+      message: 'Created color failed',
+    };
   }
 
-  updateColor(data: ColorDTO, id: number): Promise<GlobalInterface> {
-    return this.colorRepo.updateColor(data, id);
+  async updateColor(data: ColorDTO, id: number): Promise<GlobalInterface> {
+    const response = await this.colorRepo.updateColor(data, id);
+    if (response.affected === 0) {
+      return {
+        success: false,
+        message: 'Color updated failed',
+      };
+    }
+    return {
+      success: true,
+      message: 'Color updated successfully',
+    };
   }
 
-  deleteColor(id: number): Promise<GlobalInterface> {
-    return this.colorRepo.deleteColor(id);
+  async deleteColor(id: number): Promise<any> {
+    const response = await this.colorRepo.deleteColor(id);
+    if (response.affected !== 0) {
+      return {
+        success: true,
+        message: 'delete color Successfully',
+      };
+    }
+    return {
+      success: false,
+      message: 'delete color failed',
+    };
   }
 }
