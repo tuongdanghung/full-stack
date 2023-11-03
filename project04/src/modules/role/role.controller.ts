@@ -9,17 +9,19 @@ import {
   Query,
   ParseIntPipe,
   DefaultValuePipe,
+  UseGuards,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { RoleServices } from './role.service';
 import { RoleDTO } from './dto/role.dto';
 import { IsRoleInterface } from './interface/role.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
-
-// trong global class có bao nhiêu tham số thì ở đây truyền bấy nhiêu tham số
+import { CheckAuthenGuard } from 'src/shared/guards/auth.guard';
+import { CheckAuthorGuard } from 'src/shared/guards/verify_role.guard';
 dotenv.config();
 @Controller(`${process.env.API_KEY}/roles`)
-// viet guards intercepter
+@UseGuards(CheckAuthenGuard)
+@UseGuards(CheckAuthorGuard)
 export class RoleController {
   constructor(private readonly roleService: RoleServices) {}
   @Get()
@@ -63,5 +65,3 @@ export class RoleController {
   }
   // delete role
 }
-// nhận các request từ client gửi về server
-// và nhận response từ server trả về client
