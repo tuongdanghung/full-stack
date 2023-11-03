@@ -12,18 +12,17 @@ import {
   DefaultValuePipe,
   UploadedFiles,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { ProductServices } from './product.service';
-import {
-  ProductDTO,
-  ProductCapacityDTO,
-  ProductColorDTO,
-} from './dto/product.dto';
+import { ProductCapacityDTO, ProductColorDTO } from './dto/product.dto';
 import { IsProductInterface } from './interface/product.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/shared/utils/upload/cloudinary.service';
+import { CheckAuthenGuard } from 'src/shared/guards/auth.guard';
+import { CheckAuthorGuard } from 'src/shared/guards/verify_role.guard';
 
 // trong global class có bao nhiêu tham số thì ở đây truyền bấy nhiêu tham số
 dotenv.config();
@@ -53,16 +52,22 @@ export class ProductController {
   }
 
   @Post('/productCapacity')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   async createProductCapacity(@Body() productCapacityDTO: ProductCapacityDTO) {
     return this.productService.createNewProductCapacity(productCapacityDTO);
   }
 
   @Post('/productColor')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   async createNewProductColor(@Body() productColorDTO: ProductColorDTO) {
     return this.productService.createNewProductColor(productColorDTO);
   }
 
   @Post()
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   @UseInterceptors(FilesInterceptor('images'))
   async createProduct(
     @UploadedFiles() files: Express.Multer.File[],
@@ -91,6 +96,8 @@ export class ProductController {
   }
 
   @Put('/:id')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   updateProduct(
     @Body() product: IsProductInterface,
     @Param('id') id: number,
@@ -99,15 +106,18 @@ export class ProductController {
   }
 
   @Put('block/:id')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   blockProduct(
     @Body() product: IsProductInterface,
     @Param('id') id: number,
   ): Promise<GlobalInterface> {
     return this.productService.blockProduct(product, id);
   }
-  // update role
 
   @Put('/image/:id')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   @UseInterceptors(FileInterceptor('src'))
   async updateImge(
     @Param('id') id: number,
@@ -119,6 +129,8 @@ export class ProductController {
   }
 
   @Delete('/productCapacity')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   async deleteProductCapacity(@Body() productCapacityDTO: ProductCapacityDTO) {
     this.productService.deleteProductCapacity(productCapacityDTO);
   }
@@ -133,5 +145,3 @@ export class ProductController {
     return this.productService.deleteProduct(id);
   }
 }
-// nhận các request từ client gửi về server
-// và nhận response từ server trả về client

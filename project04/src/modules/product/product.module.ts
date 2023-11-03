@@ -8,6 +8,8 @@ import { ImageEntity } from './entities/image.entity';
 import { CloudinaryModule } from 'src/shared/utils/upload/cloudinary.module';
 import { ProductCapacityEntity } from './entities/productCapacity.entity';
 import { ProductColorEntity } from './entities/productColor.entity';
+import { GenerateToken } from 'src/shared/middlewares/generateToken';
+import { SharedDataService } from 'src/shared/middlewares/shareData.service';
 @Module({
   controllers: [ProductController],
   imports: [
@@ -17,9 +19,16 @@ import { ProductColorEntity } from './entities/productColor.entity';
       ProductRepository,
       ProductCapacityEntity,
       ProductColorEntity,
+      GenerateToken,
+      SharedDataService,
     ]),
     CloudinaryModule,
   ],
-  providers: [ProductServices, ProductRepository],
+  providers: [
+    ProductServices,
+    ProductRepository,
+    GenerateToken,
+    SharedDataService,
+  ],
 })
 export class ProductModule {}
