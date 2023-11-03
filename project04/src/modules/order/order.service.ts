@@ -1,8 +1,5 @@
-// lấy data để trả về controller
 import { Injectable } from '@nestjs/common';
 import { OrderRepository } from './order.repository';
-// import { RoleDTO } from './dto/role.dto';
-// import { IsRoleInterface } from './interface/role.interface';
 import { GlobalInterface } from 'src/shared/interface/global.interface';
 import { OrderDTO } from './dto/orderItem.dto';
 @Injectable()
