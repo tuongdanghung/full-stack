@@ -33,7 +33,10 @@ export class OrderItemEntity {
   @Column()
   codeOrder: number;
 
-  @ManyToOne(() => OrderEntity, (order) => order.orderItems)
+  @ManyToOne(() => OrderEntity, (order) => order.orderItems, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'codeOrder', referencedColumnName: 'codeOrder' })
   order: OrderEntity;
 

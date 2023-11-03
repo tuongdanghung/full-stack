@@ -34,11 +34,16 @@ export class OrderEntity {
   @ManyToOne(() => UserEntity, (user) => user.orders)
   user: UserEntity;
 
-  @ManyToOne(() => AddressEntity, (user) => user.orders)
+  @ManyToOne(() => AddressEntity, (user) => user.orders, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   address: AddressEntity;
 
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.order, {
     eager: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   orderItems: OrderItemEntity[];
 
