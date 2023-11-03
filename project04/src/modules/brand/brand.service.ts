@@ -19,15 +19,45 @@ export class BrandServices {
     return this.brandRepo.getOneBrand(id);
   }
 
-  createBrand(data: BrandDTO): Promise<GlobalInterface> {
-    return this.brandRepo.createBrand(data);
+  async createBrand(data: BrandDTO): Promise<GlobalInterface> {
+    const response = await this.brandRepo.createBrand(data);
+    if (response) {
+      return {
+        success: true,
+        message: 'Created brand successfully',
+      };
+    }
+    return {
+      success: false,
+      message: 'Created brand failed',
+    };
   }
 
-  updateBrand(data: BrandDTO, id: number): Promise<GlobalInterface> {
-    return this.brandRepo.updateBrand(data, id);
+  async updateBrand(data: BrandDTO, id: number): Promise<GlobalInterface> {
+    const updatedBrand = await this.brandRepo.updateBrand(data, id);
+    if (updatedBrand.affected === 0) {
+      return {
+        success: false,
+        message: 'Brand updated failed',
+      };
+    }
+    return {
+      success: true,
+      message: 'Brand updated successfully',
+    };
   }
 
-  deleteBrand(id: number): Promise<GlobalInterface> {
-    return this.brandRepo.deleteBrand(id);
+  async deleteBrand(id: number): Promise<GlobalInterface> {
+    const brandItem = await this.brandRepo.deleteBrand(id);
+    if (brandItem.affected === 0) {
+      return {
+        success: false,
+        message: 'Brand not found',
+      };
+    }
+    return {
+      success: true,
+      message: 'Delete brand successfully',
+    };
   }
 }
