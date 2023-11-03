@@ -1,8 +1,6 @@
-// lấy data để trả về controller
 import { AddressEntity } from './entities/address.entity';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AddressDTO } from './dto/address.dto';
 import { IsAddressInterface } from './interface/address.interface';
 import { GlobalInterface } from 'src/shared/interface/global.interface';
 

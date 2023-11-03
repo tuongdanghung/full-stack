@@ -27,7 +27,10 @@ export class AddressEntity {
   @ManyToOne(() => UserEntity, (user) => user.addresses)
   user: UserEntity;
 
-  @OneToMany(() => OrderEntity, (order) => order.address)
+  @OneToMany(() => OrderEntity, (order) => order.address, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   orders: OrderEntity[];
 
   @Column({ select: false })

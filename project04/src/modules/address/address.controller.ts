@@ -19,10 +19,8 @@ import { GlobalInterface } from '../../shared/interface/global.interface';
 import { SharedDataService } from 'src/shared/middlewares/shareData.service';
 import { CheckAuthenGuard } from 'src/shared/guards/auth.guard';
 
-// trong global class có bao nhiêu tham số thì ở đây truyền bấy nhiêu tham số
 dotenv.config();
 @Controller(`${process.env.API_KEY}/addresses`)
-// viet guards intercepter
 export class AddressController {
   constructor(
     private readonly addressService: AddressServices,
@@ -41,13 +39,7 @@ export class AddressController {
     }
     return this.addressService.getAllAddresses(province, page, limit);
   }
-  // get all role
-
-  // @Get('/:id')
-  // getDetailRole(@Param('id') id: number): Promise<IsRoleInterface> {
-  //   return this.roleService.getOneRole(id);
-  // }
-  // get one role
+  // get all address
 
   @Post()
   @UseGuards(CheckAuthenGuard)
@@ -56,20 +48,21 @@ export class AddressController {
     const data = { ...addressDTO, userId: currentToken.dataGenerateToken.id };
     return this.addressService.createAddress(data);
   }
-  // create role
+  // create address
 
   @Put('/:id')
+  @UseGuards(CheckAuthenGuard)
   updateAddress(
     @Body() address: IsAddressInterface,
     @Param('id') id: number,
   ): Promise<GlobalInterface> {
     return this.addressService.updateAddress(address, id);
   }
-  // update role
-
+  // update address
   @Delete('/:id')
+  @UseGuards(CheckAuthenGuard)
   deleteServices(@Param('id') id: number): Promise<GlobalInterface> {
     return this.addressService.deleteAddress(id);
   }
-  // delete role
+  // delete address
 }
