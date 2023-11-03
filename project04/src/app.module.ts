@@ -17,6 +17,7 @@ import { AddressModule } from './modules/address/address.module';
 import { ProductModule } from './modules/product/product.module';
 import { CartModule } from './modules/cart/cart.module';
 import { OrderModule } from './modules/order/order.module';
+import { FavoriteModule } from './modules/favorite/favorite.module';
 dotenv.config();
 const PORT = process.env.API_KEY;
 
@@ -34,6 +35,7 @@ const PORT = process.env.API_KEY;
     ProductModule,
     CartModule,
     OrderModule,
+    FavoriteModule,
   ],
   providers: [
     CheckAuthenGuard,
