@@ -15,8 +15,6 @@ import { BrandServices } from './brand.service';
 import { BrandDTO } from './dto/brand.dto';
 import { IsBrandInterface } from './interface/brand.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
-
-// trong global class có bao nhiêu tham số thì ở đây truyền bấy nhiêu tham số
 dotenv.config();
 @Controller(`${process.env.API_KEY}/brands`)
 export class BrandController {
@@ -62,5 +60,3 @@ export class BrandController {
   }
   // delete brand
 }
-// nhận các request từ client gửi về server
-// và nhận response từ server trả về client

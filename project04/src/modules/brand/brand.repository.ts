@@ -32,42 +32,16 @@ export class BrandRepository {
     return this.brandRepository.findOneBy({ id });
   }
 
-  async createBrand(data: BrandDTO): Promise<GlobalInterface> {
+  async createBrand(data: BrandDTO): Promise<any> {
     this.brandRepository.create(data);
-    await this.brandRepository.save(data);
-    return {
-      success: true,
-      message: 'Created brand successfully',
-    };
+    return await this.brandRepository.save(data);
   }
 
-  async updateBrand(data: BrandDTO, id: number): Promise<GlobalInterface> {
-    const updatedBrand = await this.brandRepository.update(id, data);
-    if (updatedBrand.affected === 0) {
-      return {
-        success: false,
-        message: 'Brand updated failed',
-      };
-    }
-    return {
-      success: true,
-      message: 'Brand updated successfully',
-    };
+  async updateBrand(data: BrandDTO, id: number): Promise<any> {
+    return await this.brandRepository.update(id, data);
   }
 
-  async deleteBrand(id: number): Promise<GlobalInterface> {
-    let brandItem = await this.brandRepository.findOneBy({ id });
-    if (!brandItem) {
-      return {
-        success: false,
-        message: 'Brand not found',
-      };
-    }
-
-    this.brandRepository.delete(id);
-    return {
-      success: true,
-      message: 'Delete brand successfully',
-    };
+  async deleteBrand(id: number): Promise<any> {
+    return await this.brandRepository.delete(id);
   }
 }
