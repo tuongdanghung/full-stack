@@ -41,3 +41,12 @@ export class ProductColorDTO {
   @IsNumber()
   colorsId: number;
 }
+export class ProductImageDTO {
+  @IsNotEmpty()
+  @IsNumber()
+  productId: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  src: string;
+}

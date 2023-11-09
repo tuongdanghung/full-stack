@@ -18,11 +18,11 @@ import { AppDispatch } from "../../../../store";
 import { apiUpdateUserByAdmin } from "../../../../apis";
 import { ToastContainer, toast } from "react-toastify";
 const TABLE_HEAD = [
+    "Avatar",
     "Full Name",
     "Email",
     "Role",
     "Account Status",
-    "Wallet",
     "",
 ];
 
@@ -35,8 +35,12 @@ const ManagerUsers = () => {
         dispatch(GetAllUsersByAdmin(null));
     }, []);
     const handleEdit = async (id: string) => {
-        const user = users?.find((user: any) => user._id === id);
-        const payload = { isBlocked: !user.isBlocked, id: id, token: token };
+        const user = users?.find((user: any) => user.id === id);
+        const payload = {
+            status: user.status === "true" ? "false" : "true",
+            id: id,
+            token: token,
+        };
         const response = await apiUpdateUserByAdmin(payload);
         if ((response as any).data.success) {
             dispatch(GetAllUsersByAdmin(null));
@@ -51,7 +55,11 @@ const ManagerUsers = () => {
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <Head title={"Manager User"} slug={"manager-user"} />
+                <Head
+                    title={"Manager User"}
+                    slug={"manager-user"}
+                    data={users}
+                />
             </CardHeader>
             <CardBody className="px-0">
                 <table className="w-full min-w-max table-auto text-left">
@@ -86,6 +94,7 @@ const ManagerUsers = () => {
                                         <div className="flex items-center gap-3">
                                             <Avatar
                                                 alt={item.name}
+                                                src={item.avatar}
                                                 size="md"
                                                 className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
                                             />
@@ -104,6 +113,15 @@ const ManagerUsers = () => {
                                             color="blue-gray"
                                             className="font-normal"
                                         >
+                                            {item.firstName} {item.lastName}
+                                        </Typography>
+                                    </td>
+                                    <td className={classes}>
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
                                             {item.email}
                                         </Typography>
                                     </td>
@@ -113,7 +131,7 @@ const ManagerUsers = () => {
                                             color="blue-gray"
                                             className="font-normal"
                                         >
-                                            {Number(item.role) === 2 && "user"}
+                                            {item.role.code}
                                         </Typography>
                                     </td>
                                     <td className={classes}>
@@ -122,12 +140,12 @@ const ManagerUsers = () => {
                                                 size="sm"
                                                 variant="ghost"
                                                 value={
-                                                    item.isBlocked === false
+                                                    item.status === "false"
                                                         ? "false"
                                                         : "true"
                                                 }
                                                 color={
-                                                    item.isBlocked === false
+                                                    item.status === "true"
                                                         ? "green"
                                                         : "red"
                                                 }
@@ -135,31 +153,18 @@ const ManagerUsers = () => {
                                         </div>
                                     </td>
                                     <td className={classes}>
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex flex-col">
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal capitalize"
-                                                >
-                                                    {item.wallet} $
-                                                </Typography>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        {Number(item.role) === 2 && (
+                                        {Number(item.role.id) === 1 && (
                                             <Button
                                                 onClick={() =>
-                                                    handleEdit(item._id)
+                                                    handleEdit(item.id)
                                                 }
                                                 className={`${
-                                                    item.isBlocked === false
+                                                    item.status === "false"
                                                         ? "bg-red-500 hover:bg-red-700"
                                                         : "bg-green-500 hover:bg-green-700"
                                                 }   text-white font-bold px-6 py-3 rounded text-lg`}
                                             >
-                                                {item.isBlocked === false ? (
+                                                {item.status === "false" ? (
                                                     <AiFillUnlock className="h-5 w-6  text-white" />
                                                 ) : (
                                                     <AiFillLock className="h-5 w-6 text-lg text-white" />

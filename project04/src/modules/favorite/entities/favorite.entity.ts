@@ -21,7 +21,10 @@ export class FavoriteEntity {
   @Column()
   capacityId: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.favorites)
+  @ManyToOne(() => ProductEntity, (product) => product.favorites, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   product: ProductEntity;
 
   @ManyToOne(() => CapacityEntity, (capacity) => capacity.favorites)

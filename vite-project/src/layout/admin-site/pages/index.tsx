@@ -7,5 +7,4 @@ export { default as ManagerBrand } from "./managerBrand";
 export { default as ManagerCategory } from "./managerCategory";
 export { default as ManagerColor } from "./managerColor";
 export { default as ManagerCapacity } from "./managerCapacity";
-export { default as ManagerRam } from "./managerRam";
 export { default as ManagerBlog } from "./managerBlog";

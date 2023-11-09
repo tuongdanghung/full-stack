@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Collapse, Button } from "@material-tailwind/react";
 import { TextInput } from "flowbite-react";
 import { BiSearch } from "react-icons/bi";
-import {
-    GetAllProduct,
-    GetBrand,
-    GetColor,
-    GetRam,
-} from "../../../../store/actions";
+import { GetAllProduct, GetBrand } from "../../../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../../store";
 
@@ -16,11 +11,13 @@ interface DataItem {
     title?: string;
     color?: string;
     size?: number;
+    data?: string;
 }
 
 interface CollectionItem {
     id: number;
     title: string;
+    data?: string;
 }
 
 const Collection: CollectionItem[] = [
@@ -28,31 +25,19 @@ const Collection: CollectionItem[] = [
         id: 1,
         title: "brand",
     },
-    {
-        id: 2,
-        title: "color",
-    },
-    {
-        id: 3,
-        title: "ram",
-    },
 ];
 
-const FilterProduct = () => {
+const FilterProduct = (props: any) => {
     const [value, setValue] = useState("");
     const dispatch = useDispatch<AppDispatch>();
     const brand = useSelector((state: any) => state?.productReducer.brand);
     const color = useSelector((state: any) => state?.productReducer.color);
     const [inputValue, setInputValue] = useState("");
     const [isParams, setIsParam] = useState<any>("");
-    const ram = useSelector((state: any) => state?.productReducer.ram);
     const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-    const [selectedColor, setSelectedColor] = useState<string | null>(null);
-    const [selectedRam, setSelectedRam] = useState<string | null>(null);
     const dataMap: { [key: string]: DataItem[] } = {
         brand,
         color,
-        ram,
     };
 
     const [openCollapseMap, setOpenCollapseMap] = useState<{
@@ -61,8 +46,6 @@ const FilterProduct = () => {
 
     useEffect(() => {
         dispatch(GetBrand(null));
-        dispatch(GetColor(null));
-        dispatch(GetRam(null));
     }, []);
     useEffect(() => {
         dispatch(GetAllProduct(isParams));
@@ -71,7 +54,7 @@ const FilterProduct = () => {
     const toggleOpen = (id: number) => {
         setOpenCollapseMap((prevState) => ({
             ...prevState,
-            [id]: !prevState[id], // Đảo trạng thái mở/đóng của collapse có id tương ứng
+            [id]: !prevState[id],
         }));
     };
 
@@ -90,22 +73,12 @@ const FilterProduct = () => {
         const isChecked = e.target.checked;
         if (collectionTitle === "brand") {
             setSelectedBrand(isChecked ? dataItem.title : null);
-            setSelectedRam(null);
-            setSelectedColor(null);
+            const newData = props.data?.filter(
+                (item: any) => item.brand.title === dataItem.title
+            );
+            props.filterData(newData);
             setInputValue(dataItem.title);
             setIsParam({ brand: dataItem.title });
-        } else if (collectionTitle === "color") {
-            setSelectedColor(isChecked ? dataItem.color : null);
-            setSelectedBrand(null);
-            setSelectedRam(null);
-            setInputValue(dataItem.color);
-            setIsParam({ color: dataItem.color });
-        } else if (collectionTitle === "ram") {
-            setSelectedRam(isChecked ? dataItem.size : null);
-            setSelectedColor(null);
-            setSelectedBrand(null);
-            setInputValue(dataItem.size);
-            setIsParam({ ram: dataItem.size });
         }
     };
 
@@ -128,11 +101,14 @@ const FilterProduct = () => {
                                         collectionTitle.slice(1)}
                                 </Button>
                                 <Collapse
-                                    open={openCollapseMap[collectionItem.id]}
+                                    open={
+                                        openCollapseMap[collectionItem.id] ||
+                                        false
+                                    }
                                 >
                                     {correspondingData?.map((dataItem: any) => {
                                         return (
-                                            <div key={dataItem._id}>
+                                            <div key={dataItem.id}>
                                                 <input
                                                     type="checkbox"
                                                     data-type={collectionTitle}
@@ -147,14 +123,6 @@ const FilterProduct = () => {
                                                         "brand"
                                                             ? dataItem.title ===
                                                               selectedBrand
-                                                            : collectionTitle ===
-                                                              "color"
-                                                            ? dataItem.color ===
-                                                              selectedColor
-                                                            : collectionTitle ===
-                                                              "ram"
-                                                            ? dataItem.size ===
-                                                              selectedRam
                                                             : false
                                                     }
                                                 />

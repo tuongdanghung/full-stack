@@ -7,12 +7,8 @@ import { GlobalInterface } from 'src/shared/interface/global.interface';
 @Injectable()
 export class AddressServices {
   constructor(private addressService: AddressRepository) {}
-  getAllAddresses(
-    role: string,
-    page: number,
-    limit: number,
-  ): Promise<{ data: IsAddressInterface[]; currentPage: number }> {
-    return this.addressService.getAllAddresses(role, page, limit);
+  getAllAddresses(id: number): Promise<{ data: IsAddressInterface[] }> {
+    return this.addressService.getAllAddresses(id);
   }
 
   async createAddress(data: AddressDTO): Promise<GlobalInterface> {

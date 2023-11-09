@@ -7,6 +7,7 @@ import {
 
 type Props = {
     dataMap: any;
+    setPhone: any;
 };
 
 const MapComponent = (props: Props) => {
@@ -69,7 +70,6 @@ const MapComponent = (props: Props) => {
         const findWard = wards?.find(
             (select: any) => select.ward_id === selectedOptionValue
         );
-
         props.dataMap({
             province: findProvince.province_name,
             district: findDistrict.district_name,
@@ -79,7 +79,7 @@ const MapComponent = (props: Props) => {
     return (
         <div>
             <h2 className="font-semibold text-xl py-4">Delivery address</h2>
-            <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-4 gap-5">
                 <select
                     value={province ? province : ""}
                     onChange={handleProvinceChange}
@@ -117,6 +117,11 @@ const MapComponent = (props: Props) => {
                         );
                     })}
                 </select>
+                <input
+                    type="number"
+                    placeholder="Phone number"
+                    onChange={(e) => props.setPhone(+e.target.value)}
+                />
             </div>
         </div>
     );

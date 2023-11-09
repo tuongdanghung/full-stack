@@ -18,6 +18,9 @@ import { ProductModule } from './modules/product/product.module';
 import { CartModule } from './modules/cart/cart.module';
 import { OrderModule } from './modules/order/order.module';
 import { FavoriteModule } from './modules/favorite/favorite.module';
+import { SocketGateway } from './socket';
+import { AuthUtilsModule } from './shared/utils/auth-utils/auth-utils.module';
+import { PaypalModule } from './shared/utils/paypal/paypal.module';
 dotenv.config();
 const PORT = process.env.API_KEY;
 
@@ -36,12 +39,15 @@ const PORT = process.env.API_KEY;
     CartModule,
     OrderModule,
     FavoriteModule,
+    AuthUtilsModule,
   ],
   providers: [
     CheckAuthenGuard,
     GenerateToken,
     CheckAuthorGuard,
     SharedDataService,
+    SocketGateway,
+    PaypalModule,
   ],
 })
 export class AppModule {

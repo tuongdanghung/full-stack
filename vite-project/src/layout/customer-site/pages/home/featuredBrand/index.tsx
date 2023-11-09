@@ -3,7 +3,6 @@ import {
     CardBody,
     CardFooter,
     Typography,
-    Button,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import path from "../../../utils/path";
@@ -54,7 +53,7 @@ const FeaturedBrand = (props: any) => {
                             <CardFooter className="pt-0 m-auto">
                                 <Link
                                     className="border border-separate py-2 px-4 rounded-lg hover:text-white hover:bg-blue-gray-900"
-                                    to={`/${path.PRODUCTS}/${item.category}/${item._id}`}
+                                    to={`/${path.PRODUCTS}/${item.category}/${item.id}`}
                                 >
                                     Read More
                                 </Link>

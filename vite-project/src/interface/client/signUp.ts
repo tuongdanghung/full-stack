@@ -10,5 +10,4 @@ export interface SignUpInterface {
     password: string;
     firstName: string;
     lastName: string;
-    mobile: number;
 }

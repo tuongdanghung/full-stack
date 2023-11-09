@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { GetAllOrder } from "../../../../store/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../store";
+// import PushNotification from "react-push-notification";
 import {
     Card,
     CardHeader,
@@ -16,13 +17,13 @@ import { AiFillEdit } from "react-icons/ai";
 import { apiUpdateOrder } from "../../../../apis";
 import { ToastContainer, toast } from "react-toastify";
 import ModalOrderComponent from "../../components/modal/orderDetail";
-
+import * as io from "socket.io-client";
+const socket = io.connect("http://localhost:5000");
 const TABLE_HEAD = [
     "Code Orders",
     "Address",
-    "Total",
-    "Shipping",
     "Sub Total",
+    "Shipping",
     "Status",
     "",
 ];
@@ -36,30 +37,49 @@ const ManagerOrder: React.FC = () => {
     const token = localStorage.getItem("auth");
     const data = newData?.length > 0 ? newData : orders !== undefined && orders;
     const [detail, setDetail] = useState(null);
+
     const handleClose = (close: boolean) => {
         setOpen(close);
     };
     useEffect(() => {
         dispatch(GetAllOrder(token));
-    }, []);
+        socket.on("message", (newMessage) => {
+            dispatch(GetAllOrder(token));
+            if ("Notification" in window) {
+                if (Notification.permission === "granted") {
+                    new Notification("New Message", {
+                        body: "You have a new message!",
+                    });
+                } else if (Notification.permission !== "denied") {
+                    Notification.requestPermission().then((permission) => {
+                        if (permission === "granted") {
+                            new Notification("New Message", {
+                                body: "You have a new message!",
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    }, [dispatch, socket]);
     const handleChange = async (
         event: ChangeEvent<HTMLSelectElement>,
         orderId: string
     ) => {
         const value = event.target.value;
+
         const updatedData = orders?.map((order: any) => {
-            if (order._id === orderId) {
+            if (order.id === orderId) {
                 return { ...order, status: value };
             }
             return order;
         });
 
         setNewData(updatedData);
-        const response = await apiUpdateOrder({
-            id: orderId,
-            status: value,
-            token,
-        });
+        const response = await apiUpdateOrder(
+            { id: orderId },
+            { status: value }
+        );
         if ((response as any).data.success) {
             dispatch(GetAllOrder(token));
             toast.success("Updated status successfully");
@@ -70,7 +90,7 @@ const ManagerOrder: React.FC = () => {
 
     const handleOpen = (id: string) => {
         setOpen(!open);
-        const history = orders?.find((item: any) => item._id === id);
+        const history = orders?.find((item: any) => item.id === id);
         if (history) {
             setDetail(history);
         }
@@ -79,6 +99,7 @@ const ManagerOrder: React.FC = () => {
     const handlePage = (pagination: any) => {
         setNewData(pagination);
     };
+
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -110,8 +131,14 @@ const ManagerOrder: React.FC = () => {
                             const classes = isLast
                                 ? "p-4"
                                 : "p-4 border-b border-blue-gray-50";
+                            let totalSum = 0;
+                            item.orderItems.forEach((item: any) => {
+                                totalSum += item.total;
+                            });
+                            const subTotal = totalSum.toLocaleString("en-US");
+
                             return (
-                                <tr key={item._id}>
+                                <tr key={item.id}>
                                     <td className={classes}>
                                         <div className="flex items-center justify-center gap-3">
                                             <Typography
@@ -119,7 +146,7 @@ const ManagerOrder: React.FC = () => {
                                                 color="blue-gray"
                                                 className="font-bold"
                                             >
-                                                MDH {item._id}
+                                                {item.codeOrder}
                                             </Typography>
                                         </div>
                                     </td>
@@ -130,11 +157,11 @@ const ManagerOrder: React.FC = () => {
                                                 color="blue-gray"
                                                 className="font-bold"
                                             >
-                                                {item.address[0].province}
+                                                {item.address.province}
                                                 {" - "}
-                                                {item.address[0].district}
+                                                {item.address.district}
                                                 {" - "}
-                                                {item.address[0].ward}
+                                                {item.address.ward}
                                             </Typography>
                                         </div>
                                     </td>
@@ -145,7 +172,7 @@ const ManagerOrder: React.FC = () => {
                                                 color="blue-gray"
                                                 className="font-bold"
                                             >
-                                                {item.total} $
+                                                {subTotal} $
                                             </Typography>
                                         </div>
                                     </td>
@@ -167,25 +194,11 @@ const ManagerOrder: React.FC = () => {
                                                 color="blue-gray"
                                                 className="font-bold"
                                             >
-                                                {item.shipping + item.total} $
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <div className="flex items-center justify-center gap-3">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-bold"
-                                            >
                                                 <select
                                                     className="border border-collapse rounded-lg w-full"
                                                     value={item.status}
                                                     onChange={(e) =>
-                                                        handleChange(
-                                                            e,
-                                                            item._id
-                                                        )
+                                                        handleChange(e, item.id)
                                                     }
                                                 >
                                                     <option value="Pending">
@@ -216,7 +229,7 @@ const ManagerOrder: React.FC = () => {
                                             >
                                                 <Button
                                                     onClick={() => {
-                                                        handleOpen(item._id);
+                                                        handleOpen(item.id);
                                                     }}
                                                     className="bg-green-500 hover:bg-green-700 text-white font-bold px-6 py-3 rounded text-lg"
                                                 >

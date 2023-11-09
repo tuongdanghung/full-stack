@@ -24,7 +24,6 @@ import { CloudinaryService } from 'src/shared/utils/upload/cloudinary.service';
 import { CheckAuthenGuard } from 'src/shared/guards/auth.guard';
 import { CheckAuthorGuard } from 'src/shared/guards/verify_role.guard';
 
-// trong global class có bao nhiêu tham số thì ở đây truyền bấy nhiêu tham số
 dotenv.config();
 @Controller(`${process.env.API_KEY}/products`)
 export class ProductController {
@@ -65,10 +64,27 @@ export class ProductController {
     return this.productService.createNewProductColor(productColorDTO);
   }
 
+  @Post('/image')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
+  @UseInterceptors(FileInterceptor('src'))
+  async createNewImageProduct(
+    @Body() body: any,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const image = await this.cloudinaryService.uploadSingleFile(file);
+
+    const data = {
+      src: image.url,
+      productId: +body.productId,
+    };
+    return this.productService.createNewImageProduct(data);
+  }
+
   @Post()
   @UseGuards(CheckAuthenGuard)
   @UseGuards(CheckAuthorGuard)
-  @UseInterceptors(FilesInterceptor('images'))
+  @UseInterceptors(FilesInterceptor('image'))
   async createProduct(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() formData: any,
@@ -77,10 +93,11 @@ export class ProductController {
       title: formData.title,
       description: formData.description,
       price: +formData.price,
-      stock: +formData.stock,
-      brandId: +formData.brandId,
-      categoryId: +formData.categoryId,
+      stock: +formData.quantity,
+      brandId: +formData.brand,
+      categoryId: +formData.category,
     };
+
     const capacity = JSON.parse(formData.capacity);
     const color = JSON.parse(formData.color);
     const dataImage = await this.cloudinaryService.uploadMultipleFiles(files);
@@ -119,7 +136,7 @@ export class ProductController {
   @UseGuards(CheckAuthenGuard)
   @UseGuards(CheckAuthorGuard)
   @UseInterceptors(FileInterceptor('src'))
-  async updateImge(
+  async updateImage(
     @Param('id') id: number,
     @UploadedFile() file: Express.Multer.File,
   ) {
@@ -136,11 +153,21 @@ export class ProductController {
   }
 
   @Delete('/productColor')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   async deleteProductColor(@Body() productColorDTO: ProductColorDTO) {
     this.productService.deleteProductColor(productColorDTO);
   }
+  @Delete('/image/:id')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
+  async deleteImage(@Param('id') id: number) {
+    this.productService.deleteImage(id);
+  }
 
   @Delete('/:id')
+  @UseGuards(CheckAuthenGuard)
+  @UseGuards(CheckAuthorGuard)
   async deleteProduct(@Param('id') id: number): Promise<GlobalInterface> {
     return this.productService.deleteProduct(id);
   }

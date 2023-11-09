@@ -10,20 +10,12 @@ export class AddressRepository {
     public addressRepository: Repository<AddressEntity>,
   ) {}
 
-  async getAllAddresses(
-    province: string,
-    page: number,
-    limit: number,
-  ): Promise<{ data: IsAddressInterface[]; currentPage: number }> {
-    const skip = (page - 1) * limit;
+  async getAllAddresses(id: number): Promise<{ data: IsAddressInterface[] }> {
     const data = await this.addressRepository.find({
-      where: province && { province: ILike(`%${province}%`) },
-      skip,
-      take: limit,
+      where: { userId: id },
     });
-    const currentPage = Math.ceil((skip + 1) / limit);
 
-    return { data, currentPage };
+    return { data };
   }
 
   async createAddress(data: any): Promise<GlobalInterface> {

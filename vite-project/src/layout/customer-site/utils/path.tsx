@@ -16,6 +16,8 @@ const path = {
     OUR_SERVICES: "OUR SERVICES",
     FINALREGISTER: "finalregister/:status",
     VERIFY_ACCOUNT: "verifyAccount/:id",
+    VERIFY_GOOGLE: "verifyGoogle/:token/V1",
+    FAVORITE: "favorite",
     FORGOT: "reset-password/:token",
 };
 

@@ -20,7 +20,7 @@ const Category: React.FC<Props> = (props) => {
     useEffect(() => {
         dispatch(GetColor(null));
         setId(props.id);
-        setTitle(color.find((item: any) => item._id === id));
+        setTitle(color.find((item: any) => item.id === id));
     }, [props.id]);
     return (
         <div>

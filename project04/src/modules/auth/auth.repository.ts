@@ -22,6 +22,7 @@ export class AuthRepository {
       const createUser = this.userEntity.create({
         ...data,
         email: emailEdited,
+        roleId: 1,
       });
       const response = await this.userEntity.save(createUser);
       return response;
@@ -62,6 +63,33 @@ export class AuthRepository {
         roleId: checkUser.roleId,
       };
       const access_token = isChecked
+        ? this.generateToken.signJwt({ dataGenerateToken })
+        : null;
+      return {
+        success: true,
+        data: dataGenerateToken,
+        access_token,
+      };
+    }
+    return false;
+  }
+
+  async loginGoogle(req: any) {
+    const options: FindOneOptions<UserEntity> = {
+      where: { email: req },
+    };
+
+    const checkUser = await this.userEntity.findOne(options);
+    if (checkUser) {
+      const dataGenerateToken = {
+        id: checkUser.id,
+        email: checkUser.email,
+        card_id: checkUser.card_id,
+        firstName: checkUser.firstName,
+        lastName: checkUser.lastName,
+        roleId: checkUser.roleId,
+      };
+      const access_token = checkUser
         ? this.generateToken.signJwt({ dataGenerateToken })
         : null;
       return {

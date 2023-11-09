@@ -36,12 +36,13 @@ export class FavoriteController {
   // get all favorite
   @Post()
   @UseGuards(CheckAuthenGuard)
-  createFavorite(@Body() cartDTO: FavoriteDTO): Promise<GlobalInterface> {
+  createFavorite(@Body() favoriteDTO: any) {
     const currentToken = this.sharedDataService.getCurrentToken();
     const favorite = {
-      ...cartDTO,
+      ...favoriteDTO,
       userId: currentToken.dataGenerateToken.id,
     };
+    console.log(favorite);
 
     return this.favoriteService.createFavorite(favorite);
   }

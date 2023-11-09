@@ -13,15 +13,16 @@ export class OrderServices {
     return this.orderRepo.getAllOrderByUser(id, codeOrder, page, limit);
   }
 
-  async createOrder(userId: number): Promise<any> {
+  async createOrder(userId: number, data: any): Promise<any> {
     const cartItem = await this.orderRepo.findCart(userId);
     let min = 1000000;
     let max = 9999999;
     let codeOrder = Math.floor(Math.random() * (max - min + 1)) + min;
     const order = {
       userId,
-      addressId: 2,
-      paymentId: 1,
+      addressId: +data.addressId,
+      paymentId: +data.paymentId,
+      shipping: +data.shipping,
       codeOrder,
     };
 

@@ -26,7 +26,7 @@ export class UserEntity {
   @Column({ select: false })
   password: string;
 
-  @Column()
+  @Column({ default: 'true' })
   status: string;
 
   @Column()

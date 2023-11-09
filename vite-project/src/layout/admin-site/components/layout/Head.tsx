@@ -8,6 +8,7 @@ import ModalCreateComponent from "../modal/create";
 type Props = {
     title: string;
     slug: string;
+    data?: [];
 };
 const Head: React.FC<Props> = (props) => {
     const [open, setOpen] = useState<boolean>(false);
@@ -34,8 +35,12 @@ const Head: React.FC<Props> = (props) => {
                         <AiFillFolderAdd className="h-5 w-6 text-white" />
                     </Button>
                 ) : null}
-
-                {/* <Download /> */}
+                {props.slug !== "manager-order" &&
+                props.slug !== "manager-capacity" &&
+                props.slug !== "manager-color" &&
+                props.slug !== "manager-brand" ? (
+                    <Download data={props.data} slug={props.slug} />
+                ) : null}
             </div>
             <ModalCreateComponent
                 open={open}

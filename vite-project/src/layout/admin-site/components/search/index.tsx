@@ -8,7 +8,6 @@ import {
     GetBrand,
     GetCategory,
     GetCapacity,
-    GetRam,
     GetColor,
 } from "../../../../store/actions";
 import { AppDispatch } from "../../../../store";
@@ -33,9 +32,6 @@ const SearchComponent: React.FC<Search> = (props) => {
                 break;
             case "manager-color":
                 dispatch(GetColor({ color: value }));
-                break;
-            case "manager-ram":
-                dispatch(GetRam({ size: value }));
                 break;
             case "manager-capacity":
                 dispatch(GetCapacity({ size: value }));

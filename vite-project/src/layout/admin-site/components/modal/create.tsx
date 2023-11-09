@@ -11,7 +11,6 @@ import { CheckValidInterface, ModalCreate } from "../../../../interface/client";
 import {
     GetBrand,
     GetCategory,
-    GetRam,
     GetCapacity,
     GetColor,
     GetAllProduct,
@@ -25,7 +24,6 @@ import {
     apiCreateProduct,
     apiCreateCategory,
     apiCreateColor,
-    apiCreateRam,
     apiCreateCapacity,
     apiCreateBlog,
 } from "../../../../apis";
@@ -56,7 +54,6 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
     const [title, setTitle] = useState<string>("");
     const [price, setPrice] = useState<number>(0);
     const [quantity, setQuantity] = useState<number>(0);
-    const [seller, setSeller] = useState<number>(1);
     const [description, setDescription] = useState<string>("");
     const [itemValueBrand, setItemValueBrand] = useState<any>("");
     const [itemValueCategory, setItemValueCategory] = useState<any>("");
@@ -95,7 +92,6 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
     useEffect(() => {
         setOpen(props.open);
         setSlug(props.slug);
-        dispatch(GetRam(null));
         dispatch(GetCapacity(null));
         dispatch(GetColor(null));
         dispatch(GetBrand(null));
@@ -112,27 +108,17 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
         toBase64(event.target.files);
     };
 
-    const handleCheckboxRamChange = (size: any) => {
-        const updatedCheckBoxSizes = [...itemValueRam];
-        const sizeIndex = updatedCheckBoxSizes.findIndex(
-            (selectItem) => selectItem.size === size
-        );
-        if (sizeIndex !== -1) {
-            updatedCheckBoxSizes.splice(sizeIndex, 1); // Loại bỏ nếu đã tồn tại
-        } else {
-            updatedCheckBoxSizes.push({ size: size }); // Thêm nếu chưa tồn tại
-        }
-        setItemValueRam(updatedCheckBoxSizes);
-    };
     const handleCheckboxColorChange = (color: any) => {
         const updatedCheckBoxColor = [...itemValueColor];
+
         const colorIndex = updatedCheckBoxColor.findIndex(
             (selectItem) => selectItem.color === color
         );
+
         if (colorIndex !== -1) {
             updatedCheckBoxColor.splice(colorIndex, 1);
         } else {
-            updatedCheckBoxColor.push({ color: color });
+            updatedCheckBoxColor.push(color);
         }
         setItemValueColor(updatedCheckBoxColor);
     };
@@ -144,18 +130,9 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
         if (sizeIndex !== -1) {
             updatedCheckBoxSizes.splice(sizeIndex, 1);
         } else {
-            updatedCheckBoxSizes.push({ size: size });
+            updatedCheckBoxSizes.push(size);
         }
-        const result = capacity
-            .filter((itemA: any) =>
-                updatedCheckBoxSizes.some(
-                    (itemB: any) => itemA.size === itemB.size
-                )
-            )
-            .map(
-                ({ _id, ...rest }: { id: string; [key: string]: any }) => rest
-            );
-        setItemValueCapacity(result);
+        setItemValueCapacity(updatedCheckBoxSizes);
     };
     const setDefaultValue = () => {
         setTitle("");
@@ -166,7 +143,6 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
         setItemValueBrand([]);
         setItemValueCapacity([]);
         setItemValueColor([]);
-        setSeller(1);
     };
     const handleCreate = async () => {
         if (slug === "manager-product") {
@@ -235,11 +211,9 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                 price,
                 description,
                 image,
-                seller,
                 brand: itemValueBrand,
                 category: itemValueCategory,
                 quantity,
-                ram: JSON.stringify(itemValueRam),
                 capacity: JSON.stringify(itemValueCapacity),
                 color: JSON.stringify(itemValueColor),
             };
@@ -333,28 +307,6 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                     toast.success("Create color successfully");
                 } else {
                     toast.error("Create color failed");
-                }
-                props.handleClose(false);
-            }
-        }
-        if (slug === "manager-ram") {
-            if (value === "") {
-                setCheckValid((prevState) => ({
-                    ...prevState,
-                    ram: true,
-                }));
-            }
-            if (value !== "") {
-                const response = await apiCreateRam({
-                    size: Number(value),
-                });
-                if (response.data.success) {
-                    setIsSnipper(false);
-                    dispatch(GetRam(null));
-                    setValue("");
-                    toast.success("Create ram successfully");
-                } else {
-                    toast.error("Create ram failed");
                 }
                 props.handleClose(false);
             }
@@ -493,23 +445,6 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                                     />
                                 </div>
                                 <div className="mt-4">
-                                    <label className="block">Seller</label>
-                                    <input
-                                        className="border border-collapse rounded-lg w-full"
-                                        type="number"
-                                        value={seller}
-                                        onChange={(e) =>
-                                            setSeller(Number(e.target.value))
-                                        }
-                                    />
-                                    <Required
-                                        value={seller}
-                                        valid={checkValid.seller}
-                                        keywords="Seller"
-                                        setShow={setCheckValid}
-                                    />
-                                </div>
-                                <div className="mt-4">
                                     <label className="block">Brand</label>
                                     <select
                                         className="border border-collapse rounded-lg w-full"
@@ -521,8 +456,8 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                                         <option>Choose option</option>
                                         {brand?.map((brandItem: any) => (
                                             <option
-                                                key={brandItem._id}
-                                                value={brandItem.title}
+                                                key={brandItem.id}
+                                                value={brandItem.id}
                                             >
                                                 {brandItem.title}
                                             </option>
@@ -547,8 +482,8 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                                         <option>Choose option</option>
                                         {category?.map((brandItem: any) => (
                                             <option
-                                                key={brandItem._id}
-                                                value={brandItem.title}
+                                                key={brandItem.id}
+                                                value={brandItem.id}
                                             >
                                                 {brandItem.title}
                                             </option>
@@ -576,10 +511,10 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                                                 {item.color}
                                             </label>
                                             <Checkbox
-                                                value={item.color}
+                                                value={item.id}
                                                 onChange={() =>
                                                     handleCheckboxColorChange(
-                                                        item.color
+                                                        item.id
                                                     )
                                                 }
                                                 crossOrigin={undefined}
@@ -596,38 +531,6 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                             />
                         </div>
                         <div className=" rounded-lg border border-separate mt-5 p-4">
-                            <label>Ram</label>
-                            <div className="grid grid-cols-5 gap-5">
-                                {ram?.map((item: any, index: any) => {
-                                    return (
-                                        <div
-                                            key={index}
-                                            className="flex items-center checked-button"
-                                        >
-                                            <label className="label-css">
-                                                {item.size} GB
-                                            </label>
-                                            <Checkbox
-                                                value={item.size}
-                                                onChange={() =>
-                                                    handleCheckboxRamChange(
-                                                        item.size
-                                                    )
-                                                }
-                                                crossOrigin={undefined}
-                                            />
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                            <Required
-                                value={itemValueRam}
-                                valid={checkValid.ram}
-                                keywords="Ram"
-                                setShow={setCheckValid}
-                            />
-                        </div>
-                        <div className=" rounded-lg border border-separate mt-5 p-4">
                             <label>Capacity</label>
                             <div className="grid grid-cols-5 gap-5">
                                 {capacity?.map((item: any, index: any) => {
@@ -640,10 +543,10 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                                                 {item.size} GB
                                             </label>
                                             <Checkbox
-                                                value={item.size}
+                                                value={item.id}
                                                 onChange={() =>
                                                     handleCheckboxCapacityChange(
-                                                        item.size
+                                                        item.id
                                                     )
                                                 }
                                                 crossOrigin={undefined}
@@ -718,17 +621,6 @@ const ModalCreateComponent: React.FC<ModalCreate> = (props) => {
                         <Required
                             value={category}
                             valid={checkValid.category}
-                            keywords="Title"
-                            setShow={setCheckValid}
-                        />
-                    </div>
-                )}
-                {slug === "manager-ram" && (
-                    <div>
-                        <Color handleData={handleData} />
-                        <Required
-                            value={ram}
-                            valid={checkValid.ram}
                             keywords="Title"
                             setShow={setCheckValid}
                         />

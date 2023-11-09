@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../../store";
 import { GetOneOrder } from "../../../../store/actions";
@@ -19,18 +19,10 @@ const HistoryOrder = () => {
     useEffect(() => {
         dispatch(GetOneOrder(token));
     }, []);
-    const TABLE_HEAD = [
-        "MDH",
-        "Address",
-        "Total",
-        "Shipping",
-        "Subtotal",
-        "Status",
-        "",
-    ];
+    const TABLE_HEAD = ["MDH", "Address", "Shipping", "Subtotal", "Status", ""];
     const handleOpen = (id: string) => {
         setOpen(!open);
-        const history = order?.find((item: any) => item._id === id);
+        const history = order?.find((item: any) => item.id === id);
         if (history) {
             setDetail(history);
         }
@@ -44,18 +36,17 @@ const HistoryOrder = () => {
     ) => {
         const value = event.target.value;
         const updatedData = order?.map((order: any) => {
-            if (order._id === orderId) {
+            if (order.id === orderId) {
                 return { ...order, status: value };
             }
             return order;
         });
 
         setNewData(updatedData);
-        const response = await apiUpdateOrder({
-            id: orderId,
-            status: value,
-            token,
-        });
+        const response = await apiUpdateOrder(
+            { id: orderId },
+            { status: value }
+        );
         if ((response as any).data.success) {
             dispatch(GetOneOrder(token));
             toast.success("Updated status successfully");
@@ -90,16 +81,21 @@ const HistoryOrder = () => {
                         const classes = isLast
                             ? "p-4"
                             : "p-4 border-b border-blue-gray-50";
+                        let totalSum = 0;
+                        item.orderItems.forEach((item: any) => {
+                            totalSum += item.total;
+                        });
+                        const subTotal = totalSum.toLocaleString("en-US");
 
                         return (
-                            <tr key={item._id}>
+                            <tr key={item.id}>
                                 <td className={classes}>
                                     <Typography
                                         variant="small"
                                         color="blue-gray"
                                         className="font-normal"
                                     >
-                                        MDH{item._id}
+                                        MDH {item.codeOrder}
                                     </Typography>
                                 </td>
                                 <td className={classes}>
@@ -108,20 +104,9 @@ const HistoryOrder = () => {
                                         color="blue-gray"
                                         className="font-normal"
                                     >
-                                        {item.address[0].province}
-                                        {" - "}
-                                        {item.address[0].district}
-                                        {" - "}
-                                        {item.address[0].ward}
-                                    </Typography>
-                                </td>
-                                <td className={classes}>
-                                    <Typography
-                                        variant="small"
-                                        color="blue-gray"
-                                        className="font-normal"
-                                    >
-                                        {item.total}$
+                                        {item.address.ward}{" "}
+                                        {item.address.district}{" "}
+                                        {item.address.province}
                                     </Typography>
                                 </td>
                                 <td className={classes}>
@@ -139,7 +124,7 @@ const HistoryOrder = () => {
                                         color="blue-gray"
                                         className="font-normal"
                                     >
-                                        {item.total + item.shipping}$
+                                        {subTotal} $
                                     </Typography>
                                 </td>
                                 <td className={classes}>
@@ -153,7 +138,7 @@ const HistoryOrder = () => {
                                                 className="border border-collapse rounded-lg w-full"
                                                 value={item.status}
                                                 onChange={(e) =>
-                                                    handleChange(e, item._id)
+                                                    handleChange(e, item.id)
                                                 }
                                             >
                                                 <option value="Pending">
@@ -180,7 +165,7 @@ const HistoryOrder = () => {
                                     >
                                         <Button
                                             onClick={() => {
-                                                handleOpen(item._id);
+                                                handleOpen(item.id);
                                             }}
                                             className="bg-green-500 hover:bg-green-700 text-white font-bold px-6 py-3 rounded text-lg"
                                         >

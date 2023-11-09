@@ -44,4 +44,10 @@ export class AuthServices {
   login(req: LoginDTO) {
     return this.authService.login(req);
   }
+
+  googleLogin(req) {
+    console.log(req.user.email);
+
+    return this.authService.loginGoogle(req.user.email);
+  }
 }

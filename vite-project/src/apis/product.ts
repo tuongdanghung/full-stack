@@ -2,7 +2,7 @@ import axios from "../config/axios";
 const token = localStorage.getItem("auth");
 export const apiCreateProduct = (data: any) =>
     axios({
-        url: "/product/create",
+        url: "/products",
         method: "POST",
         data: data,
         headers: { Authorization: `Bearer ${token}` },
@@ -10,7 +10,7 @@ export const apiCreateProduct = (data: any) =>
 
 export const apiGetAllProduct = (data: any) =>
     axios({
-        url: `/product`,
+        url: `/products`,
         params: data,
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
@@ -18,61 +18,39 @@ export const apiGetAllProduct = (data: any) =>
 
 export const apiProductDetail = (detail: any) =>
     axios({
-        url: `/product/${detail.id}`,
+        url: `/products/${detail}`,
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiDeleteProduct = (data: any) =>
+export const apiDeleteProduct = (id: any) =>
     axios({
-        url: `/product/${data.id}`,
+        url: `/products/${id}`,
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiEditProduct = (data: any, id: any) =>
+export const apiEditProduct = (id: any, data: any) =>
     axios({
-        url: `/product/${id}`,
+        url: `/products/${id}`,
         data: data,
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiEditStatusProduct = (id: any, data: any) =>
+    axios({
+        url: `/products/block/${id}`,
+        data: { active: data },
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
     });
 
 // product
-export const apiCreateRam = (data: any) =>
-    axios({
-        url: "/ram/create",
-        method: "POST",
-        data: data,
-        headers: { Authorization: `Bearer ${token}` },
-    });
 
-export const apiGetAllRam = (data: any) =>
-    axios({
-        url: "/ram",
-        method: "GET",
-        params: data,
-        headers: { Authorization: `Bearer ${token}` },
-    });
-
-export const apiEditRam = (data: any) =>
-    axios({
-        url: `/ram/${data.id}`,
-        data: data,
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-    });
-
-export const apiDeleteRam = (data: any) =>
-    axios({
-        url: `/ram/${data.id}`,
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-    });
-// ram
 export const apiCreateCapacity = (data: any) =>
     axios({
-        url: "/capacity/create",
+        url: "/capacities",
         method: "POST",
         data: data,
         headers: { Authorization: `Bearer ${token}` },
@@ -80,28 +58,32 @@ export const apiCreateCapacity = (data: any) =>
 
 export const apiGetAllCapacity = (data: any) =>
     axios({
-        url: "/capacity",
+        url: "/capacities",
         params: data,
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
     });
+
 export const apiEditCapacity = (data: any) =>
     axios({
-        url: `/capacity/${data.id}`,
-        data: data,
+        url: `/capacities/${data.id}`,
+        data: { size: data.size, percent: data.percent },
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
     });
+
 export const apiDeleteCapacity = (data: any) =>
     axios({
-        url: `/capacity/${data.id}`,
+        url: `/capacities/${data.id}`,
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
     });
+
 // capacity
+
 export const apiCreateColor = (data: any) =>
     axios({
-        url: "/color/create",
+        url: "/colors",
         method: "POST",
         data: data,
         headers: { Authorization: `Bearer ${token}` },
@@ -109,7 +91,7 @@ export const apiCreateColor = (data: any) =>
 
 export const apiGetAllColor = (data: any) =>
     axios({
-        url: "/color",
+        url: "/colors",
         method: "GET",
         params: data,
         headers: { Authorization: `Bearer ${token}` },
@@ -117,16 +99,74 @@ export const apiGetAllColor = (data: any) =>
 
 export const apiDeleteColor = (data: any) =>
     axios({
-        url: `/color/${data.id}`,
+        url: `/colors/${data.id}`,
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
     });
 
 export const apiEditColor = (data: any) =>
     axios({
-        url: `/color/${data.id}`,
-        data: data,
+        url: `/colors/${data.id}`,
+        data: { color: data.color },
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
     });
+
 // color
+
+export const apiCreateProductCapacity = (data: any) =>
+    axios({
+        url: "/products/productCapacity",
+        method: "POST",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiDeleteProductCapacity = (data: any) =>
+    axios({
+        url: "/products/productCapacity",
+        method: "DELETE",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+//Capacity
+
+export const apiCreateProductColor = (data: any) =>
+    axios({
+        url: "/products/productColor",
+        method: "POST",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiDeleteProductColor = (data: any) =>
+    axios({
+        url: "/products/productColor",
+        method: "DELETE",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiUpdateImage = (data: any, id: number) =>
+    axios({
+        url: `/products/image/${id}`,
+        method: "PUT",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiDeleteImage = (id: number) =>
+    axios({
+        url: `/products/image/${id}`,
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiCreateImage = (data: any) =>
+    axios({
+        url: "/products/image",
+        method: "POST",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });

@@ -7,6 +7,9 @@ export const appSlice = createSlice({
         users: null,
         oneUser: null,
         isLoading: false,
+        carts: null,
+        address: null,
+        favorite: null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -26,6 +29,26 @@ export const appSlice = createSlice({
             state.isLoading = false;
             state.oneUser = action.payload;
         });
+
+        builder.addCase(actions.GetAllCart.fulfilled, (state: any, action) => {
+            state.isLoading = false;
+            state.carts = action.payload;
+        });
+
+        builder.addCase(
+            actions.GetAllAddress.fulfilled,
+            (state: any, action) => {
+                state.isLoading = false;
+                state.address = action.payload;
+            }
+        );
+        builder.addCase(
+            actions.GetAllFavorite.fulfilled,
+            (state: any, action) => {
+                state.isLoading = false;
+                state.favorite = action.payload;
+            }
+        );
 
         builder.addCase(actions.GetAllUsersByAdmin.rejected, (state: any) => {
             state.isLoading = false;

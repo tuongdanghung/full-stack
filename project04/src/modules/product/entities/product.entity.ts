@@ -74,13 +74,19 @@ export class ProductEntity {
   )
   public productColors: ProductColorEntity[];
 
-  @OneToMany(() => CartEntity, (cart) => cart.product)
+  @OneToMany(() => CartEntity, (cart) => cart.product, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   carts: CartEntity[];
 
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product)
   orderItems: OrderItemEntity[];
 
-  @OneToMany(() => FavoriteEntity, (favorite) => favorite.product)
+  @OneToMany(() => FavoriteEntity, (favorite) => favorite.product, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   favorites: FavoriteEntity[];
 
   @Column({

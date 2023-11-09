@@ -33,7 +33,7 @@ export class UserEntity {
   @ManyToOne(() => RoleEntity, (role) => role.user)
   role: RoleEntity;
 
-  @Column({ nullable: true, default: 1 })
+  @Column({ nullable: true })
   roleId: number;
 
   @Column({

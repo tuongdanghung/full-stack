@@ -56,9 +56,12 @@ export class OrderController {
 
   @Post()
   @UseGuards(CheckAuthenGuard)
-  createOrder(): Promise<GlobalInterface> {
+  createOrder(@Body() data: any): Promise<GlobalInterface> {
     const currentToken = this.sharedDataService.getCurrentToken();
-    return this.orderService.createOrder(currentToken.dataGenerateToken.id);
+    return this.orderService.createOrder(
+      currentToken.dataGenerateToken.id,
+      data,
+    );
   }
   // create orderItem
 

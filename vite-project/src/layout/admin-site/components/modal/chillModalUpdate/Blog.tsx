@@ -18,7 +18,7 @@ const Blog: React.FC<Props> = (props) => {
     useEffect(() => {
         dispatch(GetAllBlog(null));
         setId(props.id);
-        setTitle(blog.find((item: any) => item._id === id));
+        setTitle(blog.find((item: any) => item.id === id));
     }, [props.id]);
     useEffect(() => {
         props.handleChange(title);

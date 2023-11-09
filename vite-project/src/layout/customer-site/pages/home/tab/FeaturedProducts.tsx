@@ -73,7 +73,7 @@ const FeaturedProducts = (props: any) => {
                                             className="mb-2"
                                         >
                                             <img
-                                                src={item.image[0].image}
+                                                src={item.images[0].src}
                                                 alt=""
                                             />
                                         </Typography>
@@ -88,7 +88,7 @@ const FeaturedProducts = (props: any) => {
                                     <CardFooter className="pt-0">
                                         <Link
                                             className="border border-separate py-2 px-4 rounded-lg hover:text-white hover:bg-blue-gray-900"
-                                            to={`/${path.PRODUCTS}/${item.category}/${item._id}`}
+                                            to={`/${path.PRODUCTS}/${item.category.title}/${item.id}`}
                                         >
                                             Read More
                                         </Link>

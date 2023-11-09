@@ -35,7 +35,6 @@ export class ProductRepository {
       where: title && { title: ILike(`%${title}%`) },
       relations: ['images', 'category', 'brand', 'capacities', 'colors'],
       skip,
-      take: limit,
     });
     const currentPage = Math.ceil((skip + 1) / limit);
 
@@ -62,23 +61,18 @@ export class ProductRepository {
   }
 
   async createImage(data: any) {
-    this.imageRepository.create(data);
-    this.imageRepository.save(data);
+    await this.imageRepository.create(data);
+    await this.imageRepository.save(data);
   }
 
   async createProductCapacity(data: any) {
-    this.productCapacityEntity.create(data);
-    this.productCapacityEntity.save(data);
-  }
-
-  async createNewProductColor(data: any) {
-    this.productColorEntity.create(data);
-    this.productColorEntity.save(data);
+    await this.productCapacityEntity.create(data);
+    await this.productCapacityEntity.save(data);
   }
 
   async createProductColor(data: any) {
-    this.productColorEntity.create(data);
-    this.productColorEntity.save(data);
+    await this.productColorEntity.create(data);
+    await this.productColorEntity.save(data);
   }
 
   async updateProduct(data: IsProductInterface, id: number): Promise<any> {
@@ -134,5 +128,9 @@ export class ProductRepository {
       colorsId: productColorDTO.colorsId,
     };
     await this.productColorEntity.delete(options);
+  }
+
+  async deleteImage(id: number): Promise<any> {
+    await this.imageRepository.delete(id);
   }
 }
