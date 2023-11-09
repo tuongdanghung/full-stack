@@ -21,7 +21,6 @@ export class CapacityRepository {
     const data = await this.capacityRepository.find({
       where: size ? { size: Equal(size) } : {},
       skip,
-      take: limit,
     });
     const currentPage = Math.ceil((skip + 1) / limit);
 

@@ -2,7 +2,7 @@ import axios from "../config/axios";
 const token = localStorage.getItem("auth");
 export const apiGetAllUer = (params: any) =>
     axios({
-        url: "/user",
+        url: "/users",
         method: "GET",
         params: { email: params },
         headers: { Authorization: `Bearer ${token}` },
@@ -10,13 +10,14 @@ export const apiGetAllUer = (params: any) =>
 
 export const apiGetOneUser = (token: any) =>
     axios({
-        url: "/user/me",
+        url: "/users/me",
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
     });
+
 export const apiRegister = (data: object) =>
     axios({
-        url: "/user/register",
+        url: "/auth/register",
         method: "POST",
         data: data,
         headers: {
@@ -26,7 +27,7 @@ export const apiRegister = (data: object) =>
 
 export const apiLogin = (data: object) =>
     axios({
-        url: "/user/login",
+        url: "/auth/login",
         method: "POST",
         withCredentials: true,
         data: data,
@@ -40,7 +41,7 @@ export const apiFinalRegister = (params: any) =>
 
 export const apiUpdateUser = (data: any) =>
     axios({
-        url: `/user/update`,
+        url: `/users/update`,
         method: "PUT",
         data: data,
         headers: { Authorization: `Bearer ${token}` },
@@ -48,23 +49,64 @@ export const apiUpdateUser = (data: any) =>
 
 export const apiUpdateUserByAdmin = (data: any) =>
     axios({
-        url: `/user/updateAdmin/${data.id}`,
+        url: `/users/updateByAdmin/${data.id}`,
         method: "PUT",
-        data: data,
+        data: {
+            status: data.status,
+        },
         headers: { Authorization: `Bearer ${data.token}` },
     });
-export const apiUpdateCart = (data: any) =>
+
+export const apiGetAllCart = () =>
     axios({
-        url: `/user/update/cart`,
-        method: "PUT",
-        data: data,
-        headers: { Authorization: `Bearer ${data.token}` },
+        url: "/carts",
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
     });
-export const apiDeleteCart = (data: any) =>
+
+export const apiCreateCart = (data: any) =>
     axios({
-        url: `/user/delete-cart/${data.id}`,
+        url: `/carts`,
+        method: "POST",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiGetAllFavorite = () =>
+    axios({
+        url: "/favorites",
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiCreateFavorite = (data: any) =>
+    axios({
+        url: `/favorites`,
+        method: "POST",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiDeleteFavorite = (id: any) =>
+    axios({
+        url: `/favorites/${id}`,
         method: "DELETE",
-        headers: { Authorization: `Bearer ${data.token}` },
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiUpdateCart = (id: number, data: any) =>
+    axios({
+        url: `/carts/${id}`,
+        method: "PUT",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiDeleteCart = (id: any) =>
+    axios({
+        url: `/carts/${id}`,
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
     });
 
 export const apiForgotPassword = (data: any) =>
@@ -73,9 +115,16 @@ export const apiForgotPassword = (data: any) =>
         method: "POST",
         data: data,
     });
+
 export const apiResetToken = (data: any) =>
     axios({
         url: "/user/resetpassword",
         method: "PUT",
         data: data,
+    });
+
+export const apiLoginGoogle = () =>
+    axios({
+        url: "/auth/google/redirect",
+        method: "GET",
     });

@@ -42,9 +42,6 @@ export class OrderRepository {
     const skip = (page - 1) * limit;
     const data = await this.orderRepository.find({
       where: { userId: id },
-      // where: codeOrder && { codeOrder: ILike(`%${codeOrder}%`) },
-      // skip,
-      // take: limit,
       relations: ['address', 'orderItems'],
     });
     const currentPage = Math.ceil((skip + 1) / limit);
@@ -87,7 +84,6 @@ export class OrderRepository {
     const itemOrder = await this.orderRepository.findOneBy({
       codeOrder: order.codeOrder,
     });
-    console.log(itemOrder);
     this.orderRepository.create(order);
     return await this.orderRepository.save(order);
   }

@@ -1,43 +1,45 @@
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import {
+    AiFillDelete,
+    AiFillEdit,
+    AiFillLock,
+    AiFillUnlock,
+} from "react-icons/ai";
 import {
     Card,
     CardHeader,
     Button,
     CardBody,
     CardFooter,
+    Chip,
 } from "@material-tailwind/react";
 import { useSelector, useDispatch } from "react-redux";
 import Pagination from "../../components/pagination";
 import Head from "../../components/layout/Head";
 import {
     GetAllProduct,
-    GetProductDetail,
     GetBrand,
     GetCategory,
-    GetRam,
     GetCapacity,
     GetColor,
 } from "../../../../store/actions";
-import { apiDeleteProduct, apiEditProduct } from "../../../../apis";
+import { apiDeleteProduct, apiEditStatusProduct } from "../../../../apis";
 import { AppDispatch } from "../../../../store";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import ModalEditProduct from "../../components/modal/ModalEditProduct";
-import Snipper from "../../components/snipper";
-
 const TABLE_HEAD = [
     "Title",
     "Price",
     "Quantity",
-    "Seller",
     "Category",
     "Brand",
-    "Total Rating",
     "Image",
+    "Status",
     "",
 ];
 const ManagerProduct = () => {
     const [open, setOpen] = useState<boolean>(false);
+    const [id, setId] = useState<number | null>(null);
     const dispatch = useDispatch<AppDispatch>();
     const [data, setData] = useState<any>([]);
     const product = useSelector(
@@ -45,27 +47,22 @@ const ManagerProduct = () => {
     );
     const item = useSelector((state: any) => state?.productReducer.detail);
     const brand = useSelector((state: any) => state?.productReducer.brand);
-    const ram = useSelector((state: any) => state?.productReducer.ram);
     const color = useSelector((state: any) => state?.productReducer.color);
-    const [isSnipper, setIsSnipper] = useState(false);
     const capacity = useSelector(
         (state: any) => state?.productReducer.capacity
     );
     const category = useSelector(
         (state: any) => state?.productReducer.category
     );
-    const token = localStorage.getItem("auth");
 
     useEffect(() => {
         dispatch(GetAllProduct(null));
-        dispatch(GetRam(null));
         dispatch(GetCapacity(null));
         dispatch(GetColor(null));
     }, [item]);
 
-    const handleDelete = async (id: string) => {
-        const payload = { id: id, token: token };
-        const response = await apiDeleteProduct(payload);
+    const handleDelete = async (id: number) => {
+        const response = await apiDeleteProduct(id);
         if (response.data.success) {
             dispatch(GetAllProduct(null));
             toast.success("Delete product successfully");
@@ -74,50 +71,43 @@ const ManagerProduct = () => {
         }
     };
 
-    const handleOpen = (id: string) => {
-        const detail = { id: id, token: token };
-        dispatch(GetProductDetail(detail));
+    const handleOpen = (id: any) => {
+        setId(id);
         dispatch(GetBrand(null));
         dispatch(GetCategory(null));
         setOpen(!open);
     };
+
     const handleClose = (close: boolean) => {
         setOpen(close);
-    };
-    const handleEdit = async (data: any) => {
-        const payload = {
-            ...data,
-            id: item._id,
-            ram: JSON.stringify(data.ram),
-            capacity: JSON.stringify(data.capacity),
-            color: JSON.stringify(data.color),
-            imageCloud: JSON.stringify(data.imageCloud),
-        };
-        const formData = new FormData();
-        for (let i of Object.entries(payload))
-            formData.append(i[0], i[1] as string | Blob);
-        for (let x of data.imageFile) formData.append("image", x);
-        setOpen(data.open);
-        setIsSnipper(true);
-        const response = await apiEditProduct(formData, item._id);
-        if (response.data.success) {
-            setIsSnipper(false);
-            dispatch(GetAllProduct(null));
-            toast.success("Updated product successfully");
-        } else {
-            toast.error("Updated product failed");
-        }
     };
 
     const handlePage = (pagination: any) => {
         setData(pagination);
     };
 
+    const editStatusProduct = async (id: number) => {
+        const itemProduct = product.find((item: any) => item.id === id);
+        if (itemProduct) {
+            const active = itemProduct.active === 1 ? 2 : 1;
+            const response = await apiEditStatusProduct(id, active);
+            if ((response as any).data.success) {
+                dispatch(GetAllProduct(null));
+                toast.success("Updated user successfully");
+            } else {
+                toast.error("Updated user failed");
+            }
+        }
+    };
+
     return (
         <Card className="h-full w-full">
-            {isSnipper ? <Snipper /> : null}
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <Head title={"Manager Product"} slug={"manager-product"} />
+                <Head
+                    title={"Manager Product"}
+                    slug={"manager-product"}
+                    data={product}
+                />
             </CardHeader>
             <CardBody className="px-0">
                 <table className="w-full min-w-max table-auto text-center">
@@ -137,22 +127,18 @@ const ManagerProduct = () => {
                         {data?.map((item: any, index: any) => {
                             const isLast = index === product.length - 1;
                             const price: number = item.price;
-                            const quantity: number = item?.quantity;
-                            const seller: number = item?.seller;
+                            const quantity: number = item?.stock;
                             const formattedPrice: string = price
                                 .toLocaleString("en-US")
                                 .replace(/,/g, ".");
                             const formattedQuantity: string = quantity
                                 .toLocaleString("en-US")
                                 .replace(/,/g, ".");
-                            const formattedSeller: string = seller
-                                .toLocaleString("en-US")
-                                .replace(/,/g, ".");
                             const classes = isLast
                                 ? "p-4"
                                 : "p-4 border-b border-blue-gray-50";
                             return (
-                                <tr key={item._id}>
+                                <tr key={item.id}>
                                     <td className={classes}>
                                         <div className="flex items-center gap-3 justify-center">
                                             {item.title}
@@ -162,15 +148,13 @@ const ManagerProduct = () => {
                                         {formattedPrice} $
                                     </td>
                                     <td className={classes}>
-                                        {formattedQuantity} $
+                                        {formattedQuantity}
                                     </td>
                                     <td className={classes}>
-                                        {formattedSeller} %
+                                        {item.category.title}
                                     </td>
-                                    <td className={classes}>{item.category}</td>
-                                    <td className={classes}>{item.brand}</td>
                                     <td className={classes}>
-                                        {item.totalRating}
+                                        {item.brand.title}
                                     </td>
                                     <td className={classes}>
                                         <img
@@ -178,25 +162,57 @@ const ManagerProduct = () => {
                                                 width: "100px",
                                                 margin: "auto",
                                             }}
-                                            src={item.image[0]?.image}
+                                            src={item.images[0]?.src}
                                             alt=""
+                                        />
+                                    </td>
+                                    <td className={`${classes}`}>
+                                        <Chip
+                                            size="sm"
+                                            variant="ghost"
+                                            value={
+                                                item.active === 2
+                                                    ? "block"
+                                                    : "unblock"
+                                            }
+                                            color={
+                                                item.active === 2
+                                                    ? "red"
+                                                    : "green"
+                                            }
                                         />
                                     </td>
                                     <td className={`${classes}`}>
                                         <Button
                                             onClick={() =>
-                                                handleDelete(item._id)
+                                                handleDelete(item.id)
                                             }
-                                            className="bg-red-500  hover:bg-red-700 text-white font-bold px-6 py-3 rounded text-lg mr-2"
+                                            className="bg-red-500  hover:bg-red-700 text-white font-bold px-6 py-3 rounded text-lg "
                                         >
                                             <AiFillDelete className="h-5 w-6 text-lg text-white" />
                                         </Button>
 
                                         <Button
-                                            onClick={() => handleOpen(item._id)}
-                                            className="bg-green-500 hover:bg-green-700 text-white font-bold px-6 py-3 rounded text-lg"
+                                            onClick={() => handleOpen(item.id)}
+                                            className="bg-green-500 mx-2 hover:bg-green-700 text-white font-bold px-6 py-3 rounded text-lg"
                                         >
                                             <AiFillEdit className="h-5 w-6 text-white" />
+                                        </Button>
+                                        <Button
+                                            onClick={() =>
+                                                editStatusProduct(item.id)
+                                            }
+                                            className={`${
+                                                item.active === 2
+                                                    ? "bg-red-500 hover:bg-red-700"
+                                                    : "bg-green-500 hover:bg-green-700"
+                                            }   text-white font-bold px-6 py-3 rounded text-lg`}
+                                        >
+                                            {item.active === 2 ? (
+                                                <AiFillLock className="h-5 w-6 text-lg text-white" />
+                                            ) : (
+                                                <AiFillUnlock className="h-5 w-6  text-white" />
+                                            )}
                                         </Button>
                                     </td>
                                 </tr>
@@ -210,14 +226,12 @@ const ManagerProduct = () => {
             </CardFooter>
             <ModalEditProduct
                 open={open}
-                item={item}
+                id={id}
                 brand={brand}
-                ram={ram}
                 color={color}
                 capacity={capacity}
                 category={category}
                 handleOpen={handleOpen}
-                handleEdit={handleEdit}
                 handleClose={handleClose}
             />
             <ToastContainer />

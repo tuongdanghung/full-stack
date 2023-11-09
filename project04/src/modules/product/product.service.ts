@@ -5,6 +5,7 @@ import {
   ProductCapacityDTO,
   ProductColorDTO,
   ProductDTO,
+  ProductImageDTO,
 } from './dto/product.dto';
 import { IsProductInterface } from './interface/product.interface';
 import { GlobalInterface } from 'src/shared/interface/global.interface';
@@ -28,7 +29,7 @@ export class ProductServices {
     newDataImage: any,
     capacity: number[],
     color: number[],
-  ): Promise<GlobalInterface> {
+  ): Promise<any> {
     const responseProduct = await this.productRepo.createProduct(dataProduct);
 
     if (responseProduct) {
@@ -41,7 +42,7 @@ export class ProductServices {
         capacitiesId: item,
         productsId: responseProduct?.id,
       }));
-      const productColorArray = capacity?.map((item: number) => ({
+      const productColorArray = color?.map((item: number) => ({
         colorsId: item,
         productsId: responseProduct?.id,
       }));
@@ -49,6 +50,7 @@ export class ProductServices {
       for (const image of imageArray) {
         await this.productRepo.createImage(image);
       }
+
       for (const item of productCapacityArray) {
         await this.productRepo.createProductCapacity(item);
       }
@@ -71,8 +73,12 @@ export class ProductServices {
     await this.productRepo.createProductCapacity(productCapacityDTO);
   }
 
+  async createNewImageProduct(data: ProductImageDTO) {
+    await this.productRepo.createImage(data);
+  }
+
   async createNewProductColor(productColorDTO: ProductColorDTO) {
-    await this.productRepo.createNewProductColor(productColorDTO);
+    await this.productRepo.createProductColor(productColorDTO);
   }
 
   async updateProduct(
@@ -147,5 +153,9 @@ export class ProductServices {
 
   async deleteProductColor(productColorDTO: ProductColorDTO) {
     return this.productRepo.deleteProductColor(productColorDTO);
+  }
+
+  async deleteImage(id: number) {
+    return this.productRepo.deleteImage(id);
   }
 }

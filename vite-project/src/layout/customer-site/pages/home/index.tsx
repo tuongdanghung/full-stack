@@ -63,9 +63,9 @@ function ParentComponent() {
                 </div>
             </div>
             <Panel data={data} />
-            <Banner />
+            {/* <Banner /> */}
             {/* <Timer data={data} /> */}
-            <FeaturedBrand data={data} />
+            {/* <FeaturedBrand data={data} /> */}
         </div>
     );
 }

@@ -13,9 +13,10 @@ const ExtendAdmin: React.FC = () => {
     useEffect(() => {
         dispatch(GetOneUser(token));
     }, []);
+
     return (
         <>
-            {+user?.role === 1 ? (
+            {user?.role.id === 2 ? (
                 <div className="flex w-full">
                     <div className="w-1/6">
                         <Nav />

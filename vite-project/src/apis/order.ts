@@ -1,31 +1,31 @@
 import axios from "../config/axios";
-
+const token = localStorage.getItem("auth");
 export const apiCreateOrder = (data: any) =>
     axios({
-        url: "/order/create",
+        url: "/orders",
         method: "POST",
         data,
-        headers: { Authorization: `Bearer ${data.token}` },
+        headers: { Authorization: `Bearer ${token}` },
     });
 
 export const apiGetAllOrder = (token: string) =>
     axios({
-        url: "/order/admin",
+        url: "/orders",
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
     });
 
 export const apiGetOrder = (token: string) =>
     axios({
-        url: "/order",
+        url: "/orders/byUser",
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiUpdateOrder = (data: any) =>
+export const apiUpdateOrder = (id: any, data: any) =>
     axios({
-        url: `/order/status/${data.id}`,
+        url: `/orders/${id.id}`,
         data: data,
         method: "PUT",
-        headers: { Authorization: `Bearer ${data.token}` },
+        headers: { Authorization: `Bearer ${token}` },
     });

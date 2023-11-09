@@ -21,7 +21,7 @@ const Brand = () => {
             <ul className="max-w-md list-none list-inside">
                 {category.map((item: any) => {
                     return (
-                        <li key={item._id} className="mb-4">
+                        <li key={item.id} className="mb-4">
                             <Link
                                 className="text-gray-900 hover:text-blue-500 flex items-center"
                                 to={`/${path.PRODUCTS}/${item.title}`}

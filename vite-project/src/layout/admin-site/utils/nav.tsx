@@ -68,11 +68,6 @@ export const adminNavigation: MenuItem[] = [
                 path: `${pathAdmin.MANAGER_COLOR}`,
             },
             {
-                value: "RAM",
-                icon: <BsFillDiagram3Fill />,
-                path: `${pathAdmin.MANAGER_RAM}`,
-            },
-            {
                 value: "Capacity",
                 icon: <MdReduceCapacity />,
                 path: `${pathAdmin.MANAGER_CAPACITY}`,

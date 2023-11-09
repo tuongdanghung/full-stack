@@ -14,7 +14,6 @@ import {
     apiUpdateCategory,
     apiEditColor,
     apiEditCapacity,
-    apiEditRam,
     apiUpdateBlog,
 } from "../../../../apis";
 import Brand from "./chillModalUpdate/Brand";
@@ -23,7 +22,6 @@ import {
     GetBrand,
     GetCategory,
     GetColor,
-    GetRam,
     GetCapacity,
     GetAllBlog,
 } from "../../../../store/actions";
@@ -31,7 +29,6 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../store";
 import Category from "./chillModalUpdate/Category";
 import Color from "./chillModalUpdate/Color";
-import Ram from "./chillModalUpdate/Ram";
 import Capacity from "./chillModalUpdate/Capacity";
 import Blog from "./chillModalUpdate/Blog";
 const DialogComponent: React.FC<ModalCreate> = (props) => {
@@ -111,27 +108,11 @@ const DialogComponent: React.FC<ModalCreate> = (props) => {
                 props.handleClose(false);
             }
         }
-        if (slug === "manager-ram") {
-            if (title !== "") {
-                const response = await apiEditRam({
-                    size: title,
-                    id: id,
-                    token,
-                });
-                if (response.data.success) {
-                    dispatch(GetRam(null));
-                    toast.success("Update ram successfully");
-                } else {
-                    toast.error("Update ram failed");
-                }
-                props.handleClose(false);
-            }
-        }
         if (slug === "manager-capacity") {
             if (title !== "") {
                 const response = await apiEditCapacity({
-                    size: Number(title.size),
-                    percent: Number(title.percent),
+                    size: title.size,
+                    percent: title.percent,
                     id: id,
                 });
                 if (response.data.success) {
@@ -197,17 +178,6 @@ const DialogComponent: React.FC<ModalCreate> = (props) => {
                             value={title}
                             valid={checkValid.title}
                             keywords="Color"
-                            setShow={setCheckValid}
-                        />
-                    </div>
-                )}
-                {slug === "manager-ram" && (
-                    <div>
-                        <Ram id={id} handleChange={handleChange} />
-                        <Required
-                            value={title}
-                            valid={checkValid.title}
-                            keywords="Ram"
                             setShow={setCheckValid}
                         />
                     </div>

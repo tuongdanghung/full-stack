@@ -21,7 +21,6 @@ export class CategoryRepository {
     const data = await this.categoryRepository.find({
       where: title && { title: ILike(`%${title}%`) },
       skip,
-      take: limit,
     });
     const currentPage = Math.ceil((skip + 1) / limit);
 

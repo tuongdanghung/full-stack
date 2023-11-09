@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import { InputField, Required } from "../../customer-site/components";
 import { apiLogin } from "../../../apis";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import path from "../../customer-site/utils/path";
 import pathAdmin from "../../admin-site/utils/path";
 import Swal from "sweetalert2";
+import * as io from "socket.io-client";
+const socket = io.connect("http://localhost:5000");
 import {
     SignInInterface,
     CheckValidInterface,
@@ -22,6 +24,9 @@ const Signin = () => {
         password: false,
     });
     const navigate = useNavigate();
+    socket.on("message", (newMessage) => {
+        navigate(`/${path.HOME}`);
+    });
     const handleLogin = async () => {
         if (payload.email === "") {
             setCheckValid((prevState) => ({
@@ -40,11 +45,11 @@ const Signin = () => {
             if ((response as any).data.success) {
                 localStorage.setItem(
                     "auth",
-                    (response as any).data.accessToken
+                    (response as any).data.access_token
                 );
                 navigate(
                     `${
-                        Number(response.data.data.secondary_role) !== 1
+                        Number(response.data.data.roleId) === 1
                             ? `/${path.HOME}`
                             : `/admin/${pathAdmin.DASHBOARD}`
                     }`
@@ -53,6 +58,14 @@ const Signin = () => {
                 Swal.fire("Oops!", (response as any).message, "error");
             }
         }
+    };
+
+    const handleClick = async () => {
+        window.open(
+            "http://localhost:5000/api/v1/auth/google",
+            "mywindow",
+            "width=600,height=400,location=no,menubar=no,scrollbars=yes,status=no,titlebar=no"
+        );
     };
 
     return (
@@ -90,14 +103,24 @@ const Signin = () => {
                     setShow={setCheckValid}
                 />
             </div>
-            <Button
-                onClick={() => {
-                    handleLogin();
-                }}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-3 rounded w-[100px] m-auto"
-            >
-                Login
-            </Button>
+            <div className="flex justify-center gap-2">
+                <Button
+                    onClick={() => {
+                        handleLogin();
+                    }}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-3 rounded w-[100px]"
+                >
+                    Login
+                </Button>
+                <Button
+                    onClick={() => {
+                        handleClick();
+                    }}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-3 rounded w-[100px]"
+                >
+                    Login google
+                </Button>
+            </div>
         </div>
     );
 };

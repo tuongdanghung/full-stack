@@ -27,7 +27,10 @@ export class CartEntity {
   @ManyToOne(() => UserEntity, (user) => user.carts)
   user: UserEntity;
 
-  @ManyToOne(() => ProductEntity, (product) => product.carts)
+  @ManyToOne(() => ProductEntity, (product) => product.carts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   product: ProductEntity;
 
   @ManyToOne(() => CapacityEntity, (capacity) => capacity.carts)

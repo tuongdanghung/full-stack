@@ -24,7 +24,6 @@ export class ColorRepository {
     const data = await this.colorRepository.find({
       where: color && { color: ILike(`%${color}%`) },
       skip,
-      take: limit,
     });
     const currentPage = Math.ceil((skip + 1) / limit);
 

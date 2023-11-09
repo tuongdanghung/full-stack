@@ -13,6 +13,8 @@ import {
     Blog,
     BlogDetail,
     Forgot,
+    VerifyGoogle,
+    Favorite,
 } from "./layout/customer-site/pages";
 import {
     ExtendAdmin,
@@ -22,7 +24,6 @@ import {
     ManagerOrder,
     ManagerBrand,
     ManagerCategory,
-    ManagerRam,
     ManagerColor,
     ManagerCapacity,
     ManagerBlog,
@@ -30,7 +31,6 @@ import {
 import path from "./layout/customer-site/utils/path";
 import pathAdmin from "./layout/admin-site/utils/path";
 import "react-toastify/dist/ReactToastify.css";
-
 function App() {
     return (
         <div className="App font-main w-main h-main text-main">
@@ -66,6 +66,10 @@ function App() {
                         ></Route>
 
                         <Route path={path.BLOG} element={<Blog />}></Route>
+                        <Route
+                            path={path.FAVORITE}
+                            element={<Favorite />}
+                        ></Route>
 
                         <Route path={path.ALL} element={<Home />}></Route>
                     </Route>
@@ -99,10 +103,6 @@ function App() {
                             element={<ManagerColor />}
                         ></Route>
                         <Route
-                            path={pathAdmin.MANAGER_RAM}
-                            element={<ManagerRam />}
-                        ></Route>
-                        <Route
                             path={pathAdmin.MANAGER_CAPACITY}
                             element={<ManagerCapacity />}
                         ></Route>
@@ -117,8 +117,12 @@ function App() {
                         element={<Verify />}
                     ></Route>
 
+                    <Route
+                        path={path.VERIFY_GOOGLE}
+                        element={<VerifyGoogle />}
+                    ></Route>
+
                     <Route path={path.FORGOT} element={<Forgot />}></Route>
-                    {/* <Route path={path.FINALREGISTER} element={<FinalRegister />}></Route> */}
                 </Routes>
             </div>
         </div>

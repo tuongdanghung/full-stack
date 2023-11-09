@@ -14,11 +14,10 @@ interface DataItem {
     detail: any;
     handleClose: (open: boolean) => void;
 }
-const TABLE_HEAD = ["Title", "Image", "Quantity", "Capacity", "Ram"];
+const TABLE_HEAD = ["Title", "Image", "Quantity", "Capacity", "Color", "Total"];
 const ModalOrderComponent: React.FC<DataItem> = (props: any) => {
     const [open, setOpen] = useState(false);
     const [detail, setDetail] = useState(props.detail);
-    console.log(detail);
     useEffect(() => {
         setOpen(props.open);
         setDetail(props.detail);
@@ -59,22 +58,24 @@ const ModalOrderComponent: React.FC<DataItem> = (props: any) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {detail?.product.map((item: any, index: any) => {
+                            {detail?.orderItems.map((item: any, index: any) => {
                                 const isLast =
-                                    index === detail?.product.length - 1;
+                                    index === detail?.orderItems.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
+                                const subTotal =
+                                    item.total.toLocaleString("en-US");
 
                                 return (
-                                    <tr key={item._id}>
+                                    <tr key={item.id}>
                                         <td className={classes}>
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {item.title}
+                                                {item.product.title}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -85,7 +86,10 @@ const ModalOrderComponent: React.FC<DataItem> = (props: any) => {
                                             >
                                                 <img
                                                     width={60}
-                                                    src={item.image}
+                                                    src={
+                                                        item.product.images[0]
+                                                            .src
+                                                    }
                                                     alt=""
                                                 />
                                             </Typography>
@@ -118,7 +122,18 @@ const ModalOrderComponent: React.FC<DataItem> = (props: any) => {
                                                 color="blue-gray"
                                                 className="font-medium"
                                             >
-                                                {item.ram}
+                                                {item.color.color}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography
+                                                as="a"
+                                                href="#"
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-medium"
+                                            >
+                                                {subTotal} $
                                             </Typography>
                                         </td>
                                     </tr>

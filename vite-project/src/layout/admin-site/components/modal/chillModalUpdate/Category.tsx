@@ -19,12 +19,12 @@ const Category: React.FC<Props> = (props) => {
     const category = useSelector(
         (state: any) => state?.productReducer.category
     );
-    const token = localStorage.getItem("auth");
     useEffect(() => {
         dispatch(GetCategory(null));
         setId(props.id);
-        setTitle(category.find((item: any) => item._id === id));
+        setTitle(category?.find((item: any) => item.id === id));
     }, [props.id]);
+
     return (
         <div>
             <label className="block">Title</label>

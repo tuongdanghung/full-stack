@@ -28,6 +28,7 @@ import path from "../../utils/path";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../../store";
 import { GetOneUser } from "../../../../store/actions";
+import { AiFillHeart } from "react-icons/ai";
 
 const ProfileMenu = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -201,6 +202,9 @@ const Header = () => {
                             {oneUser?.cart?.length}
                         </span>
                         <ShoppingCartIcon className="h-7 w-7" />
+                    </Link>
+                    <Link to={path.FAVORITE} className="relative">
+                        <AiFillHeart className="text-3xl text-red-600" />
                     </Link>
                     <ProfileMenu />
                 </div>

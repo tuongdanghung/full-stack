@@ -21,7 +21,6 @@ export class BrandRepository {
     const data = await this.brandRepository.find({
       where: title && { title: ILike(`%${title}%`) },
       skip,
-      take: limit,
     });
     const currentPage = Math.ceil((skip + 1) / limit);
 

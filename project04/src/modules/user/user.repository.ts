@@ -22,15 +22,18 @@ export class UserRepository {
       where: email ? { email: ILike(`%${email}%`) } : {},
       relations: ['addresses'],
       skip,
-      take: limit,
     });
+
     const currentPage = Math.ceil((skip + 1) / limit);
 
     return { data, currentPage };
   }
 
   getOneUser(id: number): Promise<any> {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne({
+      where: { id },
+      relations: ['addresses'],
+    });
   }
 
   async updateRole(data: any, id: number): Promise<boolean> {

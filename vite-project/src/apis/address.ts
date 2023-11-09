@@ -1,4 +1,5 @@
 import axios from "../config/axios";
+const token = localStorage.getItem("auth");
 export const apiGetPublicProvinces = () =>
     new Promise(async (resolve, reject) => {
         try {
@@ -51,3 +52,25 @@ export const getLocation = async (locationName: any) => {
         console.error("Lỗi khi gửi yêu cầu: " + error);
     }
 };
+
+export const apiGetAllAddress = (data: any) =>
+    axios({
+        url: `/addresses`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiCreateAddress = (data: any) =>
+    axios({
+        url: `/addresses`,
+        method: "POST",
+        data: data,
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+export const apiDeleteAddress = (id: any) =>
+    axios({
+        url: `/addresses/${id}`,
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+    });

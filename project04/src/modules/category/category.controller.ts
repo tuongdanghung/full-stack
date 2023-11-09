@@ -26,11 +26,11 @@ export class CategoryController {
   async getAllCategories(
     @Query('title') title: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number,
+    @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit: number,
   ): Promise<{ data: IsCategoryInterface[]; currentPage: number }> {
     if (!page && !limit) {
       page = 1;
-      limit = 2;
+      limit = 5;
     }
     return this.categoryService.getAllCategory(title, page, limit);
   }

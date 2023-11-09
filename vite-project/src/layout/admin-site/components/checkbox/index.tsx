@@ -1,133 +1,100 @@
 import { useEffect, useState } from "react";
 import { Checkbox } from "@material-tailwind/react";
 import "./index.scss";
+import {
+    apiCreateProductCapacity,
+    apiCreateProductColor,
+    apiDeleteProductCapacity,
+    apiDeleteProductColor,
+} from "../../../../apis";
 
 const CheckBoxComponent = (props: any) => {
-    const [ram, setRam] = useState(props.ram);
     const [capacity, setCapacity] = useState(props.capacity);
-    const [color, setColor] = useState(props.color);
+    const [color, setColor] = useState<any>(props.color);
+    const [productsId, setProductsId] = useState<any>(props.productId);
     const [itemCheckBox, setItemCheckBox] = useState(props.itemCheckBox);
-    const [itemValueRam, setItemValueRam] = useState(props.itemCheckBox.ram);
     const [itemValueColor, setItemValueColor] = useState(
         props.itemCheckBox.color
     );
     const [itemValueCapacity, setItemValueCapacity] = useState(
         props.itemCheckBox.capacity
     );
+
     useEffect(() => {
-        setItemCheckBox(props.itemCheckBox);
-        setItemValueRam(props.itemCheckBox.ram);
-        setItemValueCapacity(props.itemCheckBox.capacity);
-        setItemValueColor(props.itemCheckBox.color);
-        setRam(props.ram);
         setColor(props.color);
         setCapacity(props.capacity);
-        props.changeValueRam(props.itemCheckBox.ram);
-        props.changeValueCapacity(props.itemCheckBox.capacity);
+        setProductsId(props.productId);
+        setItemCheckBox(props.itemCheckBox);
+        setItemValueCapacity(props.itemCheckBox.capacity);
+        setItemValueColor(props.itemCheckBox.color);
     }, [props.itemCheckBox, props.ram, props.capacity]);
-    const uniqueSizesRam = Array.from(
-        new Set(ram.map((ramItem: any) => ramItem.size))
-    );
-    const uniqueSizesCapacity = Array.from(
-        new Set(capacity.map((capacityItem: any) => capacityItem.size))
-    );
-    const uniqueSizesColor = Array.from(
-        new Set(color.map((colorItem: any) => colorItem.color))
-    );
-    const handleCheckboxRamChange = (size: any) => {
-        const updatedCheckBoxSizes = [...itemValueRam];
-        const sizeIndex = updatedCheckBoxSizes.findIndex(
-            (selectItem) => selectItem.size === size
-        );
 
-        if (sizeIndex !== -1) {
-            updatedCheckBoxSizes.splice(sizeIndex, 1); // Loại bỏ nếu đã tồn tại
-        } else {
-            updatedCheckBoxSizes.push({ size: size }); // Thêm nếu chưa tồn tại
-        }
-        props.changeValueRam(updatedCheckBoxSizes);
-        setItemValueRam(updatedCheckBoxSizes);
-    };
-    const handleCheckboxCapacityChange = (size: any) => {
+    const handleCheckboxCapacityChange = async (size: any) => {
         const updatedCheckBoxSizes = [...itemValueCapacity];
-        const sizeIndex = updatedCheckBoxSizes.findIndex(
-            (selectItem) => selectItem.size === size
-        );
+        const sizeIndex = updatedCheckBoxSizes.findIndex((selectItem) => {
+            return selectItem.id === size.id;
+        });
         if (sizeIndex !== -1) {
             updatedCheckBoxSizes.splice(sizeIndex, 1);
+            await apiDeleteProductCapacity({
+                capacitiesId: size.id,
+                productsId: productsId,
+            });
         } else {
-            updatedCheckBoxSizes.push({ size: size });
+            updatedCheckBoxSizes.push(size);
+            await apiCreateProductCapacity({
+                capacitiesId: size.id,
+                productsId: productsId,
+            });
         }
-        const result = capacity
-            .filter((itemA: any) =>
-                updatedCheckBoxSizes?.some(
-                    (itemB: any) => itemA.size === itemB.size
-                )
-            )
-            .map(
-                ({ _id, ...rest }: { id: string; [key: string]: any }) => rest
-            );
-        props.changeValueCapacity(result);
-        setItemValueCapacity(result);
+
+        setItemValueCapacity(updatedCheckBoxSizes);
     };
-    const handleCheckboxColorChange = (color: any) => {
+    const handleCheckboxColorChange = async (color: any) => {
         const updatedCheckBoxColor = [...itemValueColor];
         const colorIndex = updatedCheckBoxColor.findIndex(
-            (selectItem) => selectItem.color === color
+            (selectItem) => selectItem.id === color.id
         );
+
         if (colorIndex !== -1) {
             updatedCheckBoxColor.splice(colorIndex, 1);
+            await apiDeleteProductColor({
+                colorsId: color.id,
+                productsId: productsId,
+            });
         } else {
-            updatedCheckBoxColor.push({ color: color });
+            updatedCheckBoxColor.push(color);
+            await apiCreateProductColor({
+                colorsId: color.id,
+                productsId: productsId,
+            });
         }
-        props.changeValueColor(updatedCheckBoxColor);
+
         setItemValueColor(updatedCheckBoxColor);
     };
     return Object.keys(itemCheckBox).map((key: any, index: any) => (
         <div className="mt-4 border border-separate rounded-lg p-4" key={index}>
             <label>{key.replace(/^\w/, (c: string) => c.toUpperCase())}</label>
-            {key === "ram" && (
-                <div className="grid grid-cols-3 gap-5">
-                    {uniqueSizesRam?.map((size: any, index) => {
-                        const isSizeInSelect = itemValueRam?.some(
-                            (selectItem: any) => selectItem.size === size
-                        );
-                        return (
-                            <div
-                                key={index}
-                                className="flex items-center checked-button"
-                            >
-                                <label className="label-css">{size}GB</label>
-                                <Checkbox
-                                    value={size}
-                                    onChange={() =>
-                                        handleCheckboxRamChange(size)
-                                    }
-                                    checked={isSizeInSelect}
-                                    crossOrigin={undefined}
-                                />
-                            </div>
-                        );
-                    })}
-                </div>
-            )}
 
             {key === "capacity" && (
                 <div className="grid grid-cols-3 gap-5">
-                    {uniqueSizesCapacity?.map((size: any, index) => {
+                    {capacity?.map((capacity: any, index: number) => {
                         const isSizeInSelect = itemValueCapacity?.some(
-                            (selectItem: any) => selectItem.size === size
+                            (selectItem: any) => selectItem.id === capacity.id
                         );
+
                         return (
                             <div
                                 key={index}
                                 className="flex items-center checked-button"
                             >
-                                <label className="label-css">{size}GB</label>
+                                <label className="label-css">
+                                    {capacity.size}GB
+                                </label>
                                 <Checkbox
-                                    value={size}
+                                    value={capacity.id}
                                     onChange={() =>
-                                        handleCheckboxCapacityChange(size)
+                                        handleCheckboxCapacityChange(capacity)
                                     }
                                     checked={isSizeInSelect}
                                     crossOrigin={undefined}
@@ -140,16 +107,18 @@ const CheckBoxComponent = (props: any) => {
 
             {key === "color" && (
                 <div className="grid grid-cols-3 gap-5">
-                    {uniqueSizesColor?.map((color: any, index) => {
+                    {color?.map((color: any, index: number) => {
                         const isSizeInSelect = itemValueColor?.some(
-                            (selectItem: any) => selectItem.color === color
+                            (selectItem: any) => selectItem.id === color.id
                         );
                         return (
                             <div
                                 key={index}
                                 className="flex items-center checked-button"
                             >
-                                <label className="label-css">{color}</label>
+                                <label className="label-css">
+                                    {color.color}
+                                </label>
                                 <Checkbox
                                     value={color}
                                     onChange={() =>

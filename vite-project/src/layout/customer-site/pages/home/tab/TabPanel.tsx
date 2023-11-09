@@ -23,6 +23,7 @@ const Panel: React.FC<Product> = (props) => {
     useEffect(() => {
         setProduct(props.data);
     }, [props]);
+
     const data = [
         {
             label: "BEST SELLER",

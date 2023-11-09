@@ -21,7 +21,7 @@ const Brand: React.FC<Props> = (props) => {
     useEffect(() => {
         dispatch(GetBrand(null));
         setId(props.id);
-        setTitle(brand.find((item: any) => item._id === id));
+        setTitle(brand.find((item: any) => item.id === id));
     }, [props.id]);
     return (
         <div>

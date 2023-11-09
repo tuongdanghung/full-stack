@@ -39,11 +39,6 @@ export const appSlice = createSlice({
             state.category = action.payload;
         });
 
-        builder.addCase(actions.GetRam.fulfilled, (state, action) => {
-            state.isLoading = false;
-            state.ram = action.payload;
-        });
-
         builder.addCase(actions.GetCapacity.fulfilled, (state, action) => {
             state.isLoading = false;
             state.capacity = action.payload;

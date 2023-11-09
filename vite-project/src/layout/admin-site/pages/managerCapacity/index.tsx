@@ -82,7 +82,7 @@ const ManagerCapacity: React.FC = () => {
                                 ? "p-4"
                                 : "p-4 border-b border-blue-gray-50";
                             return (
-                                <tr key={item._id}>
+                                <tr key={item.id}>
                                     <td className={classes}>
                                         <div className="flex items-center gap-3 justify-center">
                                             <Typography
@@ -109,7 +109,7 @@ const ManagerCapacity: React.FC = () => {
                                         <div className=" flex justify-end">
                                             <Button
                                                 onClick={() =>
-                                                    handleDelete(item._id)
+                                                    handleDelete(item.id)
                                                 }
                                                 className="bg-red-500  hover:bg-red-700 text-white font-bold px-6 py-3 rounded text-lg mr-2"
                                             >
@@ -118,7 +118,7 @@ const ManagerCapacity: React.FC = () => {
 
                                             <Button
                                                 onClick={() => {
-                                                    handleOpen(item._id);
+                                                    handleOpen(item.id);
                                                 }}
                                                 className="bg-green-500 hover:bg-green-700 text-white font-bold px-6 py-3 rounded text-lg"
                                             >

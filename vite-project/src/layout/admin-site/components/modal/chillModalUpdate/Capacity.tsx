@@ -21,7 +21,7 @@ const Capacity: React.FC<Props> = (props) => {
     useEffect(() => {
         dispatch(GetCapacity(null));
         setId(props.id);
-        setTitle(capacity.find((item: any) => item._id === id));
+        setTitle(capacity.find((item: any) => item.id === id));
     }, [props.id]);
 
     useEffect(() => {
@@ -31,13 +31,14 @@ const Capacity: React.FC<Props> = (props) => {
     const handleChange = (name: any, value: any) => {
         setTitle((prevData: any) => ({
             ...prevData,
-            [name]: value,
+            [name]: +value,
         }));
     };
+
     return (
         <div>
             <div>
-                <label className="block">Title</label>
+                <label className="block">Size</label>
                 <input
                     className="border border-collapse rounded-lg w-full"
                     type="number"

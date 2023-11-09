@@ -28,16 +28,13 @@ export class AddressController {
   ) {}
   @Get()
   @UseGuards(CheckAuthenGuard)
-  async getAllAddresses(
-    @Query('province') province: string,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit: number,
-  ): Promise<{ data: IsAddressInterface[]; currentPage: number }> {
-    if (!page && !limit) {
-      page = 1;
-      limit = 5;
-    }
-    return this.addressService.getAllAddresses(province, page, limit);
+  async getAllAddresses(): Promise<{
+    data: IsAddressInterface[];
+  }> {
+    const currentToken = this.sharedDataService.getCurrentToken();
+    return this.addressService.getAllAddresses(
+      currentToken.dataGenerateToken.id,
+    );
   }
   // get all address
 

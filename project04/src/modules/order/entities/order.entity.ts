@@ -20,6 +20,8 @@ export class OrderEntity {
 
   @Column({ select: false })
   addressId: number;
+  @Column()
+  shipping: number;
 
   @Column()
   paymentId: number;

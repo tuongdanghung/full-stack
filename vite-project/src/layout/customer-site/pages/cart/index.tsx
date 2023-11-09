@@ -1,63 +1,89 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Typography } from "@material-tailwind/react";
-import { GetOneUser } from "../../../../store/actions";
+import {
+    GetAllAddress,
+    GetAllCart,
+    GetOneUser,
+} from "../../../../store/actions";
 import { AppDispatch } from "../../../../store";
 import { ToastContainer, toast } from "react-toastify";
 import { apiDeleteCart, apiCreateOrder } from "../../../../apis";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import MapComponent from "../../components/map";
 import Distance from "../../components/distance";
-const TABLE_HEAD = ["Title", "Image", "Quantity", "Total", ""];
+import { apiUpdateCart } from "./../../../../apis/user";
+import AddressComponent from "../../components/address";
+import * as io from "socket.io-client";
+import TestPaypal from "./test";
+const socket = io.connect("http://localhost:5000");
+const TABLE_HEAD = [
+    "Title",
+    "Image",
+    "Quantity",
+    "Capacity",
+    "Color",
+    "Total",
+    "",
+];
 
 const Cart = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [quantity, setQuantity] = useState<any>(0);
     const [shipping, setShipping] = useState(0);
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState<any>("");
+    const [addressId, setAddressId] = useState("");
     const [isCheck, setIsCheck] = useState(false);
     const token = localStorage.getItem("auth");
-    const cart = useSelector((state: any) => state?.userReducer?.oneUser?.cart);
+    const cart = useSelector((state: any) => state?.userReducer?.carts);
+    const addressArr = useSelector((state: any) => state?.userReducer?.address);
     const data = quantity !== 0 ? quantity : cart;
+
     useEffect(() => {
-        dispatch(GetOneUser(token));
+        dispatch(GetAllCart(token));
+        dispatch(GetAllAddress(null));
     }, [quantity]);
-    const handleQuantityChange = (
+
+    const handleQuantityChange = async (
         event: React.ChangeEvent<HTMLInputElement>,
         productId: string
     ) => {
         const updatedProducts = cart.map((product: any) => {
-            const newQuantity =
-                parseInt(event.target.value, 10) < product.product.quantity
-                    ? parseInt(event.target.value, 10)
-                    : product.product.quantity;
-            if (product._id === productId) {
-                // Cập nhật giá trị quantity cho sản phẩm tương ứng
+            if (product.id === productId) {
                 return {
                     ...product,
-                    quantity: newQuantity,
+                    quantity:
+                        +event.target.value > product.product.stock
+                            ? product.product.stock
+                            : +event.target.value,
                 };
             }
+
             return product;
         });
+
+        const req = updatedProducts.find((item: any) => item.id === productId);
+        await apiUpdateCart(req.id, { quantity: req.quantity });
         setQuantity(updatedProducts);
     };
+
     const handleDelete = async (id: string) => {
-        const response = await apiDeleteCart({ id, token });
+        const response = await apiDeleteCart(id);
         if (response.data.success) {
             toast.success("Delete item cart successfully");
             dispatch(GetOneUser(token));
+            dispatch(GetAllCart(null));
         } else {
             toast.error("Delete item cart failed");
         }
     };
+
     const handleCheckout = async () => {
         if (address !== "") {
             setIsCheck(false);
             const response = await apiCreateOrder({
-                token,
                 shipping: shipping * 0.5,
-                address,
+                addressId: +addressId,
+                paymentId: 1,
             });
             if (response.data.success) {
                 Swal.fire(
@@ -65,7 +91,9 @@ const Cart = () => {
                     "Checkout successfully",
                     "success"
                 );
+                socket.emit("message", "Click!");
                 dispatch(GetOneUser(token));
+                dispatch(GetAllCart(token));
             } else {
                 Swal.fire("Oops!", "Checkout fail", "error");
             }
@@ -73,88 +101,67 @@ const Cart = () => {
             setIsCheck(true);
         }
     };
-    const dataMap = (data: any) => {
-        setAddress(data);
-    };
+
     const distance = (data: any) => {
         setShipping(data);
     };
-    const handleDecrease = (productId: string) => {
-        if (quantity !== 0) {
-            const updatedProducts = quantity.map((product: any) => {
-                const newQuantity =
-                    product.quantity > 1 ? product.quantity - 1 : 1;
-                if (product._id === productId) {
-                    // Cập nhật giá trị quantity cho sản phẩm tương ứng
-                    return {
-                        ...product,
-                        quantity: newQuantity,
-                    };
-                }
-                return product;
-            });
-            setQuantity(updatedProducts);
-        } else {
-            const updatedProducts = cart.map((product: any) => {
-                const newQuantity =
-                    product.quantity > 1 ? product.quantity - 1 : 1;
-                if (product._id === productId) {
-                    console.log(product.quantity);
-                    // Cập nhật giá trị quantity cho sản phẩm tương ứng
-                    return {
-                        ...product,
-                        quantity: newQuantity,
-                    };
-                }
-                return product;
-            });
-            setQuantity(updatedProducts);
-        }
+
+    const handleDecrease = async (productId: number) => {
+        const updatedProducts = data?.map((product: any) => {
+            if (product.id === productId) {
+                return {
+                    ...product,
+                    quantity: product.quantity > 1 ? product.quantity - 1 : 1,
+                };
+            }
+            return product;
+        });
+
+        const req = updatedProducts.find((item: any) => item.id === productId);
+        await apiUpdateCart(req.id, { quantity: req.quantity });
+        setQuantity(updatedProducts);
     };
-    const handleIncrease = (productId: string) => {
-        if (quantity !== 0) {
-            const updatedProducts = quantity.map((product: any) => {
-                const newQuantity =
-                    product.quantity < product.product.quantity
-                        ? product.quantity + 1
-                        : product.product.quantity;
-                // ;
-                if (product._id === productId) {
-                    // Cập nhật giá trị quantity cho sản phẩm tương ứng
-                    return {
-                        ...product,
-                        quantity: newQuantity,
-                    };
-                }
-                return product;
-            });
-            setQuantity(updatedProducts);
-        } else {
-            const updatedProducts = cart.map((product: any) => {
-                const newQuantity =
-                    product.quantity < product.product.quantity
-                        ? product.quantity + 1
-                        : product.product.quantity;
-                if (product._id === productId) {
-                    console.log(product.quantity);
-                    // Cập nhật giá trị quantity cho sản phẩm tương ứng
-                    return {
-                        ...product,
-                        quantity: newQuantity,
-                    };
-                }
-                return product;
-            });
-            setQuantity(updatedProducts);
-        }
+
+    const handleIncrease = async (productId: string) => {
+        const updatedProducts = data?.map((product: any) => {
+            if (product.id === productId) {
+                return {
+                    ...product,
+                    quantity:
+                        product.quantity > product.product.stock - 1
+                            ? product.product.stock
+                            : product.quantity + 1,
+                };
+            }
+            return product;
+        });
+
+        const req = updatedProducts.find((item: any) => item.id === productId);
+
+        await apiUpdateCart(req.id, { quantity: req.quantity });
+        setQuantity(updatedProducts);
     };
+
+    const handleAddressId = (address: any) => {
+        setAddressId(address);
+    };
+
+    const findAddress = (address: any) => {
+        const item = addressArr.find((a: any) => a.id === +address);
+        setAddress({
+            province: item.province,
+            district: item.district,
+            ward: item.ward,
+        });
+    };
+
     return (
         <div>
             {data?.length > 0 ? (
                 <div>
                     <Card className="w-full text-center">
-                        <div className="flex">
-                            <div className="flex-none border border-separate gap-4 w-[60%] p-5">
+                        <div className="p-5">
+                            <div className="flex-none border border-separate gap-4 w-full p-5">
                                 <h2 className="font-semibold text-xl py-4">
                                     Cart
                                 </h2>
@@ -179,8 +186,12 @@ const Cart = () => {
                                     </thead>
                                     <tbody>
                                         {data?.map((item: any, index: any) => {
-                                            const formattedTotal =
-                                                item.totalPrice.toLocaleString();
+                                            const total = (
+                                                item.product.price *
+                                                item.capacity.percent *
+                                                item.quantity
+                                            ).toLocaleString("en-US");
+
                                             const isLast =
                                                 index === cart.length - 1;
                                             const classes = isLast
@@ -188,7 +199,7 @@ const Cart = () => {
                                                 : "p-4 border-b border-blue-gray-50";
                                             return (
                                                 <tr
-                                                    key={item._id}
+                                                    key={item.id}
                                                     className="m-auto"
                                                 >
                                                     <td className={classes}>
@@ -209,7 +220,7 @@ const Cart = () => {
                                                             <img
                                                                 className="m-auto"
                                                                 width={80}
-                                                                src={`${item.product.image[0]?.image}`}
+                                                                src={`${item.product.images[0]?.src}`}
                                                                 alt=""
                                                             />
                                                         </Typography>
@@ -219,7 +230,7 @@ const Cart = () => {
                                                             <Button
                                                                 onClick={() =>
                                                                     handleDecrease(
-                                                                        item._id
+                                                                        item.id
                                                                     )
                                                                 }
                                                             >
@@ -234,14 +245,14 @@ const Cart = () => {
                                                                 onChange={(e) =>
                                                                     handleQuantityChange(
                                                                         e,
-                                                                        item._id
+                                                                        item.id
                                                                     )
                                                                 }
                                                             />
                                                             <Button
                                                                 onClick={() =>
                                                                     handleIncrease(
-                                                                        item._id
+                                                                        item.id
                                                                     )
                                                                 }
                                                             >
@@ -257,7 +268,30 @@ const Cart = () => {
                                                             color="blue-gray"
                                                             className="font-medium"
                                                         >
-                                                            {formattedTotal} $
+                                                            {item.capacity.size}
+                                                            GB
+                                                        </Typography>
+                                                    </td>
+                                                    <td className={classes}>
+                                                        <Typography
+                                                            as="a"
+                                                            href="#"
+                                                            variant="small"
+                                                            color="blue-gray"
+                                                            className="font-medium"
+                                                        >
+                                                            {item.color.color}
+                                                        </Typography>
+                                                    </td>
+                                                    <td className={classes}>
+                                                        <Typography
+                                                            as="a"
+                                                            href="#"
+                                                            variant="small"
+                                                            color="blue-gray"
+                                                            className="font-medium"
+                                                        >
+                                                            {total} $
                                                         </Typography>
                                                     </td>
                                                     <td className={classes}>
@@ -271,7 +305,7 @@ const Cart = () => {
                                                             <Button
                                                                 onClick={() =>
                                                                     handleDelete(
-                                                                        item._id
+                                                                        item.id
                                                                     )
                                                                 }
                                                                 className="bg-[#ea4335] hover:bg-[#a03329] text-xs"
@@ -286,8 +320,12 @@ const Cart = () => {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="grow border border-separate gap-4 p-5 ml-5">
-                                <MapComponent dataMap={dataMap} />
+                            <div className="grow border border-separate gap-4 p-5 mt-5">
+                                {/* <MapComponent dataMap={dataMap} /> */}
+                                <AddressComponent
+                                    handleAddressId={handleAddressId}
+                                    findAddress={findAddress}
+                                />
                                 {isCheck === true && (
                                     <i className="mt-4 text-red-500">
                                         You have not selected a delivery address
@@ -339,6 +377,7 @@ const Cart = () => {
                         </Button>
                     </div>
                     <ToastContainer />
+                    <TestPaypal />
                 </div>
             ) : (
                 <p className="text-center">

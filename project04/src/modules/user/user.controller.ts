@@ -10,6 +10,7 @@ import {
   UseGuards,
   Req,
   UploadedFile,
+  Param,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { UserServices } from './user.service';
@@ -58,26 +59,28 @@ export class UserController {
   async updateUser(
     @UploadedFile() file: Express.Multer.File,
     @Body() formData: any,
-  ): Promise<GlobalInterface> {
+  ): Promise<any> {
     const currentToken = this.sharedDataService.getCurrentToken();
     const data = await this.cloudinaryService.uploadSingleFile(file);
+
     return this.userController.updateUser(
       {
         ...(data?.url && { avatar: data.url }),
-        ...formData,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
       },
       currentToken.dataGenerateToken.id,
     );
   }
 
-  @Put('/updateByAdmin')
+  @Put('/updateByAdmin/:id')
   @UseGuards(CheckAuthenGuard)
   @UseGuards(CheckAuthorGuard)
-  async updateUserByAdmin(@Body() data: any): Promise<GlobalInterface> {
-    const currentToken = this.sharedDataService.getCurrentToken();
-    return this.userController.updateUserByAdmin(
-      data,
-      currentToken.dataGenerateToken.id,
-    );
+  async updateUserByAdmin(
+    @Body() data: any,
+    @Param('id') id: number,
+  ): Promise<GlobalInterface> {
+    return this.userController.updateUserByAdmin(data, id);
   }
 }
