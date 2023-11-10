@@ -95,7 +95,7 @@ const Cart = () => {
                 dispatch(GetOneUser(token));
                 dispatch(GetAllCart(token));
             } else {
-                Swal.fire("Oops!", "Checkout fail", "error");
+                Swal.fire("Oops!", "Product is out of stock", "error");
             }
         } else {
             setIsCheck(true);

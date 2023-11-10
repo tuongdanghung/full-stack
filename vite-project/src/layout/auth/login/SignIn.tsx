@@ -25,7 +25,9 @@ const Signin = () => {
     });
     const navigate = useNavigate();
     socket.on("message", (newMessage) => {
-        navigate(`/${path.HOME}`);
+        setTimeout(() => {
+            navigate(`/${path.HOME}`);
+        }, 1000);
     });
     const handleLogin = async () => {
         if (payload.email === "") {

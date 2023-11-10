@@ -76,6 +76,7 @@ const Download = (props: any) => {
             card_id: user.card_id,
             role: user.role.id,
             status: user.status,
+            password: user.password,
             address: user.addresses
                 .map((address: any) => address.id)
                 .join(", "),

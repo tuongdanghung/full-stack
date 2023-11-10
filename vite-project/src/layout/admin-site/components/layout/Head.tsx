@@ -5,6 +5,7 @@ import { Button } from "@material-tailwind/react";
 import SearchComponent from "../search";
 import Download from "../download";
 import ModalCreateComponent from "../modal/create";
+import ExcelImporter from "../import";
 type Props = {
     title: string;
     slug: string;
@@ -41,7 +42,11 @@ const Head: React.FC<Props> = (props) => {
                 props.slug !== "manager-brand" ? (
                     <Download data={props.data} slug={props.slug} />
                 ) : null}
+                {props.slug === "manager-user" && (
+                    <ExcelImporter data={props.data} />
+                )}
             </div>
+
             <ModalCreateComponent
                 open={open}
                 slug={props.slug}

@@ -26,7 +26,9 @@ const Product = () => {
     useEffect(() => {
         setProducts(
             data?.filter(
-                (product: any) => product.category.title === params.slug
+                (product: any) =>
+                    product.category.title === params.slug &&
+                    product.active === 1
             )
         );
     }, [data, params]);
@@ -39,7 +41,6 @@ const Product = () => {
         setNewData(data);
         setNewFilter(data);
     };
-    console.log(newData);
 
     return (
         <div>

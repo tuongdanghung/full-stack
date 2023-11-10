@@ -17,8 +17,6 @@ import { AiFillEdit } from "react-icons/ai";
 import { apiUpdateOrder } from "../../../../apis";
 import { ToastContainer, toast } from "react-toastify";
 import ModalOrderComponent from "../../components/modal/orderDetail";
-import * as io from "socket.io-client";
-const socket = io.connect("http://localhost:5000");
 const TABLE_HEAD = [
     "Code Orders",
     "Address",
@@ -30,7 +28,6 @@ const TABLE_HEAD = [
 
 const ManagerOrder: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-
     const [open, setOpen] = useState<boolean>(false);
     const orders = useSelector((state: any) => state?.orderReducer?.orders);
     const [newData, setNewData] = useState<any>([]);
@@ -43,25 +40,7 @@ const ManagerOrder: React.FC = () => {
     };
     useEffect(() => {
         dispatch(GetAllOrder(token));
-        socket.on("message", (newMessage) => {
-            dispatch(GetAllOrder(token));
-            if ("Notification" in window) {
-                if (Notification.permission === "granted") {
-                    new Notification("New Message", {
-                        body: "You have a new message!",
-                    });
-                } else if (Notification.permission !== "denied") {
-                    Notification.requestPermission().then((permission) => {
-                        if (permission === "granted") {
-                            new Notification("New Message", {
-                                body: "You have a new message!",
-                            });
-                        }
-                    });
-                }
-            }
-        });
-    }, [dispatch, socket]);
+    }, [dispatch]);
     const handleChange = async (
         event: ChangeEvent<HTMLSelectElement>,
         orderId: string

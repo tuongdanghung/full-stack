@@ -12,6 +12,14 @@ export class UserRepository {
     public userRepository: Repository<UserEntity>,
   ) {}
 
+  async createUser(data: any): Promise<any> {
+    const createUser = this.userRepository.create({
+      ...data,
+      roleId: 1,
+    });
+    const response = await this.userRepository.save(createUser);
+  }
+
   async getAllUsers(
     email: string,
     page: number,

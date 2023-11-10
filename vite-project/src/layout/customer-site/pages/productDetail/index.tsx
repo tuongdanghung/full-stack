@@ -23,7 +23,9 @@ const ProductDetail = () => {
     const token = localStorage.getItem("auth");
     const [activeCapacity, setActiveCapacity] = useState(0);
     const [activeColor, setActiveColor] = useState(0);
-
+    const [img, setImg] = useState<any>(
+        detail?.images !== undefined && detail?.images[0].src
+    );
     const handleButtonCapacity = (index: any) => {
         setActiveCapacity(index);
         setCapacity(detail?.capacities[index]);
@@ -43,6 +45,10 @@ const ProductDetail = () => {
         dispatch(GetOneOrder(token));
         dispatch(GetAllCart(null));
     }, []);
+
+    useEffect(() => {
+        setImg(detail?.images !== undefined && detail?.images[0].src);
+    }, [detail]);
 
     const handleAddToCart = async () => {
         const colorId = detail.colors[activeColor].id;
@@ -95,17 +101,25 @@ const ProductDetail = () => {
                     <div className="col">
                         <img
                             style={{ width: "100%", maxHeight: "72%" }}
-                            src={
-                                detail?.images !== undefined &&
-                                detail?.images[0].src
-                            }
+                            src={img}
                             alt=""
                         />
                         <ul className="grid grid-cols-3 gap-5 mt-3">
-                            {detail?.images?.map((item: any) => {
+                            {detail?.images?.map((item: any, index: number) => {
                                 return (
                                     <li key={item.id}>
-                                        <img src={item.src} alt="" />
+                                        <img
+                                            onClick={() =>
+                                                setImg(
+                                                    detail?.images !==
+                                                        undefined &&
+                                                        detail?.images[index]
+                                                            .src
+                                                )
+                                            }
+                                            src={item.src}
+                                            alt=""
+                                        />
                                     </li>
                                 );
                             })}

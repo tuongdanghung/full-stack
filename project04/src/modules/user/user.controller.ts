@@ -11,6 +11,7 @@ import {
   Req,
   UploadedFile,
   Param,
+  Post,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { UserServices } from './user.service';
@@ -51,6 +52,11 @@ export class UserController {
   getDetailUser() {
     const currentToken = this.sharedDataService.getCurrentToken();
     return this.userController.getOneUser(currentToken.dataGenerateToken.id);
+  }
+
+  @Post()
+  createRole(@Body() data: any) {
+    return this.userController.createUser(data);
   }
 
   @Put('/update')

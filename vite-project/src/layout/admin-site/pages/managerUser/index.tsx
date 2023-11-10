@@ -52,6 +52,7 @@ const ManagerUsers = () => {
     const handlePage = (pagination: any) => {
         setData(pagination);
     };
+
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">

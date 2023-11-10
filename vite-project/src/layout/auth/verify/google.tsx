@@ -6,10 +6,10 @@ const VerifyGoogle = () => {
     const params = useParams();
     const { token }: any = params;
     useEffect(() => {
+        localStorage.setItem("auth", token);
         socket.emit("message", "Click!");
     }, []);
     setTimeout(() => {
-        localStorage.setItem("auth", token);
         window.close();
     }, 1000);
     return <div></div>;
