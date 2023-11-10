@@ -29,7 +29,7 @@ const NewArrivals = (props: any) => {
     useEffect(() => {
         setProduct(props.product);
     }, [props]);
-    const randomItems = getRandomItems(product, 4);
+    const randomItems = getRandomItems(product, 6);
     return (
         <div className="grid grid-cols-1 gap-5">
             <Swiper

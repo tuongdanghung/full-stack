@@ -23,7 +23,7 @@ export class UserEntity {
   @Column()
   email: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column({ default: 'true' })
@@ -32,7 +32,10 @@ export class UserEntity {
   @Column()
   card_id: string;
 
-  @Column()
+  @Column({
+    default:
+      'https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg',
+  })
   avatar: string;
 
   @ManyToOne(() => RoleEntity, (role) => role.user, { eager: true })

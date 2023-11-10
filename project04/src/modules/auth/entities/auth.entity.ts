@@ -26,7 +26,7 @@ export class UserEntity {
 
   @Column({
     default:
-      'https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi3LTAwMi1wLnBuZw.png',
+      'https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg',
   })
   avatar: string;
 

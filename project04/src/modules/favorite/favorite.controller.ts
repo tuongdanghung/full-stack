@@ -42,7 +42,6 @@ export class FavoriteController {
       ...favoriteDTO,
       userId: currentToken.dataGenerateToken.id,
     };
-    console.log(favorite);
 
     return this.favoriteService.createFavorite(favorite);
   }

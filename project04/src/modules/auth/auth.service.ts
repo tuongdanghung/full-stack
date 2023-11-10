@@ -46,8 +46,6 @@ export class AuthServices {
   }
 
   googleLogin(req) {
-    console.log(req.user.email);
-
     return this.authService.loginGoogle(req.user.email);
   }
 }

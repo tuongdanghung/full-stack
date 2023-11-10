@@ -24,9 +24,6 @@ export class OrderRepository {
   async getAllOrders(codeOrder: string, page: number, limit: number) {
     const skip = (page - 1) * limit;
     const data = await this.orderRepository.find({
-      // where: codeOrder && { codeOrder: ILike(`%${codeOrder}%`) },
-      // skip,
-      // take: limit,
       relations: ['address', 'orderItems'],
     });
     const currentPage = Math.ceil((skip + 1) / limit);
@@ -55,6 +52,16 @@ export class OrderRepository {
     });
   }
 
+  async findOrder(id: number) {
+    return await this.orderRepository.findOneBy({ id });
+  }
+
+  async findOrderItem(id: any) {
+    return await this.orderItemRepository.find({
+      where: { codeOrder: id },
+    });
+  }
+
   async createOrderItem(orderItem: any) {
     const cartId = orderItem.cartId;
     const data = {
@@ -77,6 +84,11 @@ export class OrderRepository {
   async updateProduct(id: number, stock: number, quantity: number) {
     return await this.productRepository.update(id, {
       stock: stock - quantity,
+    });
+  }
+  async updateProductCancelOrder(id: number, data: number) {
+    return await this.productRepository.update(id, {
+      stock: data,
     });
   }
 

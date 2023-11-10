@@ -70,6 +70,24 @@ export class OrderServices {
   async updateOrder(data: OrderDTO, id: number): Promise<GlobalInterface> {
     const response = await this.orderRepo.updateOrder(data, id);
     if (response.affected !== 0) {
+      const findOrder = await this.orderRepo.findOrder(id);
+      if (findOrder.status === 'Cancel') {
+        if (findOrder) {
+          const findOrderItem = await this.orderRepo.findOrderItem(
+            findOrder.codeOrder,
+          );
+          for (const item of findOrderItem) {
+            const findProduct = await this.orderRepo.findProduct(
+              item.product.id,
+            );
+            await this.orderRepo.updateProductCancelOrder(
+              item.product.id,
+              findProduct.stock + item.quantity,
+            );
+          }
+        }
+      }
+
       return {
         success: true,
         message: 'Order updated successfully',
