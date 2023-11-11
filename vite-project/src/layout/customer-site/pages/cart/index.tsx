@@ -14,7 +14,7 @@ import Distance from "../../components/distance";
 import { apiUpdateCart } from "./../../../../apis/user";
 import AddressComponent from "../../components/address";
 import * as io from "socket.io-client";
-import TestPaypal from "./test";
+import TestPaypal from "./paypal";
 const socket = io.connect("http://localhost:5000");
 const TABLE_HEAD = [
     "Title",
@@ -33,6 +33,7 @@ const Cart = () => {
     const [address, setAddress] = useState<any>("");
     const [addressId, setAddressId] = useState("");
     const [isCheck, setIsCheck] = useState(false);
+    const [paymentId, setPaymentId] = useState(1);
     const token = localStorage.getItem("auth");
     const cart = useSelector((state: any) => state?.userReducer?.carts);
     const addressArr = useSelector((state: any) => state?.userReducer?.address);
@@ -83,7 +84,7 @@ const Cart = () => {
             const response = await apiCreateOrder({
                 shipping: shipping * 0.5,
                 addressId: +addressId,
-                paymentId: 1,
+                paymentId,
             });
             if (response.data.success) {
                 Swal.fire(
@@ -153,6 +154,29 @@ const Cart = () => {
             district: item.district,
             ward: item.ward,
         });
+    };
+
+    const total = data?.reduce(
+        (total: any, item: any) =>
+            total +
+            item.product.price * item.capacity.percent * item.quantity +
+            shipping * 0.5,
+        0
+    );
+
+    const dataPaypal = {
+        shipping: shipping * 0.5,
+        addressId: +addressId,
+        paymentId,
+    };
+
+    const handleCheckoutPaypal = (status: any) => {
+        if (status === true) {
+            Swal.fire("Congratulations!", "Checkout successfully", "success");
+            socket.emit("message", "Click!");
+            dispatch(GetOneUser(token));
+            dispatch(GetAllCart(token));
+        }
     };
 
     return (
@@ -320,64 +344,127 @@ const Cart = () => {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="grow border border-separate gap-4 p-5 mt-5">
-                                {/* <MapComponent dataMap={dataMap} /> */}
-                                <AddressComponent
-                                    handleAddressId={handleAddressId}
-                                    findAddress={findAddress}
-                                />
-                                {isCheck === true && (
-                                    <i className="mt-4 text-red-500">
-                                        You have not selected a delivery address
-                                    </i>
-                                )}
+                            <div className="grid grid-cols-2 gap-5">
+                                <div className="grow border border-separate gap-4 p-5 mt-5">
+                                    <AddressComponent
+                                        handleAddressId={handleAddressId}
+                                        findAddress={findAddress}
+                                    />
+                                    {isCheck === true && (
+                                        <i className="mt-4 text-red-500">
+                                            You have not selected a delivery
+                                            address
+                                        </i>
+                                    )}
+                                </div>
+                                <div className="grow border border-separate gap-4 p-5 mt-5">
+                                    <div className="mt-6 flex flex-col items-end">
+                                        <p className="text-2xl font-bold">
+                                            Total:{" "}
+                                            <span>
+                                                {data
+                                                    ?.reduce(
+                                                        (
+                                                            total: any,
+                                                            item: any
+                                                        ) =>
+                                                            total +
+                                                            item.product.price *
+                                                                item.capacity
+                                                                    .percent *
+                                                                item.quantity,
+                                                        0
+                                                    )
+                                                    .toLocaleString()}{" "}
+                                                $
+                                            </span>
+                                        </p>
+                                        <Distance
+                                            address={address}
+                                            distance={distance}
+                                        />
+                                        <p className="text-2xl font-bold">
+                                            Sub Total:{" "}
+                                            <span>
+                                                {data
+                                                    ?.reduce(
+                                                        (
+                                                            total: any,
+                                                            item: any
+                                                        ) =>
+                                                            total +
+                                                            item.product.price *
+                                                                item.capacity
+                                                                    .percent *
+                                                                item.quantity +
+                                                            shipping * 0.5,
+                                                        0
+                                                    )
+                                                    .toLocaleString()}{" "}
+                                                $
+                                            </span>
+                                        </p>
+                                        <div className="flex mt-4">
+                                            <div>
+                                                <label>
+                                                    Payment on delivery
+                                                </label>
+                                                <input
+                                                    className="ml-2"
+                                                    value={1}
+                                                    onChange={(e) =>
+                                                        setPaymentId(
+                                                            Number(
+                                                                e.target.value
+                                                            )
+                                                        )
+                                                    }
+                                                    checked={paymentId === 1}
+                                                    type="radio"
+                                                />
+                                            </div>
+                                            <div className="ml-3">
+                                                <label>Pay with paypal</label>
+                                                <input
+                                                    className="ml-2"
+                                                    value={2}
+                                                    onChange={(e) =>
+                                                        setPaymentId(
+                                                            Number(
+                                                                e.target.value
+                                                            )
+                                                        )
+                                                    }
+                                                    checked={paymentId === 2}
+                                                    type="radio"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="mt-4">
+                                            {paymentId === 1 ? (
+                                                <Button
+                                                    onClick={handleCheckout}
+                                                    className="mt-4 border border-separate rounded-lg px-4 py-3 hover:text-white hover:bg-gray-900"
+                                                >
+                                                    Checkout
+                                                </Button>
+                                            ) : (
+                                                <TestPaypal
+                                                    total={total}
+                                                    dataPaypal={dataPaypal}
+                                                    handleCheckoutPaypal={
+                                                        handleCheckoutPaypal
+                                                    }
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </Card>
-                    <div className="mt-6 flex flex-col items-end">
-                        <p className="text-2xl font-bold">
-                            Total:{" "}
-                            <span>
-                                {data
-                                    ?.reduce(
-                                        (total: any, item: any) =>
-                                            total +
-                                            item.product.price *
-                                                item.capacity.percent *
-                                                item.quantity,
-                                        0
-                                    )
-                                    .toLocaleString()}{" "}
-                                $
-                            </span>
-                        </p>
-                        <Distance address={address} distance={distance} />
-                        <p className="text-2xl font-bold">
-                            Total:{" "}
-                            <span>
-                                {data
-                                    ?.reduce(
-                                        (total: any, item: any) =>
-                                            total +
-                                            item.product.price *
-                                                item.capacity.percent *
-                                                item.quantity +
-                                            shipping * 0.5,
-                                        0
-                                    )
-                                    .toLocaleString()}{" "}
-                                $
-                            </span>
-                        </p>
-                        <Button
-                            onClick={handleCheckout}
-                            className="mt-4 border border-separate rounded-lg px-4 py-3 hover:text-white hover:bg-gray-900"
-                        >
-                            Checkout
-                        </Button>
-                    </div>
+
                     <ToastContainer />
-                    <TestPaypal />
                 </div>
             ) : (
                 <p className="text-center">

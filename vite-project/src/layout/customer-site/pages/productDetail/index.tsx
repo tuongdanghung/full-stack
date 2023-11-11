@@ -13,7 +13,6 @@ import { ToastContainer, toast } from "react-toastify";
 import Favorite from "./favorite";
 const ProductDetail = () => {
     const params = useParams();
-
     const dispatch = useDispatch<AppDispatch>();
     const [quantity, setQuantity] = useState(1);
     const detail = useSelector((state: any) => state?.productReducer.detail);
