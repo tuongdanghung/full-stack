@@ -73,7 +73,7 @@ const FilterProduct = (props: any) => {
         const isChecked = e.target.checked;
         if (collectionTitle === "brand") {
             setSelectedBrand(isChecked ? dataItem.title : null);
-            const newData = props.data?.filter(
+            const newData = props?.data?.filter(
                 (item: any) => item.brand.title === dataItem.title
             );
             props.filterData(newData);
@@ -81,11 +81,21 @@ const FilterProduct = (props: any) => {
             setIsParam({ brand: dataItem.title });
         }
     };
+    const handleAll = () => {
+        props.filterData(props?.data);
+        setInputValue("");
+        setSelectedBrand(null);
+        setIsParam("");
+    };
 
     return (
         <div className="p-4 border border-collapse rounded-md m-0 top-7">
             <div className="grid grid-cols-5 gap-5">
                 <div className="col-span-3 grid grid-cols-5 gap-5">
+                    <Button className="h-[40px]" onClick={handleAll}>
+                        All
+                    </Button>
+
                     {Collection.map((collectionItem) => {
                         const collectionTitle = collectionItem.title;
                         const correspondingData = dataMap[collectionTitle];

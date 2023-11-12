@@ -71,7 +71,7 @@ const ProductDetail = () => {
             if (response.data.success) {
                 toast.success("Add to cart successfully");
                 dispatch(GetOneUser(token));
-                dispatch(GetAllCart(null));
+                dispatch(GetAllCart(token));
             } else {
                 toast.error("Add to cart failed");
             }
@@ -83,7 +83,7 @@ const ProductDetail = () => {
             if (response.data.success) {
                 toast.success("update cart successfully");
                 dispatch(GetOneUser(token));
-                dispatch(GetAllCart(null));
+                dispatch(GetAllCart(token));
             } else {
                 toast.error("update cart failed");
             }

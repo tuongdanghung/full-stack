@@ -15,6 +15,8 @@ import { apiUpdateCart } from "./../../../../apis/user";
 import AddressComponent from "../../components/address";
 import * as io from "socket.io-client";
 import TestPaypal from "./paypal";
+import { useNavigate } from "react-router-dom";
+import path from "../../utils/path";
 const socket = io.connect("http://localhost:5000");
 const TABLE_HEAD = [
     "Title",
@@ -27,6 +29,7 @@ const TABLE_HEAD = [
 ];
 
 const Cart = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const [quantity, setQuantity] = useState<any>(0);
     const [shipping, setShipping] = useState(0);
@@ -41,7 +44,7 @@ const Cart = () => {
 
     useEffect(() => {
         dispatch(GetAllCart(token));
-        dispatch(GetAllAddress(null));
+        dispatch(GetAllAddress(token));
     }, [quantity]);
 
     const handleQuantityChange = async (
@@ -72,7 +75,7 @@ const Cart = () => {
         if (response.data.success) {
             toast.success("Delete item cart successfully");
             dispatch(GetOneUser(token));
-            dispatch(GetAllCart(null));
+            dispatch(GetAllCart(token));
         } else {
             toast.error("Delete item cart failed");
         }
@@ -91,8 +94,10 @@ const Cart = () => {
                     "Congratulations!",
                     "Checkout successfully",
                     "success"
-                );
-                socket.emit("message", "Click!");
+                ).then(() => {
+                    navigate(`/${path.HISTORY}`);
+                });
+                socket.emit("order", "Click!");
                 dispatch(GetOneUser(token));
                 dispatch(GetAllCart(token));
             } else {

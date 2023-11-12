@@ -16,7 +16,7 @@ export const GetAllUsersByAdmin = createAsyncThunk<any, any, type.UserType>(
 export const GetAllCart = createAsyncThunk<any, any, type.UserType>(
     "cart",
     async (data: string, { rejectWithValue }) => {
-        const response = await apis.apiGetAllCart();
+        const response = await apis.apiGetAllCart(data);
         if ((response as any).status !== 200) {
             return rejectWithValue("Error fetching data");
         }
@@ -163,7 +163,7 @@ export const GetAllAddress = createAsyncThunk<any, any, type.ProductType>(
 export const GetAllFavorite = createAsyncThunk<any, any, type.ProductType>(
     "favorite",
     async (data: string, { rejectWithValue }) => {
-        const response = await apis.apiGetAllFavorite();
+        const response = await apis.apiGetAllFavorite(data);
         if ((response as any).data.success) {
             return rejectWithValue("Error fetching data");
         }

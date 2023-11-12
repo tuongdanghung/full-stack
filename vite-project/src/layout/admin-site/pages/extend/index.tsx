@@ -14,7 +14,7 @@ const ExtendAdmin: React.FC = () => {
     const user = useSelector((state: any) => state?.userReducer?.oneUser);
     useEffect(() => {
         dispatch(GetOneUser(token));
-        socket.on("message", (newMessage) => {
+        socket.on("order", (newMessage) => {
             dispatch(GetAllOrder(token));
             if ("Notification" in window) {
                 if (Notification.permission === "granted") {

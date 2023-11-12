@@ -11,19 +11,20 @@ const FeaturedBrand = (props: any) => {
     const [filterData, setFilterdata] = useState<any>([]);
     useEffect(() => {
         setFilterdata(
-            props.data?.filter((data: any) => data.brand === "Samsung")
+            props.data?.filter((data: any) => data.brand.title === "apple")
         );
     }, [props]);
+
     return (
         <div className="mt-6 customer-care p-6 bg-white border border-collapse rounded-md">
             <div className="flex">
                 <h1>
                     Featured Brand :{" "}
-                    <span className="text-red-700 font-bold">SAMSUNG</span>
+                    <span className="text-red-700 font-bold">Apple</span>
                 </h1>
             </div>
             <div className="grid grid-cols-4 gap-5">
-                {filterData?.map((item: any, index: any) => {
+                {filterData?.slice(0, 8)?.map((item: any, index: any) => {
                     return (
                         <Card
                             key={index}
@@ -35,19 +36,14 @@ const FeaturedBrand = (props: any) => {
                                     color="blue-gray"
                                     className="mb-2"
                                 >
-                                    <img
-                                        src={
-                                            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/0d/b0/e183f5f1d1e66d8c402b50b476e4a486.jpg.webp"
-                                        }
-                                        alt=""
-                                    />
+                                    <img src={item.images[0].src} alt="" />
                                 </Typography>
                                 <Typography className="m-auto">
                                     <span className="text-2xl font-bold">
                                         {item.title}
                                     </span>{" "}
                                     <br />
-                                    <span> {item.price}</span>
+                                    <span> {item.stock} pcs</span>
                                 </Typography>
                             </CardBody>
                             <CardFooter className="pt-0 m-auto">

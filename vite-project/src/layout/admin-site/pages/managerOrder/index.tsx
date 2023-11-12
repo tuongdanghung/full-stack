@@ -18,7 +18,9 @@ import { apiUpdateOrder } from "../../../../apis";
 import { ToastContainer, toast } from "react-toastify";
 import ModalOrderComponent from "../../components/modal/orderDetail";
 const TABLE_HEAD = [
+    "ID",
     "Code Orders",
+    "Date Order",
     "Address",
     "Sub Total",
     "Shipping",
@@ -78,6 +80,7 @@ const ManagerOrder: React.FC = () => {
     const handlePage = (pagination: any) => {
         setNewData(pagination);
     };
+    console.log(data);
 
     return (
         <Card className="h-full w-full">
@@ -125,7 +128,31 @@ const ManagerOrder: React.FC = () => {
                                                 color="blue-gray"
                                                 className="font-bold"
                                             >
+                                                {item.id}
+                                            </Typography>
+                                        </div>
+                                    </td>
+                                    <td className={classes}>
+                                        <div className="flex items-center justify-center gap-3">
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-bold"
+                                            >
                                                 {item.codeOrder}
+                                            </Typography>
+                                        </div>
+                                    </td>
+                                    <td className={classes}>
+                                        <div className="flex items-center justify-center gap-3">
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-bold"
+                                            >
+                                                {new Date(
+                                                    item.createdAt
+                                                ).toLocaleString()}
                                             </Typography>
                                         </div>
                                     </td>

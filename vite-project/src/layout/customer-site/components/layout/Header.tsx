@@ -27,10 +27,11 @@ import "./index.scss";
 import path from "../../utils/path";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../../store";
-import { GetOneUser } from "../../../../store/actions";
+import { GetAllCart, GetOneUser } from "../../../../store/actions";
 import { AiFillHeart } from "react-icons/ai";
 import { BiLogIn } from "react-icons/bi";
-
+import * as io from "socket.io-client";
+const socket = io.connect("http://localhost:5000");
 const ProfileMenu = () => {
     const dispatch = useDispatch<AppDispatch>();
     const token = localStorage.getItem("auth");
@@ -46,8 +47,14 @@ const ProfileMenu = () => {
     };
     useEffect(() => {
         dispatch(GetOneUser(token));
+        dispatch(GetAllCart(token));
     }, []);
-
+    socket.on("blockUser", (newMessage) => {
+        setTimeout(() => {
+            localStorage.removeItem("auth");
+            navigate(`/${path.LOGIN}`);
+        }, 1000);
+    });
     return (
         <div>
             {oneUser !== null ? (

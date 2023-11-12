@@ -66,11 +66,11 @@ export const apiUpdateUserByAdmin = (data: any) =>
         headers: { Authorization: `Bearer ${data.token}` },
     });
 
-export const apiGetAllCart = () =>
+export const apiGetAllCart = (data: any) =>
     axios({
         url: "/carts",
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${data}` },
     });
 
 export const apiCreateCart = (data: any) =>
@@ -81,11 +81,11 @@ export const apiCreateCart = (data: any) =>
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiGetAllFavorite = () =>
+export const apiGetAllFavorite = (data: any) =>
     axios({
         url: "/favorites",
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${data}` },
     });
 
 export const apiCreateFavorite = (data: any) =>

@@ -19,7 +19,15 @@ const HistoryOrder = () => {
     useEffect(() => {
         dispatch(GetOneOrder(token));
     }, []);
-    const TABLE_HEAD = ["MDH", "Address", "Shipping", "Subtotal", "Status", ""];
+    const TABLE_HEAD = [
+        "MDH",
+        "Date Order",
+        "Address",
+        "Shipping",
+        "Subtotal",
+        "Status",
+        "",
+    ];
     const handleOpen = (id: string) => {
         setOpen(!open);
         const history = order?.find((item: any) => item.id === id);
@@ -96,6 +104,17 @@ const HistoryOrder = () => {
                                         className="font-normal"
                                     >
                                         MDH {item.codeOrder}
+                                    </Typography>
+                                </td>
+                                <td className={classes}>
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal"
+                                    >
+                                        {new Date(
+                                            item.createdAt
+                                        ).toLocaleString()}
                                     </Typography>
                                 </td>
                                 <td className={classes}>

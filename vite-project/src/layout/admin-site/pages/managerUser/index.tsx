@@ -17,6 +17,8 @@ import { GetAllUsersByAdmin } from "../../../../store/actions";
 import { AppDispatch } from "../../../../store";
 import { apiUpdateUserByAdmin } from "../../../../apis";
 import { ToastContainer, toast } from "react-toastify";
+import * as io from "socket.io-client";
+const socket = io.connect("http://localhost:5000");
 const TABLE_HEAD = [
     "Avatar",
     "Full Name",
@@ -45,6 +47,7 @@ const ManagerUsers = () => {
         if ((response as any).data.success) {
             dispatch(GetAllUsersByAdmin(null));
             toast.success("Updated user successfully");
+            socket.emit("blockUser", "Click!");
         } else {
             toast.error("Updated user failed");
         }

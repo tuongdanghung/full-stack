@@ -16,8 +16,6 @@ import { ColorServices } from './color.service';
 import { ColorDTO } from './dto/color.dto';
 import { IsColorInterface } from './interface/color.interface';
 import { GlobalInterface } from '../../shared/interface/global.interface';
-import { CheckAuthenGuard } from 'src/shared/guards/auth.guard';
-import { CheckAuthorGuard } from 'src/shared/guards/verify_role.guard';
 dotenv.config();
 @Controller(`${process.env.API_KEY}/colors`)
 export class ColorController {
