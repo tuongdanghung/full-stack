@@ -25,6 +25,9 @@ export class OrderRepository {
     const skip = (page - 1) * limit;
     const data = await this.orderRepository.find({
       relations: ['address', 'orderItems'],
+      order: {
+        id: 'DESC',
+      },
     });
     const currentPage = Math.ceil((skip + 1) / limit);
     return { data, currentPage };
@@ -40,6 +43,9 @@ export class OrderRepository {
     const data = await this.orderRepository.find({
       where: { userId: id },
       relations: ['address', 'orderItems'],
+      order: {
+        id: 'DESC',
+      },
     });
     const currentPage = Math.ceil((skip + 1) / limit);
     return { data, currentPage };

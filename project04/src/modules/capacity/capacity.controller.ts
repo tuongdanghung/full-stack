@@ -21,8 +21,6 @@ import { CheckAuthorGuard } from 'src/shared/guards/verify_role.guard';
 
 dotenv.config();
 @Controller(`${process.env.API_KEY}/capacities`)
-@UseGuards(CheckAuthenGuard)
-@UseGuards(CheckAuthorGuard)
 export class CapacityController {
   constructor(private readonly capacityService: CapacityServices) {}
   @Get()

@@ -34,6 +34,9 @@ export class ProductRepository {
     const data = await this.productRepository.find({
       where: title && { title: ILike(`%${title}%`) },
       relations: ['images', 'category', 'brand', 'capacities', 'colors'],
+      order: {
+        id: 'DESC',
+      },
       skip,
     });
     const currentPage = Math.ceil((skip + 1) / limit);

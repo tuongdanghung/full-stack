@@ -26,6 +26,21 @@ export class SocketGateway
         this.server.emit(event, data);
       }
     }
+    if (event === 'blockUser') {
+      if (to) {
+        this.server.to(to).emit(event, data);
+      } else {
+        this.server.emit(event, data);
+      }
+    }
+
+    if (event === 'order') {
+      if (to) {
+        this.server.to(to).emit(event, data);
+      } else {
+        this.server.emit(event, data);
+      }
+    }
   }
 
   sendToClient(clientId: string, event: string, data: any) {
@@ -41,6 +56,26 @@ export class SocketGateway
     console.log('>>>>', data);
 
     return this.sendToClient(socket.id, 'message', data);
+  }
+
+  @SubscribeMessage('order')
+  async handleOrder(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data: any,
+  ) {
+    console.log('>>>>', data);
+
+    return this.sendToClient(socket.id, 'order', data);
+  }
+
+  @SubscribeMessage('blockUser')
+  async handleBlockUser(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data: any,
+  ) {
+    console.log('>>>>', data);
+
+    return this.sendToClient(socket.id, 'blockUser', data);
   }
 
   afterInit(socket: Socket): any {}
