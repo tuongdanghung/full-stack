@@ -23,8 +23,6 @@ dotenv.config();
 export class BrandController {
   constructor(private readonly brandService: BrandServices) {}
   @Get()
-  @UseGuards(CheckAuthenGuard)
-  @UseGuards(CheckAuthorGuard)
   async getAllBrands(
     @Query('title') title: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
