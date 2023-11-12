@@ -14,6 +14,8 @@ import { AppDispatch } from "../../../../store";
 import { useDispatch } from "react-redux";
 
 const SearchComponent: React.FC<Search> = (props) => {
+    const token = localStorage.getItem("auth");
+
     const dispatch = useDispatch<AppDispatch>();
     const [value, setValue] = useState("");
     useEffect(() => {
@@ -22,7 +24,9 @@ const SearchComponent: React.FC<Search> = (props) => {
                 dispatch(GetAllProduct({ title: value }));
                 break;
             case "manager-user":
-                dispatch(GetAllUsersByAdmin(value));
+                console.log({ email: value, token });
+
+                dispatch(GetAllUsersByAdmin({ email: value, token }));
                 break;
             case "manager-brand":
                 dispatch(GetBrand({ title: value }));

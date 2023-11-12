@@ -4,8 +4,8 @@ import * as type from "../../interface/api";
 
 export const GetAllUsersByAdmin = createAsyncThunk<any, any, type.UserType>(
     "users",
-    async (data: string, { rejectWithValue }) => {
-        const response = await apis.apiGetAllUer(data);
+    async ({ email, token }, { rejectWithValue }) => {
+        const response = await apis.apiGetAllUer(email, token);
         if ((response as any).status !== 200) {
             return rejectWithValue("Error fetching data");
         }

@@ -45,7 +45,7 @@ const ManagerUsers = () => {
         };
         const response = await apiUpdateUserByAdmin(payload);
         if ((response as any).data.success) {
-            dispatch(GetAllUsersByAdmin(null));
+            dispatch(GetAllUsersByAdmin(token));
             toast.success("Updated user successfully");
             socket.emit("blockUser", "Click!");
         } else {

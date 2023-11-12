@@ -9,12 +9,12 @@ export const apiCreateUer = (data: any) =>
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiGetAllUer = (params: any) =>
+export const apiGetAllUer = (params: any, dataToken: any) =>
     axios({
         url: "/users",
         method: "GET",
         params: { email: params },
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataToken}` },
     });
 
 export const apiGetOneUser = (token: any) =>
