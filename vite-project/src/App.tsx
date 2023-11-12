@@ -15,6 +15,7 @@ import {
     Forgot,
     VerifyGoogle,
     Favorite,
+    Contact,
 } from "./layout/customer-site/pages";
 import {
     ExtendAdmin,
@@ -46,6 +47,10 @@ function App() {
                         <Route
                             path={path.PRODUCT_DETAIL}
                             element={<ProductDetail />}
+                        ></Route>
+                        <Route
+                            path={path.CONTACT}
+                            element={<Contact />}
                         ></Route>
                         <Route
                             path={path.BLOG_DETAIL}

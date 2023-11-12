@@ -13,3 +13,4 @@ export { default as HistoryOrder } from "./historyOrder";
 export { default as Blog } from "./blog";
 export { default as BlogDetail } from "./blogDetail";
 export { default as Favorite } from "./favorite";
+export { default as Contact } from "./contact";

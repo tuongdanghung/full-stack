@@ -21,13 +21,7 @@ export const navigation = [
     {
         id: 4,
         label: "CONTACT",
-        path: `/${path.OUR_SERVICES}`,
-        icon: UserCircleIcon,
-    },
-    {
-        id: 5,
-        label: "FAQ",
-        path: `/${path.FAQ}`,
+        path: `/${path.CONTACT}`,
         icon: UserCircleIcon,
     },
 ];
