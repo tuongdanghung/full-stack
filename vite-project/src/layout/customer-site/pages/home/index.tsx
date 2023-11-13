@@ -21,11 +21,11 @@ function ParentComponent() {
     }, []);
     return (
         <div>
-            <div className="flex flex-row gap-7">
+            <div className="flex flex-row gap-7 content">
                 <div className="left-content basis-3/5">
                     <Carousels />
                 </div>
-                <div className="left-content basis-2/5">
+                <div className="right-content basis-2/5">
                     <img
                         src="https://cf.shopee.vn/file/vn-50009109-5a4aed0e9a4ef43f3eaee2561763e9f8_xhdpi"
                         alt=""
@@ -42,7 +42,7 @@ function ParentComponent() {
                     />
                 </div>
             </div>
-            <div className="mt-6 customer-care flex justify-between p-4 bg-white border border-collapse rounded-md">
+            <div className="mt-6 customer customer-care flex justify-between p-4 bg-white border border-collapse rounded-md">
                 <div className="flex">
                     <p className="flex items-center">
                         <IoMdCloudDone />
@@ -63,8 +63,7 @@ function ParentComponent() {
                 </div>
             </div>
             <Panel data={data} />
-            {/* <Banner /> */}
-            {/* <Timer data={data} /> */}
+            <Banner />
             <FeaturedBrand data={data} />
         </div>
     );

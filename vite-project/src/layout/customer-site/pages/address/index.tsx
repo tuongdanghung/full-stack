@@ -32,7 +32,7 @@ const AddressProfile = (props: Props) => {
             ...addressData,
             phone,
         };
-        const response = await apiCreateAddress(data);
+        const response = await apiCreateAddress(data, token);
         if (response.data.success) {
             dispatch(GetOneUser(token));
             toast.success("Add new address successfully");

@@ -2,12 +2,13 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Header, Footer } from "../../components";
 import Brand from "../../components/layout/Brand";
+import "../home/index.scss";
 const Extend = () => {
     return (
         <div>
             <Header />
             <div className="max-w-[1400px] m-auto mt-6">
-                <div className="flex flex-row gap-7">
+                <div className="flex content flex-row gap-7">
                     <div className="left-content basis-1/5 relative">
                         <Brand />
                     </div>

@@ -42,11 +42,11 @@ const Profile = () => {
         const formData = new FormData();
         for (let i of Object.entries(newData)) formData.append(i[0], i[1]);
         for (let img of avatar) formData.append("avatar", img);
-        const response = await apiUpdateUser(formData);
+        const response = await apiUpdateUser(formData, token);
         if (response.status === 200) {
             toast.success("User updated successfully");
             dispatch(GetOneUser(token));
-            setIsCheck(false);
+            setIsCheck(true);
         } else {
             toast.success("User updated failed");
         }

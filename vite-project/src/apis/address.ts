@@ -60,12 +60,12 @@ export const apiGetAllAddress = (data: any) =>
         headers: { Authorization: `Bearer ${data}` },
     });
 
-export const apiCreateAddress = (data: any) =>
+export const apiCreateAddress = (data: any, dataToken: any) =>
     axios({
         url: `/addresses`,
         method: "POST",
         data: data,
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataToken}` },
     });
 
 export const apiDeleteAddress = (id: any) =>

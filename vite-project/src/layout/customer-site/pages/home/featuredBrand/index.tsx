@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import path from "../../../utils/path";
 import { Link } from "react-router-dom";
+import "./index.scss";
 const FeaturedBrand = (props: any) => {
     const [filterData, setFilterdata] = useState<any>([]);
     useEffect(() => {
@@ -23,7 +24,7 @@ const FeaturedBrand = (props: any) => {
                     <span className="text-red-700 font-bold">Apple</span>
                 </h1>
             </div>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid grid-cols-4 gap-5 featuredBrand">
                 {filterData?.slice(0, 8)?.map((item: any, index: any) => {
                     return (
                         <Card

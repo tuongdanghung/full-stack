@@ -24,8 +24,6 @@ const SearchComponent: React.FC<Search> = (props) => {
                 dispatch(GetAllProduct({ title: value }));
                 break;
             case "manager-user":
-                console.log({ email: value, token });
-
                 dispatch(GetAllUsersByAdmin({ email: value, token }));
                 break;
             case "manager-brand":

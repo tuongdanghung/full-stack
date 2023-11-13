@@ -30,11 +30,25 @@ export class AuthRepository {
     return false;
   }
 
+  async resetPassword(data: RegisterDTOServices): Promise<any> {
+    const options: FindOneOptions<UserEntity> = {
+      where: { email: data.email },
+    };
+
+    const checkUser = await this.userEntity.findOne(options);
+    if (checkUser !== null) {
+      const updatedAccount = await this.userEntity.update(checkUser.id, {
+        password: data.password,
+      });
+      return updatedAccount;
+    }
+    return false;
+  }
+
   async verifyAccount(card_id: string): Promise<any> {
     const options: FindOneOptions<UserEntity> = {
       where: { card_id },
     };
-
     const checkUser = await this.userEntity.findOne(options);
     if (checkUser) {
       const hashEmail = atob(checkUser.email);
@@ -65,11 +79,18 @@ export class AuthRepository {
       const access_token = isChecked
         ? this.generateToken.signJwt({ dataGenerateToken })
         : null;
-      return {
-        success: true,
-        data: dataGenerateToken,
-        access_token,
-      };
+      if (access_token !== null) {
+        return {
+          success: true,
+          data: dataGenerateToken,
+          access_token,
+        };
+      } else {
+        return {
+          success: false,
+          message: 'Enter wrong password',
+        };
+      }
     }
     return false;
   }

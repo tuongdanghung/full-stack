@@ -7,6 +7,7 @@ import {
 } from "@material-tailwind/react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import Forgot from "../forgot";
 
 const Login = () => {
     const data = [
@@ -19,6 +20,11 @@ const Login = () => {
             label: "Sign up",
             value: "react",
             desc: <SignUp />,
+        },
+        {
+            label: "Forgot Password",
+            value: "forgot",
+            desc: <Forgot />,
         },
     ];
 

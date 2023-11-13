@@ -34,7 +34,7 @@ const ManagerUsers = () => {
     const [data, setData] = useState<any>([]);
     const token = localStorage.getItem("auth");
     useEffect(() => {
-        dispatch(GetAllUsersByAdmin(null));
+        dispatch(GetAllUsersByAdmin({ email: "", token }));
     }, []);
     const handleEdit = async (id: string) => {
         const user = users?.find((user: any) => user.id === id);
@@ -45,7 +45,7 @@ const ManagerUsers = () => {
         };
         const response = await apiUpdateUserByAdmin(payload);
         if ((response as any).data.success) {
-            dispatch(GetAllUsersByAdmin(token));
+            dispatch(GetAllUsersByAdmin({ email: "", token }));
             toast.success("Updated user successfully");
             socket.emit("blockUser", "Click!");
         } else {

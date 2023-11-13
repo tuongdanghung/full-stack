@@ -41,6 +41,23 @@ export class AuthServices {
     }
   }
 
+  async resetPassword(data: any): Promise<any> {
+    const hashPassword = (password: string) =>
+      bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+    const user = { ...data, password: hashPassword(data.password) };
+    const response = await this.authService.resetPassword(user);
+    if (!response) {
+      return {
+        success: false,
+        message: 'Email not found',
+      };
+    }
+    return {
+      success: true,
+      message: 'Reset password successfully',
+    };
+  }
+
   login(req: LoginDTO) {
     return this.authService.login(req);
   }

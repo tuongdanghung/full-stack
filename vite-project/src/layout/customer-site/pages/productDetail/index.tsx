@@ -67,7 +67,7 @@ const ProductDetail = () => {
                 colorId,
                 capacityId,
             };
-            const response = await apiCreateCart(data);
+            const response = await apiCreateCart(data, token);
             if (response.data.success) {
                 toast.success("Add to cart successfully");
                 dispatch(GetOneUser(token));
@@ -79,7 +79,7 @@ const ProductDetail = () => {
             const data = {
                 quantity: result.quantity + quantity,
             };
-            const response = await apiUpdateCart(result.id, data);
+            const response = await apiUpdateCart(result.id, data, token);
             if (response.data.success) {
                 toast.success("update cart successfully");
                 dispatch(GetOneUser(token));

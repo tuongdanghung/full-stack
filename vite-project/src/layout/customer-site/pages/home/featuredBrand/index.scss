@@ -1,0 +1,20 @@
+@media screen and (max-width: 800px) and (min-width: 700px) {
+   .featuredBrand{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+   }
+   content{
+    flex-direction: column;
+   }
+}
+@media screen and (max-width: 699px) and (min-width: 300px) {
+    .featuredBrand{
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     grid-gap: 10px;
+    }
+    content{
+        flex-direction: column;
+       }
+ }

@@ -85,7 +85,7 @@ const Cart = () => {
         if (address !== "") {
             setIsCheck(false);
             const response = await apiCreateOrder({
-                shipping: shipping * 0.5 > 50 ? 50 : shipping * 0.5,
+                shipping: shipping * 0.5,
                 addressId: +addressId,
                 paymentId,
             });
@@ -165,12 +165,12 @@ const Cart = () => {
         (total: any, item: any) =>
             total +
             item.product.price * item.capacity.percent * item.quantity +
-            shipping * 0.05,
+            shipping * 0.5,
         0
     );
 
     const dataPaypal = {
-        shipping: shipping * 0.5 > 50 ? 50 : shipping * 0.5,
+        shipping: shipping * 0.5,
         addressId: +addressId,
         paymentId,
     };
@@ -183,6 +183,7 @@ const Cart = () => {
             dispatch(GetAllCart(token));
         }
     };
+
     const subTotal = data?.reduce(
         (total: any, item: any) =>
             total + item.product.price * item.capacity.percent * item.quantity,
@@ -231,7 +232,6 @@ const Cart = () => {
                                             const classes = isLast
                                                 ? "p-4"
                                                 : "p-4 border-b border-blue-gray-50";
-
                                             return (
                                                 <tr
                                                     key={item.id}
@@ -397,10 +397,12 @@ const Cart = () => {
                                         <p className="text-2xl font-bold">
                                             Sub Total:{" "}
                                             <span>
-                                                {subTotal +
-                                                    (shipping * 0.05 > 50
+                                                {(
+                                                    subTotal +
+                                                    (shipping * 0.5 > 50
                                                         ? 50
-                                                        : shipping * 0.05)}
+                                                        : shipping * 0.5)
+                                                ).toLocaleString()}{" "}
                                                 $
                                             </span>
                                         </p>

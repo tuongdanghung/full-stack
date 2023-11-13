@@ -25,6 +25,10 @@ export class ProductCapacityEntity {
   @ManyToOne(
     () => CapacityEntity,
     (capacityEntity) => capacityEntity.productCapacities,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
   public capacities: CapacityEntity;
 }

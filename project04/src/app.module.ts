@@ -6,7 +6,6 @@ import { RoleModule } from './modules/role/role.module';
 import { ColorModule } from './modules/color/color.module';
 import { CapacityModule } from './modules/capacity/capacity.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { LoggerMiddleware } from './shared/middlewares/logger.middleware';
 import { GenerateToken } from './shared/middlewares/generateToken';
 import * as dotenv from 'dotenv';
 import { UserModule } from './modules/user/user.module';
@@ -50,10 +49,4 @@ const PORT = process.env.API_KEY;
     PaypalModule,
   ],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes({ path: `${PORT}/roles`, method: RequestMethod.GET });
-  }
-}
+export class AppModule {}

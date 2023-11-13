@@ -34,6 +34,10 @@ export class CapacityEntity {
   @OneToMany(
     () => ProductCapacityEntity,
     (productCapacityEntity) => productCapacityEntity.capacities,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
   @OneToMany(() => CartEntity, (cart) => cart.product)
   carts: CartEntity[];

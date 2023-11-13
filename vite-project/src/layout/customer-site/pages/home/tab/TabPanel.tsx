@@ -11,6 +11,7 @@ import { MdFiberNew, MdFeaturedPlayList } from "react-icons/md";
 import Seller from "./Seller";
 import NewArrivals from "./NewArrivals";
 import FeaturedProducts from "./FeaturedProducts";
+import "../../home/index.scss";
 interface Product {
     id?: number;
     title?: string;
@@ -47,12 +48,12 @@ const Panel: React.FC<Product> = (props) => {
     return (
         <Tabs
             value="bestSeller"
-            className="mt-6 border border-collapse p-6 rounded-md "
+            className="mt-6 border border-collapse p-6 rounded-md panel"
         >
             <TabsHeader>
                 {data.map(({ label, value, icon }, index) => (
                     <Tab key={index} value={value}>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 title-panel">
                             {React.createElement(icon, {
                                 className: "w-5 h-5",
                             })}

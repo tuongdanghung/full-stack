@@ -59,3 +59,34 @@
         z-index: 2;
     }
 }
+
+@media screen and (max-width: 800px) and (min-width: 700px) {
+    .content{
+     flex-direction: column;
+    }
+    .right-content{
+        display: none;
+    }
+    .customer{
+        display: none;
+    }
+    .title-panel{
+        font-size: 8px;
+    }
+
+ }
+ 
+ @media screen and (max-width: 699px) and (min-width: 300px) {
+     .content{
+         flex-direction: column;
+        }
+        .right-content{
+            display: none;
+        }
+        .customer{
+            display: none;
+        }
+        .title-panel{
+            font-size: 8px;
+        }
+  }

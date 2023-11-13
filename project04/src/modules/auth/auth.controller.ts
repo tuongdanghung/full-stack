@@ -31,6 +31,11 @@ export class AuthController {
     return this.authService.register(req);
   }
 
+  @Put('/resetpassword')
+  resetPassword(@Body() data: any): Promise<any> {
+    return this.authService.resetPassword(data);
+  }
+
   @Put('verifyAccount/:id')
   verifyAccount(@Param('id') card_id: string) {
     return this.authService.verifyAccount(card_id);
@@ -50,10 +55,8 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
     const response = await this.authService.googleLogin(req);
-
     if (response && response.access_token) {
       const token = response.access_token;
-
       return res.redirect(`http://127.0.0.1:3000/verifyGoogle/${token}/V1`);
     }
   }

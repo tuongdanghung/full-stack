@@ -44,7 +44,7 @@ export class SocketGateway
   }
 
   sendToClient(clientId: string, event: string, data: any) {
-    console.log('clientId', clientId);
+    // console.log('clientId', clientId);
     this.server.emit(event, data);
   }
 
@@ -53,7 +53,7 @@ export class SocketGateway
     @ConnectedSocket() socket: Socket,
     @MessageBody() data: any,
   ) {
-    console.log('>>>>', data);
+    // console.log('>>>>', data);
 
     return this.sendToClient(socket.id, 'message', data);
   }
@@ -63,7 +63,7 @@ export class SocketGateway
     @ConnectedSocket() socket: Socket,
     @MessageBody() data: any,
   ) {
-    console.log('>>>>', data);
+    // console.log('>>>>', data);
 
     return this.sendToClient(socket.id, 'order', data);
   }
@@ -73,7 +73,7 @@ export class SocketGateway
     @ConnectedSocket() socket: Socket,
     @MessageBody() data: any,
   ) {
-    console.log('>>>>', data);
+    // console.log('>>>>', data);
 
     return this.sendToClient(socket.id, 'blockUser', data);
   }

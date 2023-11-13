@@ -80,7 +80,6 @@ const ManagerOrder: React.FC = () => {
     const handlePage = (pagination: any) => {
         setNewData(pagination);
     };
-    console.log(data);
 
     return (
         <Card className="h-full w-full">

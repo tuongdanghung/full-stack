@@ -159,7 +159,7 @@ const notActiveStyle =
     "px-4 py-2 flex items-center gap-2 hover:bg-gray-600 rounded-full hover:text-white";
 const NavList = () => {
     return (
-        <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
+        <ul className="mb-4 mt-2 color-black flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
             <NavListMenu />
             {navigation.map(({ label, icon, path }) => (
                 <NavLink
@@ -173,9 +173,9 @@ const NavList = () => {
                         )
                     }
                 >
-                    <div className="flex items-center gap-2 lg:rounded-full">
+                    <div className="flex  text-black items-center gap-2 lg:rounded-full">
                         {React.createElement(icon, {
-                            className: "h-[18px] w-[18px]",
+                            className: "h-[18px] w-[18px] text-black",
                         })}{" "}
                         {label}
                     </div>

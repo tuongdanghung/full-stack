@@ -2,3 +2,27 @@ nav{
     max-width: 100% !important;
     border-radius: 0 !important;
 }
+
+@media screen and (max-width: 800px) and (min-width: 700px) {
+    .footer-col{
+        display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     grid-gap: 10px;
+     padding: 30px;
+    }
+    .category-mobile{
+        display: flex;
+    }
+ }
+ 
+ @media screen and (max-width: 699px) and (min-width: 300px) {
+     .footer-col{
+        display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     grid-gap: 10px;
+     padding: 30px;
+     }
+     .category-mobile{
+        display: flex;
+    }
+  }

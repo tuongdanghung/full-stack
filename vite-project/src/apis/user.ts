@@ -48,12 +48,12 @@ export const apiFinalRegister = (params: any) =>
         method: "PUT",
     });
 
-export const apiUpdateUser = (data: any) =>
+export const apiUpdateUser = (data: any, dataToken: any) =>
     axios({
         url: `/users/update`,
         method: "PUT",
         data: data,
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataToken}` },
     });
 
 export const apiUpdateUserByAdmin = (data: any) =>
@@ -73,12 +73,12 @@ export const apiGetAllCart = (data: any) =>
         headers: { Authorization: `Bearer ${data}` },
     });
 
-export const apiCreateCart = (data: any) =>
+export const apiCreateCart = (data: any, dataTOken: any) =>
     axios({
         url: `/carts`,
         method: "POST",
         data: data,
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataTOken}` },
     });
 
 export const apiGetAllFavorite = (data: any) =>
@@ -103,12 +103,12 @@ export const apiDeleteFavorite = (id: any) =>
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiUpdateCart = (id: number, data: any) =>
+export const apiUpdateCart = (id: number, data: any, dataToken: any) =>
     axios({
         url: `/carts/${id}`,
         method: "PUT",
         data: data,
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataToken}` },
     });
 
 export const apiDeleteCart = (id: any) =>
@@ -127,7 +127,7 @@ export const apiForgotPassword = (data: any) =>
 
 export const apiResetToken = (data: any) =>
     axios({
-        url: "/user/resetpassword",
+        url: "/auth/resetpassword",
         method: "PUT",
         data: data,
     });

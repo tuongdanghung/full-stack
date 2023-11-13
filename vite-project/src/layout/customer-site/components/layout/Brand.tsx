@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import path from "../../utils/path";
 import { useDispatch, useSelector } from "react-redux";
 import { GetCategory } from "../../../../store/actions";
 import { AppDispatch } from "../../../../store";
+import "./index.scss";
 const Brand = () => {
     const dispatch = useDispatch<AppDispatch>();
     const token = localStorage.getItem("auth");
@@ -18,7 +19,7 @@ const Brand = () => {
             <h1 className="text-2xl text-center font-semibold mb-5">
                 Category
             </h1>
-            <ul className="max-w-md list-none list-inside">
+            <ul className="max-w-md list-none list-inside category-mobile">
                 {category.map((item: any) => {
                     return (
                         <li key={item.id} className="mb-4">
