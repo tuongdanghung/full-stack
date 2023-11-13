@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@material-tailwind/react";
 import { InputField, Required } from "../../customer-site/components";
 import { apiLogin } from "../../../apis";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import path from "../../customer-site/utils/path";
 import pathAdmin from "../../admin-site/utils/path";
 import Swal from "sweetalert2";
@@ -24,11 +24,18 @@ const Signin = () => {
         password: false,
     });
     const navigate = useNavigate();
-    socket.on("message", (newMessage) => {
-        setTimeout(() => {
-            navigate(`/${path.HOME}`);
-        }, 1000);
-    });
+    useEffect(() => {
+        socket.on("message", (newMessage) => {
+            setTimeout(() => {
+                navigate(`/${path.HOME}`);
+            }, 1000);
+        });
+
+        return () => {
+            socket.off("message");
+        };
+    }, []);
+
     const handleLogin = async () => {
         if (payload.email === "") {
             setCheckValid((prevState) => ({

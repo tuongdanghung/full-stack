@@ -48,13 +48,17 @@ const ProfileMenu = () => {
     useEffect(() => {
         dispatch(GetOneUser(token));
         dispatch(GetAllCart(token));
+        socket.on("blockUser", (newMessage) => {
+            setTimeout(() => {
+                localStorage.removeItem("auth");
+                navigate(`/${path.LOGIN}`);
+            }, 1000);
+        });
+        return () => {
+            socket.off("blockUser");
+        };
     }, []);
-    socket.on("blockUser", (newMessage) => {
-        setTimeout(() => {
-            localStorage.removeItem("auth");
-            navigate(`/${path.LOGIN}`);
-        }, 1000);
-    });
+
     return (
         <div>
             {oneUser !== null ? (

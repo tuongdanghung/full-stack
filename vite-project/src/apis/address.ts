@@ -57,7 +57,7 @@ export const apiGetAllAddress = (data: any) =>
     axios({
         url: `/addresses`,
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${data}` },
     });
 
 export const apiCreateAddress = (data: any) =>

@@ -96,11 +96,25 @@ const Distance = (props: Props) => {
 
     return (
         <div>
-            <p>Distance: {number !== null ? `${number} km` : "Chưa tính"}</p>
-            <p>
-                Delivery charges:{" "}
-                {number !== null ? `${number * 0.5} usd` : "Chưa tính"}
-            </p>
+            {props.address === "" ? (
+                <div>
+                    <p>Distance: 0</p>
+                    <p>Delivery charges: 0</p>
+                </div>
+            ) : (
+                <div>
+                    <p>
+                        Distance:{" "}
+                        {number !== null ? `${number} km` : "Chưa tính"}
+                    </p>
+                    <p>
+                        Delivery charges:{" "}
+                        {number !== null
+                            ? `${number * 0.5 > 50 ? 50 : number * 0.5} usd`
+                            : "Chưa tính"}
+                    </p>
+                </div>
+            )}
         </div>
     );
 };

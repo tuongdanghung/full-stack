@@ -4,11 +4,13 @@ import { AppDispatch } from "../../../../store";
 import { useDispatch, useSelector } from "react-redux";
 
 const AddressComponent = (props: any) => {
+    const token = localStorage.getItem("auth");
+
     const dispatch = useDispatch<AppDispatch>();
     const [province, setProvince] = useState<any>("");
     const address = useSelector((state: any) => state?.userReducer?.address);
     useEffect(() => {
-        dispatch(GetAllAddress(null));
+        dispatch(GetAllAddress(token));
     }, []);
 
     const handleProvinceChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -16,7 +18,7 @@ const AddressComponent = (props: any) => {
         props.handleAddressId(event.target.value);
         props.findAddress(event.target.value);
         setProvince(selectedOptionValue);
-        dispatch(GetAllAddress(null));
+        dispatch(GetAllAddress(token));
     };
     return (
         <div>
