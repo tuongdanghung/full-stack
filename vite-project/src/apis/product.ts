@@ -163,10 +163,10 @@ export const apiDeleteImage = (id: number) =>
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiCreateImage = (data: any) =>
+export const apiCreateImage = (data: any, dataToken: any) =>
     axios({
         url: "/products/image",
         method: "POST",
         data: data,
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataToken}` },
     });

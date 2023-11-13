@@ -12,10 +12,11 @@ type Props = {
 };
 
 const Favorite = (props: Props) => {
+    const token = localStorage.getItem("auth");
     const favorite = useSelector((state: any) => state?.userReducer?.favorite);
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        dispatch(GetAllFavorite(null));
+        dispatch(GetAllFavorite(token));
     }, []);
 
     const active = favorite?.find(
@@ -30,11 +31,12 @@ const Favorite = (props: Props) => {
         });
         if ((response as any).data.success) {
             toast.success("update favorite successfully");
-            dispatch(GetAllFavorite(null));
+            dispatch(GetAllFavorite(token));
         } else {
             toast.error("update favorite failed");
         }
     };
+
     return (
         <div>
             {active ? (

@@ -85,7 +85,7 @@ const ModalEditProduct: React.FC<Modal> = (props) => {
         });
     };
 
-    const handleUpdateImage = (id: number) => {
+    const handleUpdateImage = () => {
         setIsCheckImage(!isCheckImage);
     };
     const handleClose = () => {

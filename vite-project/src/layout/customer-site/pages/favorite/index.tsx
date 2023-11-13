@@ -19,7 +19,7 @@ const Favorite = () => {
         const response = await apiDeleteFavorite(id);
         if (response.data.success) {
             toast.success("Delete item favorite successfully");
-            dispatch(GetAllFavorite(null));
+            dispatch(GetAllFavorite(token));
         } else {
             toast.error("Delete item favorite failed");
         }

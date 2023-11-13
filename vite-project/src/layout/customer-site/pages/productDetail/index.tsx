@@ -79,13 +79,19 @@ const ProductDetail = () => {
             const data = {
                 quantity: result.quantity + quantity,
             };
-            const response = await apiUpdateCart(result.id, data, token);
-            if (response.data.success) {
-                toast.success("update cart successfully");
-                dispatch(GetOneUser(token));
-                dispatch(GetAllCart(token));
+            if (data < detail.stock) {
+                const response = await apiUpdateCart(result.id, data, token);
+                if (response.data.success) {
+                    toast.success("update cart successfully");
+                    dispatch(GetOneUser(token));
+                    dispatch(GetAllCart(token));
+                } else {
+                    toast.error("update cart failed");
+                }
             } else {
-                toast.error("update cart failed");
+                toast.warning(
+                    "The number of carts exceeds the number of products"
+                );
             }
         }
     };
@@ -268,7 +274,7 @@ const ProductDetail = () => {
                             </p>
                         )}
                     </div>
-                    <div className="col">3</div>
+                    <div className="col"></div>
                 </div>
                 <div className="mt-6">
                     <h1 className="text-3xl font-bold mb-4">Description</h1>

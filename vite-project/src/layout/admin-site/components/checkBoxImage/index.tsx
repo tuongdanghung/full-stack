@@ -14,6 +14,8 @@ type Props = {
 
 const CheckBoxImage: React.FC<Props> = (props: any) => {
     const [image, setImage] = useState<any>(props.image);
+    const token = localStorage.getItem("auth");
+
     useEffect(() => {
         setImage(props.image);
     }, [props.image]);
@@ -53,7 +55,7 @@ const CheckBoxImage: React.FC<Props> = (props: any) => {
             if (newData.src) {
                 for (let img of newData.src) formData.append("src", img);
                 try {
-                    await apiCreateImage(formData);
+                    await apiCreateImage(formData, token);
                     props.handleUpdateImage(1);
                 } catch (error: any) {
                     throw new Error(error);
@@ -61,6 +63,7 @@ const CheckBoxImage: React.FC<Props> = (props: any) => {
             }
         };
     };
+
     return (
         <div className="mt-4 border border-separate rounded-lg p-4 ">
             <div className="grid grid-cols-5 gap-3 relative">
@@ -77,6 +80,7 @@ const CheckBoxImage: React.FC<Props> = (props: any) => {
                             >
                                 <MdRemoveCircleOutline />
                             </button>
+
                             <input
                                 className="mt-4 w-[120px]"
                                 type="file"
@@ -89,19 +93,21 @@ const CheckBoxImage: React.FC<Props> = (props: any) => {
                         </div>
                     );
                 })}
-                <div className="w-[114px] h-[114px] border border-collapse">
-                    <img
-                        src="https://w7.pngwing.com/pngs/268/723/png-transparent-add-and-files-folder-folders-files-and-folders-icon-thumbnail.png"
-                        alt=""
-                    />
-                    <input
-                        className="w-[112px] mt-[69px]"
-                        id="file-upload-button"
-                        type="file"
-                        onChange={handleAddFileChange()}
-                        multiple
-                    />
-                </div>
+                {image?.length < 5 ? (
+                    <div className="w-[114px] h-[114px] border border-collapse">
+                        <img
+                            src="https://w7.pngwing.com/pngs/268/723/png-transparent-add-and-files-folder-folders-files-and-folders-icon-thumbnail.png"
+                            alt=""
+                        />
+                        <input
+                            className="w-[112px] mt-[69px]"
+                            id="file-upload-button"
+                            type="file"
+                            onChange={handleAddFileChange()}
+                            multiple
+                        />
+                    </div>
+                ) : null}
             </div>
         </div>
     );

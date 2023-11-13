@@ -6,8 +6,11 @@ import { Button, Input } from "@material-tailwind/react";
 import { apiUpdateUser } from "../../../../apis";
 import { ToastContainer, toast } from "react-toastify";
 import AddressProfile from "../address";
+import { Snipper } from "../../components";
 const Profile = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const [isSnipper, setIsSnipper] = useState(false);
+
     const oneUser = useSelector((state: any) => state?.userReducer.oneUser);
     const [avatar, setAvatar] = useState("");
     const [userData, setUserData] = useState({
@@ -35,6 +38,7 @@ const Profile = () => {
         }));
     };
     const handleUpdate = async () => {
+        setIsSnipper(true);
         const newData = {
             ...userData,
             avatar,
@@ -47,12 +51,15 @@ const Profile = () => {
             toast.success("User updated successfully");
             dispatch(GetOneUser(token));
             setIsCheck(true);
+            setIsSnipper(false);
         } else {
             toast.success("User updated failed");
         }
     };
+
     return (
         <div className="p-4 border border-collapse rounded-md m-0">
+            {isSnipper ? <Snipper /> : null}
             <ToastContainer />
             <div className="md:flex no-wrap md:-mx-2 ">
                 {/* Right Side */}
