@@ -3,14 +3,9 @@ import { GrProductHunt } from "react-icons/gr";
 import { TbBrandAppleArcade } from "react-icons/tb";
 import { PiUsersFourDuotone } from "react-icons/pi";
 import { BiCategoryAlt } from "react-icons/bi";
-import { BsFillDiagram3Fill } from "react-icons/bs";
 import { IoIosColorPalette } from "react-icons/io";
 import { MdReduceCapacity } from "react-icons/md";
-import {
-    AiOutlineDashboard,
-    AiOutlineShoppingCart,
-    AiOutlineComment,
-} from "react-icons/ai";
+import { AiOutlineDashboard, AiOutlineShoppingCart } from "react-icons/ai";
 
 interface MenuItem {
     id: number;
@@ -80,12 +75,5 @@ export const adminNavigation: MenuItem[] = [
         value: "Manage Orders",
         type: "single",
         path: `${pathAdmin.MANAGER_ORDER}`,
-    },
-    {
-        id: 5,
-        icon: <AiOutlineComment />,
-        value: "Manage Blog",
-        type: "single",
-        path: `${pathAdmin.MANAGER_BLOG}`,
     },
 ];

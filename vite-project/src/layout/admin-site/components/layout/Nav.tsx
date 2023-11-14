@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { adminNavigation } from "../../utils/nav";
 import clsx from "clsx";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineCaretDown } from "react-icons/ai";
+import { Button } from "flowbite-react";
+import path from "../../../customer-site/utils/path";
 const activeStyle =
     "px-4 py-2 flex items-center gap-2 bg-gray-500 text-gray-200 rounded rounded-lg";
 const notActiveStyle =
@@ -16,6 +18,11 @@ const Nav = () => {
         } else {
             setActived((prev) => [...prev, tabId]);
         }
+    };
+    const navigate = useNavigate();
+    const handleLogOut = () => {
+        localStorage.removeItem("auth");
+        navigate(`${`/${path.LOGIN}`}`);
     };
     return (
         <div className="p-4 bg-gray-900 text-white h-screen">
@@ -60,7 +67,7 @@ const Nav = () => {
                                     <div className="px-4">
                                         {item.submenu?.map((item) => (
                                             <NavLink
-                                                key={item.path} // Make sure to provide a unique key
+                                                key={item.path}
                                                 className={({ isActive }) =>
                                                     clsx(
                                                         isActive && activeStyle,
@@ -83,6 +90,14 @@ const Nav = () => {
                         )}
                     </li>
                 ))}
+                <li className="mt-4">
+                    <Button
+                        onClick={() => handleLogOut()}
+                        className={"w-full bg-gray-600"}
+                    >
+                        Log out
+                    </Button>
+                </li>
             </ul>
         </div>
     );

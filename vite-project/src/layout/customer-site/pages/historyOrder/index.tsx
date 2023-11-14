@@ -22,8 +22,8 @@ const HistoryOrder = () => {
     const TABLE_HEAD = [
         "MDH",
         "Date Order",
+        "Payment",
         "Address",
-        "Shipping",
         "Subtotal",
         "Status",
         "",
@@ -93,7 +93,9 @@ const HistoryOrder = () => {
                         item.orderItems.forEach((item: any) => {
                             totalSum += item.total;
                         });
-                        const subTotal = totalSum.toLocaleString("en-US");
+                        const subTotal = (
+                            totalSum + item.shipping
+                        ).toLocaleString("en-US");
 
                         return (
                             <tr key={item.id}>
@@ -123,9 +125,9 @@ const HistoryOrder = () => {
                                         color="blue-gray"
                                         className="font-normal"
                                     >
-                                        {item.address.ward}{" "}
-                                        {item.address.district}{" "}
-                                        {item.address.province}
+                                        {item.paymentId === 1
+                                            ? "Payment at home"
+                                            : "Payment by card"}
                                     </Typography>
                                 </td>
                                 <td className={classes}>
@@ -134,7 +136,9 @@ const HistoryOrder = () => {
                                         color="blue-gray"
                                         className="font-normal"
                                     >
-                                        {item.shipping}$
+                                        {item.address.ward}{" "}
+                                        {item.address.district}{" "}
+                                        {item.address.province}
                                     </Typography>
                                 </td>
                                 <td className={classes}>

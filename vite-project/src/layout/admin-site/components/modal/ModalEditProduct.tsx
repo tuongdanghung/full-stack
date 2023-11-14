@@ -36,6 +36,7 @@ const ModalEditProduct: React.FC<Modal> = (props) => {
     const [capacity, setCapacity] = useState<object[]>(props.capacity);
     const [category, setCategory] = useState<object[]>(props.category);
     const [color, setColor] = useState<object[]>(props.color);
+    const token = localStorage.getItem("auth");
     useEffect(() => {
         setOpen(props.open);
         setItem(props.id);
@@ -98,10 +99,11 @@ const ModalEditProduct: React.FC<Modal> = (props) => {
             brandId: itemSelect.brand,
         };
 
-        const response = await apiEditProduct(id, data);
+        const response = await apiEditProduct(id, data, token);
         if (response.data.success) {
             props.handleClose(false);
             dispatch(GetAllProduct(null));
+            dispatch(GetProductDetail(item));
             toast.success("Updated product successfully");
         } else {
             toast.error("Updated product failed");

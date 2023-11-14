@@ -15,7 +15,7 @@ import { apiUpdateCart } from "./../../../../apis/user";
 import AddressComponent from "../../components/address";
 import * as io from "socket.io-client";
 import TestPaypal from "./paypal";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import path from "../../utils/path";
 const socket = io.connect("http://localhost:5000");
 const TABLE_HEAD = [
@@ -66,7 +66,7 @@ const Cart = () => {
         });
 
         const req = updatedProducts.find((item: any) => item.id === productId);
-        await apiUpdateCart(req.id, { quantity: req.quantity });
+        await apiUpdateCart(req.id, { quantity: req.quantity }, token);
         setQuantity(updatedProducts);
     };
 
@@ -124,7 +124,7 @@ const Cart = () => {
         });
 
         const req = updatedProducts.find((item: any) => item.id === productId);
-        await apiUpdateCart(req.id, { quantity: req.quantity });
+        await apiUpdateCart(req.id, { quantity: req.quantity }, token);
         setQuantity(updatedProducts);
     };
 
@@ -144,7 +144,7 @@ const Cart = () => {
 
         const req = updatedProducts.find((item: any) => item.id === productId);
 
-        await apiUpdateCart(req.id, { quantity: req.quantity });
+        await apiUpdateCart(req.id, { quantity: req.quantity }, token);
         setQuantity(updatedProducts);
     };
 
@@ -177,10 +177,18 @@ const Cart = () => {
 
     const handleCheckoutPaypal = (status: any) => {
         if (status === true) {
-            Swal.fire("Congratulations!", "Checkout successfully", "success");
-            socket.emit("message", "Click!");
+            Swal.fire(
+                "Congratulations!",
+                "Checkout successfully",
+                "success"
+            ).then(() => {
+                navigate(`/${path.HISTORY}`);
+            });
+            socket.emit("order", "Click!");
             dispatch(GetOneUser(token));
             dispatch(GetAllCart(token));
+        } else {
+            Swal.fire("Oops!", "Product is out of stock", "error");
         }
     };
 
@@ -357,10 +365,17 @@ const Cart = () => {
                             </div>
                             <div className="grid grid-cols-2 gap-5">
                                 <div className="grow border border-separate gap-4 p-5 mt-5">
-                                    <AddressComponent
-                                        handleAddressId={handleAddressId}
-                                        findAddress={findAddress}
-                                    />
+                                    {addressArr?.length > 0 ? (
+                                        <AddressComponent
+                                            handleAddressId={handleAddressId}
+                                            findAddress={findAddress}
+                                        />
+                                    ) : (
+                                        <Link to="http://127.0.0.1:3000/profile">
+                                            Please add an address to purchase
+                                        </Link>
+                                    )}
+
                                     {isCheck === true && (
                                         <i className="mt-4 text-red-500">
                                             You have not selected a delivery

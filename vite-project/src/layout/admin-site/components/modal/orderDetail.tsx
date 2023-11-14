@@ -14,7 +14,15 @@ interface DataItem {
     detail: any;
     handleClose: (open: boolean) => void;
 }
-const TABLE_HEAD = ["Title", "Image", "Quantity", "Capacity", "Color", "Total"];
+const TABLE_HEAD = [
+    "Title",
+    "Image",
+    "Quantity",
+    "Capacity",
+    "Color",
+    "Shipping",
+    "Total",
+];
 const ModalOrderComponent: React.FC<DataItem> = (props: any) => {
     const [open, setOpen] = useState(false);
     const [detail, setDetail] = useState(props.detail);
@@ -122,6 +130,17 @@ const ModalOrderComponent: React.FC<DataItem> = (props: any) => {
                                                 className="font-medium"
                                             >
                                                 {item.color.color}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography
+                                                as="a"
+                                                href="#"
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-medium"
+                                            >
+                                                {detail.shipping} $
                                             </Typography>
                                         </td>
                                         <td className={classes}>

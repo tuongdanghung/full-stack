@@ -120,7 +120,7 @@ export const apiDeleteCart = (id: any) =>
 
 export const apiForgotPassword = (data: any) =>
     axios({
-        url: "/user/forgotpassword",
+        url: "/auth/forGotPassword",
         method: "POST",
         data: data,
     });

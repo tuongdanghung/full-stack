@@ -39,12 +39,13 @@ const Head: React.FC<Props> = (props) => {
                 {props.slug !== "manager-order" &&
                 props.slug !== "manager-capacity" &&
                 props.slug !== "manager-color" &&
+                props.slug !== "manager-category" &&
                 props.slug !== "manager-brand" ? (
                     <Download data={props.data} slug={props.slug} />
                 ) : null}
-                {/* {props.slug === "manager-user" && (
+                {props.slug === "manager-user" && (
                     <ExcelImporter data={props.data} />
-                )} */}
+                )}
             </div>
 
             <ModalCreateComponent

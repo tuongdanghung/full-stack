@@ -30,12 +30,12 @@ export const apiDeleteProduct = (id: any) =>
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiEditProduct = (id: any, data: any) =>
+export const apiEditProduct = (id: any, data: any, dataToken: any) =>
     axios({
         url: `/products/${id}`,
         data: data,
         method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataToken}` },
     });
 
 export const apiEditStatusProduct = (id: any, data: any) =>
@@ -148,19 +148,19 @@ export const apiDeleteProductColor = (data: any) =>
         headers: { Authorization: `Bearer ${token}` },
     });
 
-export const apiUpdateImage = (data: any, id: number) =>
+export const apiUpdateImage = (data: any, id: number, dataToken: any) =>
     axios({
         url: `/products/image/${id}`,
         method: "PUT",
         data: data,
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataToken}` },
     });
 
-export const apiDeleteImage = (id: number) =>
+export const apiDeleteImage = (id: number, dataToken: any) =>
     axios({
         url: `/products/image/${id}`,
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${dataToken}` },
     });
 
 export const apiCreateImage = (data: any, dataToken: any) =>

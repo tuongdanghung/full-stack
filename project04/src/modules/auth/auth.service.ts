@@ -41,20 +41,41 @@ export class AuthServices {
     }
   }
 
-  async resetPassword(data: any): Promise<any> {
+  async forGotPassword(data: any): Promise<any> {
+    const response = await this.authService.forGotPassword(data);
+    if (response !== null) {
+      const html = `<h2>Card code: ${response.card_id}</h2><br/><a href="http://127.0.0.1:3000/reset-password">Click here to confirm your registration</a>`;
+      const data = {
+        email: response.email,
+        html,
+        subject: 'Confirm your registration',
+      };
+      await this.emailService.sendEmail(data.email, data.subject, data.html);
+      return {
+        success: true,
+        message: 'Reset password successfully',
+      };
+    }
+    return {
+      success: false,
+      message: 'Email not found',
+    };
+  }
+
+  async resetpassword(req: LoginDTO) {
     const hashPassword = (password: string) =>
       bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-    const user = { ...data, password: hashPassword(data.password) };
-    const response = await this.authService.resetPassword(user);
-    if (!response) {
+    const user = { ...req, password: hashPassword(req.password) };
+    const response = await this.authService.resetpassword(user);
+    if (response) {
       return {
-        success: false,
-        message: 'Email not found',
+        success: true,
+        message: 'Reset password successfully',
       };
     }
     return {
       success: true,
-      message: 'Reset password successfully',
+      message: 'Reset password failed',
     };
   }
 

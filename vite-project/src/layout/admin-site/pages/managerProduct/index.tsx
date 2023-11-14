@@ -27,6 +27,8 @@ import { AppDispatch } from "../../../../store";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import ModalEditProduct from "../../components/modal/ModalEditProduct";
+import * as io from "socket.io-client";
+const socket = io.connect("http://localhost:5000");
 const TABLE_HEAD = [
     "Title",
     "Price",
@@ -94,6 +96,7 @@ const ManagerProduct = () => {
             if ((response as any).data.success) {
                 dispatch(GetAllProduct(null));
                 toast.success("Updated user successfully");
+                socket.emit("blockProduct", "Click!");
             } else {
                 toast.error("Updated user failed");
             }

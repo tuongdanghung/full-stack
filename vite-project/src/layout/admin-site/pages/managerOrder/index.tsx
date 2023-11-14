@@ -20,10 +20,10 @@ import ModalOrderComponent from "../../components/modal/orderDetail";
 const TABLE_HEAD = [
     "ID",
     "Code Orders",
+    "Payment",
     "Date Order",
     "Address",
     "Sub Total",
-    "Shipping",
     "Status",
     "",
 ];
@@ -116,7 +116,9 @@ const ManagerOrder: React.FC = () => {
                             item.orderItems.forEach((item: any) => {
                                 totalSum += item.total;
                             });
-                            const subTotal = totalSum.toLocaleString("en-US");
+                            const subTotal = (
+                                totalSum + item.shipping
+                            ).toLocaleString("en-US");
 
                             return (
                                 <tr key={item.id}>
@@ -149,12 +151,26 @@ const ManagerOrder: React.FC = () => {
                                                 color="blue-gray"
                                                 className="font-bold"
                                             >
+                                                {item.paymentId === 1
+                                                    ? "Payment at home"
+                                                    : "Payment by card"}
+                                            </Typography>
+                                        </div>
+                                    </td>
+                                    <td className={classes}>
+                                        <div className="flex items-center justify-center gap-3">
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-bold"
+                                            >
                                                 {new Date(
                                                     item.createdAt
                                                 ).toLocaleString()}
                                             </Typography>
                                         </div>
                                     </td>
+
                                     <td className={classes}>
                                         <div className="flex items-center justify-center gap-3">
                                             <Typography
@@ -181,17 +197,7 @@ const ManagerOrder: React.FC = () => {
                                             </Typography>
                                         </div>
                                     </td>
-                                    <td className={classes}>
-                                        <div className="flex items-center justify-center gap-3">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-bold"
-                                            >
-                                                {item.shipping} $
-                                            </Typography>
-                                        </div>
-                                    </td>
+
                                     <td className={classes}>
                                         <div className="flex items-center justify-center gap-3">
                                             <Typography

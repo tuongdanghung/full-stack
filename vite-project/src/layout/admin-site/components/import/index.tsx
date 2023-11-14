@@ -9,6 +9,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 
 const ExcelImporter = (props: any) => {
     const [convertedData, setConvertedData] = useState<any[]>([]);
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleFileUpload = (e: any) => {
         const file = e.target.files[0];
@@ -43,15 +44,7 @@ const ExcelImporter = (props: any) => {
         return convertedData;
     };
     const handleClick = async () => {
-        const dispatch = useDispatch<AppDispatch>();
-        const newArray = convertedData?.filter(
-            (item) =>
-                !props?.data?.some(
-                    (element: any) => element.email === item.email
-                )
-        );
-
-        for (const item of newArray) {
+        for (const item of convertedData) {
             const data = {
                 firstName: item.firstname,
                 lastName: item.lastname,

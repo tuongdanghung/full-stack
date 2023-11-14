@@ -30,19 +30,12 @@ export class AuthRepository {
     return false;
   }
 
-  async resetPassword(data: RegisterDTOServices): Promise<any> {
+  async forGotPassword(data: RegisterDTOServices): Promise<any> {
     const options: FindOneOptions<UserEntity> = {
       where: { email: data.email },
     };
 
-    const checkUser = await this.userEntity.findOne(options);
-    if (checkUser !== null) {
-      const updatedAccount = await this.userEntity.update(checkUser.id, {
-        password: data.password,
-      });
-      return updatedAccount;
-    }
-    return false;
+    return await this.userEntity.findOne(options);
   }
 
   async verifyAccount(card_id: string): Promise<any> {
@@ -54,6 +47,19 @@ export class AuthRepository {
       const hashEmail = atob(checkUser.email);
       const updatedAccount = await this.userEntity.update(checkUser.id, {
         email: hashEmail,
+      });
+      return updatedAccount;
+    }
+    return checkUser;
+  }
+  async resetpassword(data: any): Promise<any> {
+    const options: FindOneOptions<UserEntity> = {
+      where: { card_id: data.card_id },
+    };
+    const checkUser = await this.userEntity.findOne(options);
+    if (checkUser) {
+      const updatedAccount = await this.userEntity.update(checkUser.id, {
+        password: data.password,
       });
       return updatedAccount;
     }

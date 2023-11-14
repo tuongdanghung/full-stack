@@ -6,6 +6,8 @@ import {
     CardFooter,
     Typography,
 } from "@material-tailwind/react";
+import * as io from "socket.io-client";
+const socket = io.connect("http://localhost:5000");
 import { GetAllProduct } from "../../../../store/actions";
 import Pagination from "../../components/pagination";
 import path from "../../utils/path";
@@ -21,6 +23,9 @@ const Product = () => {
     const [products, setProducts] = useState([]);
     useEffect(() => {
         dispatch(GetAllProduct(null));
+        socket.on("blockProduct", (newMessage) => {
+            dispatch(GetAllProduct(null));
+        });
     }, []);
 
     useEffect(() => {

@@ -12,6 +12,7 @@ import {
     SignInInterface,
     CheckValidInterface,
 } from "../../../interface/client/login";
+import { FcGoogle } from "react-icons/fc";
 
 const Signin = () => {
     const [payload, setPayload] = useState<SignInInterface>({
@@ -56,6 +57,7 @@ const Signin = () => {
                     "auth",
                     (response as any).data.access_token
                 );
+
                 navigate(
                     `${
                         Number(response.data.data.roleId) === 1
@@ -63,6 +65,7 @@ const Signin = () => {
                             : `/admin/${pathAdmin.DASHBOARD}`
                     }`
                 );
+                window.location.reload();
             } else {
                 Swal.fire("Oops!", (response as any).message, "error");
             }
@@ -125,9 +128,9 @@ const Signin = () => {
                     onClick={() => {
                         handleClick();
                     }}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-3 rounded w-[100px]"
+                    className="bg-white border border-collapse hover:bg-gray-200 text-white font-bold py-3 px-9 rounded w-[100px]"
                 >
-                    Login google
+                    <FcGoogle className="text-2xl" />
                 </Button>
             </div>
         </div>

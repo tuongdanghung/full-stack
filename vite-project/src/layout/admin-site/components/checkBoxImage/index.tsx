@@ -21,7 +21,7 @@ const CheckBoxImage: React.FC<Props> = (props: any) => {
     }, [props.image]);
 
     const handleDelete = async (id: number) => {
-        await apiDeleteImage(id);
+        await apiDeleteImage(id, token);
         props.handleUpdateImage(id);
     };
 
@@ -34,7 +34,7 @@ const CheckBoxImage: React.FC<Props> = (props: any) => {
                     formData.append("src", files[i]);
                 }
                 try {
-                    await apiUpdateImage(formData, id);
+                    await apiUpdateImage(formData, id, token);
                     props.handleUpdateImage(id);
                 } catch (error: any) {
                     throw new Error(error);

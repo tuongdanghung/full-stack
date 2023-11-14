@@ -17,7 +17,7 @@ const path = {
     VERIFY_ACCOUNT: "verifyAccount/:id",
     VERIFY_GOOGLE: "verifyGoogle/:token/V1",
     FAVORITE: "favorite",
-    FORGOT: "reset-password/:token",
+    FORGOT: "reset-password",
 };
 
 export default path;

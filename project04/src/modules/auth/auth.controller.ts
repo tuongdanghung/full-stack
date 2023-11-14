@@ -31,9 +31,14 @@ export class AuthController {
     return this.authService.register(req);
   }
 
+  @Post('/forGotPassword')
+  forGotPassword(@Body() data: any): Promise<any> {
+    return this.authService.forGotPassword(data);
+  }
+
   @Put('/resetpassword')
-  resetPassword(@Body() data: any): Promise<any> {
-    return this.authService.resetPassword(data);
+  resetpassword(@Body() data: any): Promise<any> {
+    return this.authService.resetpassword(data);
   }
 
   @Put('verifyAccount/:id')
