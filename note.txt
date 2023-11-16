@@ -13,5 +13,10 @@
  giảm sự phụ thuộc giữa các thành phần trong một ứng dụng.
  Điều này giúp tăng tính linh hoạt, tái sử dụng và kiểm thử của mã.
 
+- getter đọc giá trị
+- setter ghi giá trị (thiết lập giá trị)
+
+
 
 - hỏi cụ thể chi tiết : bối cảnh kịch bản, vấn đề gặp phải, giải phápxxxx
+  
